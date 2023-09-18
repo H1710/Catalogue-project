@@ -1,18 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const PageDetail = sequelize.define("page_detail", {
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  const PageDetail = sequelize.define(
+    "page_detail",
+    {
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      image_url: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
     },
-    image_url: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  });
+    {
+      timestamps: false,
+    }
+  );
 
   return PageDetail;
 };

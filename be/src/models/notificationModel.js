@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
-  const Feedback = sequelize.define(
-    "feedback",
+  const Notification = sequelize.define(
+    "notification",
     {
-      rate: {
-        type: DataTypes.INTEGER,
+      content: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
@@ -12,5 +12,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Feedback;
+  return Notification;
 };

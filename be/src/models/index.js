@@ -13,6 +13,7 @@ db.pageDetail = require("./pageDetailModel")(sequelize, DataTypes);
 db.feedback = require("./feedbackModel")(sequelize, DataTypes);
 db.template = require("./templateModel")(sequelize, DataTypes);
 db.page = require("./pageModel")(sequelize, DataTypes);
+db.notification = require("./notificationModel")(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Re-sync success");
@@ -46,13 +47,23 @@ db.product.belongsTo(db.user);
 db.template.hasMany(db.product);
 db.product.belongsTo(db.template);
 
+const product_page = sequelize.define(
+  "product_page",
+  {},
+  {
+    timestamps: false,
+  }
+);
 db.product.belongsToMany(db.page, {
-  through: "product_page",
+  through: product_page,
 });
 db.page.belongsToMany(db.product, {
-  through: "product_page",
+  through: product_page,
 });
 db.page.hasMany(db.pageDetail);
 db.pageDetail.belongsTo(db.page);
+
+db.user.hasMany(db.notification);
+db.notification.belongsTo(db.user);
 
 module.exports = db;
