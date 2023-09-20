@@ -1,0 +1,4 @@
+const host = "http://localhost:5000/api/v1";
+
+export const createTemplateRoute = `${host}/template/create`;
+export const getTemplateRoute = `${host}/template/get`;
