@@ -23,6 +23,8 @@ server.listen(5000, () => {
   console.log(`Server started on Port ${5000}`);
 });
 
+//http://localhost:5000
+
 sequelize
   .authenticate()
   .then(() => {
@@ -33,3 +35,4 @@ sequelize
   });
 
 app.use("/api/v1", routes);
+//http://localhost:5000/api/v1/first-step-registeration
