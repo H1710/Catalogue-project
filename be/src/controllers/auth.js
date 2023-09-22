@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const sendVerificationEmail = require("../utils/verifyEmail");
-
+const bcrypt = require("bcrypt");
 const User = db.user;
 
 
@@ -55,7 +55,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
-      if (user && !user.OTPCode) {
+      if (user && !user.otpCode) {
         return res.status(400).json({ message: 'Email already exists' });
       }
 
@@ -66,14 +66,15 @@ class AuthController {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       if (user) {
-        user.OTPCode = OTP;
+        user.otpCode = OTP;
         user.password = hashedPassword;
         await user.save();
       } else {
         await User.create({
           email: email,
-          OTPCode: OTP,
+          otpCode: OTP,
           password: hashedPassword,
+          type_register: 'normal-register'
         });
       }
       return res.status(200).send({
@@ -99,11 +100,11 @@ class AuthController {
         return res.status(400).json({ message: 'User not found.' });
       }
 
-      if (OTPCode != user.OTPCode) {
+      if (OTPCode != user.otpCode) {
         return res.status(400).json({ message: 'OTP code not correct.' });
       }
 
-      user.OTPCode = 0;
+      user.otpCode = 0;
       await user.save();
 
       return res

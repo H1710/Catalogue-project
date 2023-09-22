@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("user", {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     otpCode: {
       type: DataTypes.STRING,
@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     type_register: {
       type: DataTypes.STRING,

@@ -14,6 +14,7 @@ const sendVerificationEmail = async (email, OTP) => {
     to: email,
     subject: "Email verification",
     text: `OTP code to verify your account: ${OTP}`,
+    //code html
   };
 
   try {
