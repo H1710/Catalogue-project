@@ -28,6 +28,7 @@ db.sequelize.sync({ force: false }).then(() => {
 // Relations
 
 const order = require("./orderModel")(sequelize, DataTypes);
+db.order = order;
 db.user.belongsToMany(db.servicePackage, { through: order });
 db.servicePackage.belongsToMany(db.user, { through: order });
 
