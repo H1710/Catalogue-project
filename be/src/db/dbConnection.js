@@ -1,18 +1,22 @@
 const { Sequelize, DataTypes } = require("sequelize");
+require("dotenv").config();
 
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  "root",
+  process.env.DB_PASSWORD,
+  {
+    host: "localhost",
+    dialect: "mysql",
+    operatorsAliases: false,
 
-const sequelize = new Sequelize("test", "root", "giao2403", {
-
-  host: "localhost",
-  dialect: "mysql",
-  operatorsAliases: false,
-
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
-});
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
+);
 
 module.exports = sequelize;

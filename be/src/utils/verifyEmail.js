@@ -1,11 +1,12 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const sendVerificationEmail = async (email, OTP) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "huyqhse172520@fpt.edu.vn",
-      pass: "levfyweweaqnhsvv",
+      user: process.env.OTP_EMAIL,
+      pass: process.env.OTP_PASSWORD,
     },
   });
 

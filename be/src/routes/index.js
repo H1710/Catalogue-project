@@ -8,7 +8,7 @@ const orderRoute = require("./order");
 router.use("/user", userRoute);
 router.use("/template", templateRoute);
 router.use("/auth", authRoute);
-router.use("/service-package", serviecePackageRoute)
+router.use("/service-package", serviecePackageRoute);
 router.use("/order", orderRoute);
 
 //http://localhost:5000/api/v1/auth

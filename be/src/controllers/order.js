@@ -1,38 +1,27 @@
 const db = require("../models/index");
-const order = db.order;
+const Order = db.order;
+const User = db.user;
+const ServicePackage = db.servicePackage;
 
+class OrderController {
+  static async addOrder(req, res) {
+    try {
+      const { userId, packageId } = req.body;
 
+      await Order.create({
+        userId: userId,
+        servicePackageId: packageId,
+      });
 
-class Order {
-
-    static async addOrder(req, res) {
-        try {
-            const userID = req.body.userId;
-            const serviceID = req.body.servicePackageId;
-
-            console.log("userID: " + userID);
-            console.log("serviceID: " + serviceID);
-            // const currentDate = new Date();
-            // const purchaseDate = currentDate.getDate();
-            const purchaseDate = new Date();
-
-
-            const newOrder = await Order.create({ purchase_date: purchaseDate });
-            await newOrder.setUser(userID);
-            await newOrder.setServicePackage(serviceID);
-
-            res.status(200).send({
-                message: "Add Success!!!"
-            })
-
-
-        } catch (error) {
-            res.status(500).send({
-                message: "Add failed!!!"
-            });
-        }
+      return res.status(200).send({
+        message: "Add Success!!!",
+      });
+    } catch (error) {
+      return res.status(500).send({
+        message: "Add failed!!!",
+      });
     }
+  }
 }
 
-
-exports.Order = Order;
+exports.OrderController = OrderController;

@@ -6,6 +6,7 @@ const routes = require("./src/routes/index");
 
 const app = express();
 const server = http.createServer(app);
+require("dotenv").config();
 
 // app.use(cookieParser());
 
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set("trust proxy", 1);
 
 server.listen(5000, () => {
-  console.log(`Server started on Port ${5000}`);
+  console.log(`Server started on Port ${process.env.PORT}`);
 });
 
 //http://localhost:5000
