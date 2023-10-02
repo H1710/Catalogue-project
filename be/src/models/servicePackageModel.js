@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       remain_day: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      classService: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
