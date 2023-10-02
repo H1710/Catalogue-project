@@ -1,6 +1,9 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import DesignerPage from "./pages/DesignerPage";
+
+import BlogPage from "./pages/BlogPage";
+import ProfilePage from "./pages/ProfilePage";
 import CreateBlog from "./pages/CreateBlog";
 import MainLayout from "./pages/MainLayout";
 
@@ -27,6 +30,14 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/blogpage",
+    element: <BlogPage/>
+  },{
+    path: "/profile",
+    element: <ProfilePage/>
+  }
+
 ]);
 
 export default router;
