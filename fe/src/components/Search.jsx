@@ -55,13 +55,13 @@ function Search() {
   }, [searchValue]);
 
   return (
-   <div className="search  flex justify-center items-center justify-items-center   w-full  absolute z-10 ">
+   <div className="search  flex justify-center items-center justify-items-center   w-full  absolute  ">
       <Tippy
         interactive={true}
         visible={showResult && searchResult.length > 0}
         offset={[0, 5]}
         placement="bottom"
-        render={(...attrs) => (
+        render={({...attrs}) => (
           <div
             tabIndex="-1"
             {...attrs}

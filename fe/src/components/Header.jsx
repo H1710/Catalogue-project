@@ -8,7 +8,9 @@ import {
   faKeyboard,
   faUser,
   faSignOut,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
+import {f} from '@fortawesome/free-regular-svg-icons'
 import Tippy from '@tippyjs/react';
 import Menu from './Menu';
 import { useEffect, useState } from 'react';
@@ -84,25 +86,28 @@ function Header() {
       setNavList(navSeleted)
   };
   return (
-    <>
+    <div className='pl-[16px] pr-[32px] shadow-md'>
       <div
-        className="flex h-16 bg-transparent items-center px-[20px] shadow-md fixed-top  z-1"
+        className="header flex py-2 h-[72px] bg-transparent items-center  fixed-top  z-1"
         style={customFontStyle}
       >
-        <div className="flex ml-2 w-1/5 font-bold">
+        <div className='text-[24px] px-[6px]'>
+          <FontAwesomeIcon icon={faBars}/>
+        </div>
+        <div className="logoflex ml-2 w-1/5 font-bold">
           <img
             className="w-12 h-12 object-cover text-[50px]"
             src="assets/images/logo.png"
             alt="logo"
           />
-          <p className="text-3xl   text-[#E9168E] ml-4 leading-[50px]">NOTO</p>
+          {/* <p className="text-3xl   text-[#E9168E] ml-4 leading-[50px]"></p> */}
         </div>
-        <div className="w-3/5 flex text-xl h-full inline-block ">
+        <div className=" nav w-3/5 flex text-xl h-full inline-block ">
           {navList.map((nav) => (
            <Link to={nav.to} key={nav.id}>
               <button
               key={nav.id}
-              className={ `flex text-xl h-full w-[200px] whitespace-nowrap active:border-b-2 px-1 text-xl font-medium items-center justify-center
+              className={ `flex text-xl h-full whitespace-nowrap active:border-b-2 px-1 text-xl font-medium items-center justify-center
               active:border-indigo-600 active:text-indigo-600  border-transparent text-gray-900  ${
                 nav.selected
                   ? 'bg-orange-300 bg-opacity-40 border-b-2 border-orange-900 '
@@ -116,7 +121,7 @@ function Header() {
               // }`}
               onClick={() => handleClick(nav.id)}
             >
-              {nav.title}
+              <p className='px-4'>{nav.title}</p>
             </button>
            </Link>
           ))}
@@ -149,7 +154,7 @@ function Header() {
               </Tippy>
         </div> */}
       </div>
-    </>
+    </div>
   );
 }
 export default Header;

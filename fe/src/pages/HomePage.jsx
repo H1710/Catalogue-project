@@ -12,6 +12,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Search from '../components/Search';
 import Banner from '../components/Banner';
 import Slider from '../components/Slider';
+import Footer from '../components/Footer';
 
 const HomePage = () => {
   const [input, setInput] = useState('');
@@ -38,18 +39,25 @@ const HomePage = () => {
       }
     >
       <Header />
-      <div className="relative h-[500px] shadow-md flex justify-center items-center justify-items-center">
-        <Banner />
-        <Search />
+      <div className="  h-[250px]  pl-4 box-border  ">
+        <div
+          className=" relative  w-full h-full pt-6 pl-4 pr-8 pb-0 flex justify-center items-center justify-items-center" >
+          <div className=" rounded-[5px]  w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
+          <Search />
+        </div>
       </div>
-      <div className=" ">
-        <h2 className="content text-3xl flex justify-start p-4">
-          Most popular catalogue
-        </h2>
-        <Slider />
+      <div className="pl-4">
+        <div className='pt-6 pr-8 pb-12 pl-4'>
+          <h2 className="content text-3xl flex justify-start p-4">
+            Most popular catalogue
+          </h2>
+          <Slider />
+        </div>
       </div>
 
       {template && <Template template={template} setTemplate={setTemplate} />}
+
+      <Footer />
     </div>
   );
 };
