@@ -2,19 +2,18 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import React, { useCallback, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {} from '@fortawesome/free-regular-svg-icons';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import {Rating} from '@mui/material/Rating';import SvgIcon from '@mui/material/SvgIcon';
+
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { templateList } from '../shared/Template';
-import {
-  faChevronLeft,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
+// import {
+//   faChevronLeft,
+//   faChevronRight,
+// } from '@fortawesome/free-solid-svg-icons';
 
 function Slider() {
   const sliderRef = useRef(null);
@@ -35,7 +34,7 @@ function Slider() {
         className="prev-arrow  text-[50px] w-1/12 items-center justify-center leading-[500px] cursor-pointer"
         onClick={handlePrev}
       >
-        <FontAwesomeIcon icon={faChevronLeft} />
+        {/* <FontAwesomeIcon icon={faChevronLeft} /> */}
       </div>
       <Swiper
         ref={sliderRef}
@@ -54,14 +53,14 @@ function Slider() {
             <p className="flex text-2xl justify-start p-2 ">{template.name}</p>
               
            <div className='inline-block flex justify-items-end p-1'>
-              <Rating
+              {/* <Rating
               className=' '
                 name="simple-controlled"
                 value={star}
                 onChange={(event, star) => {
                   setStar(star);
                 }}
-              />
+              /> */}
            </div>
             <button className='bg-sky-500 rounded-[2px] p-1 text-xl bottom-1'>Detail</button>
           </SwiperSlide>
@@ -72,7 +71,7 @@ function Slider() {
         className="next-arrow text-[50px] w-1/12 items-center justify-center leading-[500px] cursor-pointer"
         onClick={handleNext}
       >
-        <FontAwesomeIcon icon={faChevronRight} />
+        {/* <FontAwesomeIcon icon={faChevronRight} /> */}
       </div>
     </div>
   );
