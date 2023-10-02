@@ -1,6 +1,7 @@
 const db = require("../models/index");
-const sendVerificationEmail = require("../utils/verifyEmail");
+const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
+const uploadImage = require("../utils/uploadImage");
 const User = db.user;
 
 class AuthController {
@@ -50,14 +51,14 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
-
       if (user && !user.otpCode) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
       const OTP = Math.floor(10000 + Math.random() * 900000);
 
-      await sendVerificationEmail(email, OTP);
+      // sendEmail(email, OTP);
+      uploadImage();
 
       const hashedPassword = await bcrypt.hash(password, 10);
 

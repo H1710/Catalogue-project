@@ -19,11 +19,12 @@ class servicePackageController {
 
   static async addServiecePackage(req, res) {
     try {
-      const { name, price, remain_day } = req.body;
+      const { name, price, remain_day, classService } = req.body;
       await ServicePackage.create({
         name,
         price,
         remain_day,
+        classService,
       });
       res.status(200).json({ message: "Add package successfully" });
     } catch (error) {
@@ -51,7 +52,7 @@ class servicePackageController {
   }
   static async editServiecePackage(req, res) {
     try {
-      const { id, name, price, remain_day } = req.body;
+      const { id, name, price, remain_day, classService } = req.body;
 
       const pk_edit = await ServicePackage.findByPk(id);
       if (!pk_edit) {
@@ -59,6 +60,7 @@ class servicePackageController {
       }
 
       pk_edit.name = name;
+      pk_edit.classService = classService;
       pk_edit.price = price;
       pk_edit.remain_day = remain_day;
 

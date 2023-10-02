@@ -6,20 +6,27 @@ const db = {};
 db.sequelize = sequelize;
 db.user = require("./userModel")(sequelize, DataTypes);
 db.servicePackage = require("./servicePackageModel")(sequelize, DataTypes);
+
 db.blogComment = require("./blogCommentModel")(sequelize, DataTypes);
+db.blogRating = require("./blogRatingModel")(sequelize, DataTypes);
 db.blog = require("./blogModel")(sequelize, DataTypes);
+
 db.product = require("./productModel")(sequelize, DataTypes);
 db.productPageDetail = require("./productPageDetailModel")(
   sequelize,
   DataTypes
 );
-db.feedback = require("./feedbackModel")(sequelize, DataTypes);
+
+db.templateRating = require("./templateRatingModel")(sequelize, DataTypes);
+db.templateComment = require("./templateCommentModel")(sequelize, DataTypes);
 db.template = require("./templateModel")(sequelize, DataTypes);
+
 db.templatePageDetail = require("./templatePageDetailModel")(
   sequelize,
   DataTypes
 );
 db.notification = require("./notificationModel")(sequelize, DataTypes);
+db.role = require("./roleModel")(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Re-sync success");
@@ -27,14 +34,30 @@ db.sequelize.sync({ force: false }).then(() => {
 
 // Relations
 
+db.role.hasMany(db.user);
+db.user.belongsTo(db.role, {
+  foreignKey: "roleId",
+});
+
 const order = require("./orderModel")(sequelize, DataTypes);
 db.order = order;
 db.user.belongsToMany(db.servicePackage, { through: order });
 db.servicePackage.belongsToMany(db.user, { through: order });
 
+db.user.belongsTo(db.servicePackage);
+db.servicePackage.hasMany(db.user);
+
+db.template.belongsTo(db.servicePackage);
+db.servicePackage.hasMany(db.template);
+
 db.user.hasMany(db.blog);
 db.blog.belongsTo(db.user, {
   foreignKey: "userId",
+});
+
+db.user.hasMany(db.template);
+db.template.belongsTo(db.user, {
+  foreignKey: "authorId",
 });
 
 db.user.hasMany(db.blogComment);
@@ -47,13 +70,51 @@ db.blogComment.belongsTo(db.blog, {
   foreignKey: "blogId",
 });
 
-db.user.hasMany(db.feedback);
-db.feedback.belongsTo(db.user, {
+db.blogComment.belongsTo(db.blogComment, {
+  foreignKey: "replyCommentId",
+  useJunctionTable: false,
+});
+db.blogComment.hasMany(db.blogComment, {
+  foreignKey: "replyCommentId",
+  useJunctionTable: false,
+});
+
+db.user.hasMany(db.blogRating);
+db.blogRating.belongsTo(db.user, {
   foreignKey: "userId",
 });
 
-db.template.hasMany(db.feedback);
-db.feedback.belongsTo(db.template, {
+db.blog.hasMany(db.blogRating);
+db.blogRating.belongsTo(db.blog, {
+  foreignKey: "blogId",
+});
+
+db.user.hasMany(db.templateComment);
+db.templateComment.belongsTo(db.user, {
+  foreignKey: "userId",
+});
+
+db.template.hasMany(db.templateComment);
+db.templateComment.belongsTo(db.template, {
+  foreignKey: "templateId",
+});
+
+db.templateComment.belongsTo(db.templateComment, {
+  foreignKey: "replyCommentId",
+  useJunctionTable: false,
+});
+db.templateComment.hasMany(db.templateComment, {
+  foreignKey: "replyCommentId",
+  useJunctionTable: false,
+});
+
+db.user.hasMany(db.templateRating);
+db.templateRating.belongsTo(db.user, {
+  foreignKey: "userId",
+});
+
+db.template.hasMany(db.templateRating);
+db.templateRating.belongsTo(db.template, {
   foreignKey: "templateId",
 });
 
