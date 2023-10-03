@@ -41,14 +41,14 @@ const CreateBlog = () => {
 
   return (
     <div className="my-4 w-full px-4">
-      <div className="grid grid-cols-5 grid-rows-4 my-4 gap-4 w-full h-[260px]">
-        <div className="col-start-1 col-span-2 flex-wrap">
-          <p className="text-2xl">Create</p>
+      <div className="grid grid-cols-5 my-4 gap-4 w-full h-[310px]">
+        <div className="col-start-1 col-span-2 flex flex-col">
+          <p className="text-2xl mb-2 font-semibold">Create</p>
           <CreateForm blog={blog} setBlog={setBlog} />
         </div>
 
-        <div className="col-start-3 col-span-3">
-          <p className="text-2xl">Preview</p>
+        <div className="col-start-3 col-span-3 flex flex-col">
+          <p className="text-2xl mb-2 font-semibold">Preview</p>
           <PreviewBlog blog={blog} />
         </div>
       </div>
