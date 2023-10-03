@@ -7,7 +7,7 @@ import { createBlogRoute } from "../utils/APIRoute";
 
 const CreateBlog = () => {
   const initState = {
-    user: 1,
+    userId: 1,
     title: "",
     content: "",
     description: "",
@@ -31,23 +31,24 @@ const CreateBlog = () => {
 
   const handleCreateBlog = async () => {
     const newData = { ...blog, content: body };
-    console.log(newData);
     let formData = new FormData();
     for (let key in newData) {
       formData.append(key, newData[key]);
     }
     const data = await axios.post(createBlogRoute, formData);
+
+    console.log(data);
   };
 
   return (
-    <div className="my-4 w-full px-4">
-      <div className="grid grid-cols-5 my-4 gap-4 w-full h-[310px]">
-        <div className="col-start-1 col-span-2 flex flex-col">
+    <div className="my-4 w-full px-4 h-full">
+      <div className="grid grid-cols-5 lg:grid-cols-5 my-4 gap-4 w-full">
+        <div className="col-start-1 col-span-5 xl:col-span-2 flex flex-col">
           <p className="text-2xl mb-2 font-semibold">Create</p>
           <CreateForm blog={blog} setBlog={setBlog} />
         </div>
 
-        <div className="col-start-3 col-span-3 flex flex-col">
+        <div className="col-start-1 col-span-5 xl:col-start-3 xl:col-span-3 flex flex-col">
           <p className="text-2xl mb-2 font-semibold">Preview</p>
           <PreviewBlog blog={blog} />
         </div>

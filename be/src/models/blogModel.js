@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.STRING,
         allowNull: false,
-        default: "No process",
+        defaultValue: "No process",
       },
     },
     {
