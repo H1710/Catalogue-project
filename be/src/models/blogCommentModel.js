@@ -1,14 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const BlogComment = sequelize.define("blog_comment", {
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
+  const BlogComment = sequelize.define(
+    "blog_comment",
+    {
+      date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      vote: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  });
+    {
+      timeStamp: true,
+    }
+  );
 
   return BlogComment;
 };

@@ -1,12 +1,10 @@
 const db = require("../models/index");
-const sendVerificationEmail = require("../utils/verifyEmail");
+const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
+const uploadImage = require("../utils/uploadImage");
 const User = db.user;
 
-
-
 class AuthController {
-
   static async login(req, res) {
     try {
       const { email, password } = req.body;
@@ -14,54 +12,53 @@ class AuthController {
       if (!user)
         return res
           .status(400)
-          .send({ message: 'This account does not exist.' });
+          .send({ message: "This account does not exist." });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).send({ message: 'Password incorrect.' });
+        return res.status(400).send({ message: "Password incorrect." });
       }
 
-      if (!user.lastname || !user.firstname) {
+      if (!user.name) {
         return res
           .status(400)
-          .send({ message: 'Account has not been registered' });
+          .send({ message: "Account has not been registered" });
       }
       return res.status(200).send({
-        message: 'Login successful',
+        message: "Login successful",
       });
     } catch (error) {
       return res
         .status(500)
-        .json({ message: 'Failed to do somthing exceptional' });
+        .json({ message: "Failed to do somthing exceptional" });
     }
   }
 
   static async logout(req, res) {
     try {
-      await res.clearCookie('refreshtoken', {
+      await res.clearCookie("refreshtoken", {
         secure: true,
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: "none",
       });
-      return res.status(200).send({ message: 'Logged out.' });
+      return res.status(200).send({ message: "Logged out." });
     } catch (error) {
-      return res.status(500).send({ message: 'Logout erro.r' });
+      return res.status(500).send({ message: "Logout erro.r" });
     }
   }
-
 
   static async firstStepRegisteration(req, res) {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
-
       if (user && !user.otpCode) {
-        return res.status(400).json({ message: 'Email already exists' });
+        return res.status(400).json({ message: "Email already exists" });
       }
 
       const OTP = Math.floor(10000 + Math.random() * 900000);
 
-      await sendVerificationEmail(email, OTP);
+      // sendEmail(email, OTP);
+      uploadImage();
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -74,22 +71,18 @@ class AuthController {
           email: email,
           otpCode: OTP,
           password: hashedPassword,
-          type_register: 'normal-register'
+          type_register: "normal-register",
         });
       }
       return res.status(200).send({
-        message: 'Succcess. Check your mail to get OPTcode'
+        message: "Succcess. Check your mail to get OPTcode",
       });
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
-        .json({ message: 'Failed to do something exceptional' });
+        .json({ message: "Failed to do something exceptional" });
     }
   }
-
-
-
 
   static async submitOTP(req, res) {
     try {
@@ -97,47 +90,43 @@ class AuthController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ message: 'User not found.' });
+        return res.status(400).json({ message: "User not found." });
       }
 
       if (OTPCode != user.otpCode) {
-        return res.status(400).json({ message: 'OTP code not correct.' });
+        return res.status(400).json({ message: "OTP code not correct." });
       }
 
       user.otpCode = 0;
       await user.save();
 
-      return res
-        .status(200)
-        .send({ message: 'Register successfully.' });
+      return res.status(200).send({ message: "Register successfully." });
     } catch (error) {
       return res
         .status(500)
-        .json({ message: 'Failed to do somthing exceptional.' });
+        .json({ message: "Failed to do somthing exceptional." });
     }
   }
 
   static async setInfo(req, res, next) {
     try {
-      const { firstname, lastname, email } = req.body;
+      const { name, email } = req.body;
       const user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ message: 'User not found.' });
+        return res.status(400).json({ message: "User not found." });
       }
 
-      user.firstname = firstname;
-      user.lastname = lastname;
+      user.name = name;
       user.save();
 
-      return res.status(200).send({ message: 'Update info success.' });
+      return res.status(200).send({ message: "Update info success." });
     } catch (error) {
       return res
         .status(500)
-        .json({ message: 'Failed to do somthing exceptional.' });
+        .json({ message: "Failed to do somthing exceptional." });
     }
   }
 }
-
 
 exports.AuthController = AuthController;
