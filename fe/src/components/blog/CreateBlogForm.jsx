@@ -18,12 +18,13 @@ const CreateForm = ({ blog, setBlog }) => {
   };
 
   return (
-    <form className="flex-1">
-      <div className="relative flex">
+    <form className=" flex flex-col flex-1">
+      <div className="relative flex h-[40px] border-gray-100 rounded">
         <input
           type="text"
-          className="w-full"
+          className="w-full rounded placeholder:italic"
           value={blog.title}
+          placeholder="Title..."
           name="title"
           onChange={handleChangeInput}
         />
@@ -39,17 +40,18 @@ const CreateForm = ({ blog, setBlog }) => {
       <div className="my-3">
         <input
           type="file"
-          className="w-full border border-black"
+          className="w-full border border-gray-500 rounded p-[4px]"
           accept="image/*"
           onChange={handleChangeThumbnail}
         />
       </div>
 
-      <div className="relative flex">
+      <div className="relative flex flex-1 border-gray-100 rounded">
         <textarea
-          className="w-full"
+          className="w-full rounded"
           rows={4}
           value={blog.description}
+          placeholder="Description..."
           style={{ resize: "none" }}
           name="description"
           onChange={handleChangeInput}

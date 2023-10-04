@@ -1,26 +1,29 @@
 module.exports = (sequelize, DataTypes) => {
-  const Blog = sequelize.define("blog", {
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
+  const Blog = sequelize.define(
+    "blog",
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      thumbnail: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "No process",
+      },
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    thumbnail: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-  });
+    {
+      timeStamp: true,
+    }
+  );
 
   return Blog;
 };
