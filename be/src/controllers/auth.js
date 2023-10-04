@@ -57,8 +57,7 @@ class AuthController {
 
       const OTP = Math.floor(10000 + Math.random() * 900000);
 
-      // sendEmail(email, OTP);
-      uploadImage();
+      sendEmail(email, OTP);
 
       const hashedPassword = await bcrypt.hash(password, 10);
 

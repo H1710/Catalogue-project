@@ -5,8 +5,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      
+    <div className="App min-h-[100vh]">
       <RouterProvider router={router} />
     </div>
   );
