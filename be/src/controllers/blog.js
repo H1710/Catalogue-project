@@ -10,6 +10,7 @@ class BlogController {
       const { title, content, userId } = req.body;
 
       const thumbnail = req.file;
+      console.log(thumbnail)//
       if (!thumbnail) {
         return res.status(400).json({ message: "Thumbnail not found" });
       }
@@ -51,9 +52,8 @@ class BlogController {
 
   static async deleteBlog(req, res) {
     try {
-      const blogID = req.body.id;
+      const blogID = req.params.id;
       const blog = await Blog.findByPk(blogID);
-      console.log(blog);
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
@@ -70,19 +70,25 @@ class BlogController {
 
   static async editBlog(req, res) {
     try {
-      const blogId = req.body.id;
-      const blog = await Blog.findByPk(blogId);
+      const { title, content } = req.body;
+      const id = req.params.id;
+      const thumbnail = req.file;
+      const blog = await Blog.findByPk(id);
+      console.log(blog);
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
       await blog.update({
-        status: "In process"
+        status: "No process",
+        title: title,
+        content: content,
+        thumbnail: thumbnail
       }, {
         where: {
-          id: blogId
+          id: id
         }
       });
-      return res.status(200).json({ message: "Update blog successfully" });
+      return res.status(200).json({ message: "Update blog successfully", newBlog: blog });
     } catch (error) {
       return res.status(500).json({ message: "Can not update!" });
     }
@@ -96,7 +102,7 @@ class BlogController {
         return res.status(404).json({ message: "Blog not found" });
       }
       await blog.update({
-        status: "No process"
+        status: "Hide"
       }, {
         where: {
           id: blogId
@@ -151,10 +157,50 @@ class BlogController {
         return res.status(201).json({ message: 'Rating created successfully' });
       }
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
+
+  static async acceptBlog(req, res) {
+    try {
+      const blogId = req.body.id;
+      const blog = await Blog.findByPk(blogId);
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+      await blog.update({
+        status: "Processed"
+      }, {
+        where: {
+          id: blogId
+        }
+      });
+      return res.status(200).json({ message: "Update blog successfully", blog });
+    } catch (error) {
+      return res.status(500).json({ message: "Can not update!" });
+    }
+  }
+
+  static async cancelBlog(req, res) {
+    try {
+      const blogId = req.body.id;
+      const blog = await Blog.findByPk(blogId);
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+      await blog.update({
+        status: "No process"
+      }, {
+        where: {
+          id: blogId
+        }
+      });
+      return res.status(200).json({ message: "Update blog successfully", blog });
+    } catch (error) {
+      return res.status(500).json({ message: "Can not update!" });
+    }
+  }
+
 }
 
 
