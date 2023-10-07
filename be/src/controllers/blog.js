@@ -4,13 +4,14 @@ const Blog = db.blog;
 const User = db.user;
 const blogRating = db.blogRating;
 
+
 class BlogController {
   static async createBlog(req, res) {
     try {
       const { title, content, userId } = req.body;
 
       const thumbnail = req.file;
-      console.log(thumbnail)//
+
       if (!thumbnail) {
         return res.status(400).json({ message: "Thumbnail not found" });
       }
@@ -74,7 +75,6 @@ class BlogController {
       const id = req.params.id;
       const thumbnail = req.file;
       const blog = await Blog.findByPk(id);
-      console.log(blog);
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
@@ -200,7 +200,6 @@ class BlogController {
       return res.status(500).json({ message: "Can not update!" });
     }
   }
-
 }
 
 
