@@ -2,17 +2,14 @@ module.exports = (sequelize, DataTypes) => {
   const TemplateComment = sequelize.define(
     "template_comment",
     {
-      date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       content: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      vote: {
+      total_vote: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0,
       },
     },
     {
