@@ -76,6 +76,7 @@ class AuthController {
         message: "Succcess. Check your mail to get OPTcode",
       });
     } catch (error) {
+      console.error(error);
       return res
         .status(500)
         .json({ message: "Failed to do something exceptional" });
