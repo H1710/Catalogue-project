@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import  {ImageBanners} from '../shared/Banner'
+import  {ImageBanners} from '../../shared/Banner'
 
 function Banner() {
     const max = ImageBanners.length -1;

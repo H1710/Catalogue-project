@@ -55,13 +55,13 @@ function Search() {
   }, [searchValue]);
 
   return (
-   <div className="search  flex justify-center items-center justify-items-center   w-full  absolute z-10 ">
+   <div className="search flex justify-center items-center justify-items-center w-full">
       <Tippy
         interactive={true}
         visible={showResult && searchResult.length > 0}
         offset={[0, 5]}
         placement="bottom"
-        render={(...attrs) => (
+        render={({...attrs}) => (
           <div
             tabIndex="-1"
             {...attrs}
@@ -80,9 +80,9 @@ function Search() {
           </div>
         )}
       >
-        <div className="flex group relative h-14 bg-zinc-100 border-neutral-100 focus-within:border-neutral-300 rounded-full">
+        <div className="flex relative h-14 bg-zinc-100 border-neutral-100 focus-within:border-neutral-300 rounded-[5px]">
           <input
-            className="w-[500px]  bg-zinc-100 rounded-l-full h-14 text-xl px-6 outline-none border-none"
+            className="w-[500px]  bg-zinc-100 rounded-l-[5px] h-14 text-xl px-6 outline-none border-none"
             type="text"
             value={searchValue}
             spellCheck={false}
@@ -92,7 +92,7 @@ function Search() {
           />
           <div className="absolute w-[2px] h-10  top-[8px] bg-[#ccc] ml-[500px] "></div>
           <button
-            className=" text-3xl rounded-r-full h-14 w-14 flex items-center justify-center
+            className=" text-2xl rounded-r-[5px] h-14 w-14 flex items-center justify-center
             border-neutral-100 hover:bg-neutral-200 text-zinc-400 hover:text-zinc-700   "
             onClick={()=> handleSearch}
           >
