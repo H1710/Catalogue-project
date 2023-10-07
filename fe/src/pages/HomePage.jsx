@@ -10,12 +10,12 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 // import background from 'assets/images/background.png';
 
-import Search from '../components/Search';
-import Banner from '../components/homepage/Banner';
-import Slider from '../components/homepage/Slider';
-import Footer from '../components/Footer';
-import Sidebar from '../components/homepage/Sidebar';
-import {templateList} from '../shared/Template'
+import Search from "../components/Search";
+import Banner from "../components/homepage/Banner";
+import Slider from "../components/homepage/Slider";
+import Footer from "../components/Footer";
+import Sidebar from "../components/homepage/Sidebar";
+import { templateList } from "../shared/Template";
 
 const HomePage = () => {
   const [input, setInput] = useState("");
@@ -34,11 +34,11 @@ const HomePage = () => {
   };
 
   const divStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'auto minmax(0, 1fr)',
-    gridTemplateRows: '0fr 0fr 1fr 0fr',
-    margin: '0 auto',
-    minHeight: '100vh',
+    display: "grid",
+    gridTemplateColumns: "auto minmax(0, 1fr)",
+    gridTemplateRows: "0fr 0fr 1fr 0fr",
+    margin: "0 auto",
+    minHeight: "100vh",
   };
   return (
     <div className="theme relative" style={divStyle}>
@@ -51,16 +51,8 @@ const HomePage = () => {
 
       <div className="col-start-2 col-end-3 row-start-2 row-end-3 h-[250px] pt-4 pl-4 pr-8 pb-0 block z-40 ">
         <div className=" rounded-[5px] w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex justify-center items-center justify-items-center">
-    <div
-      className=" h-[1500px] "
-      style={
-        {
-          // backgroundImage: `url(${background})`
-        }
-      }
-    >
-      <div className="relative h-[500px] shadow-md flex justify-center items-center justify-items-center">
-        <Banner />
+          <Search />
+        </div>
       </div>
 
       <div className="col-start-2 col-end-3 row-start-3 row-end-4  pl-4">
@@ -72,8 +64,10 @@ const HomePage = () => {
         </div>
       </div>
 
-
-     <div className='col-start-2 col-end-3 row-start-4 row-end-5'> <Footer /></div>
+      <div className="col-start-2 col-end-3 row-start-4 row-end-5">
+        {" "}
+        <Footer />
+      </div>
     </div>
   );
 };

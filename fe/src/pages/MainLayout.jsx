@@ -1,16 +1,15 @@
-
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from '../components/Header';
-import Sidebar from '../components/homepage/Sidebar';
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "../components/Header";
+import Sidebar from "../components/homepage/Sidebar";
 
 const MainLayout = () => {
   const divStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'auto minmax(0, 1fr)',
-    gridTemplateRows: '0fr 0fr 1fr 0fr',
-    margin: '0 auto',
-    minHeight: '100vh',
+    display: "grid",
+    gridTemplateColumns: "auto minmax(0, 1fr)",
+    gridTemplateRows: "0fr 0fr 1fr 0fr",
+    margin: "0 auto",
+    minHeight: "100vh",
   };
   const [showSidebar, setShowSidebar] = useState(false);
   return (
@@ -20,8 +19,8 @@ const MainLayout = () => {
       </div>
 
       <div className="col-start-1 col-end-2 row-start-2 row-end-5 pl-4">
-       {showSidebar && <Sidebar />}
-      </div> 
+        {showSidebar && <Sidebar />}
+      </div>
       <Outlet />
     </div>
   );

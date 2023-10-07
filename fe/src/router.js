@@ -28,16 +28,17 @@ const router = createBrowserRouter([
         path: "/blog/create",
         element: <CreateBlog />,
       },
+      {
+        path: "/blog",
+        element: <BlogPage />,
+      },
     ],
   },
-  {
-    path: "/blogpage",
-    element: <BlogPage/>
-  },{
-    path: "/profile",
-    element: <ProfilePage/>
-  }
 
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+  },
 ]);
 
 export default router;
