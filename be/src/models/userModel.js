@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     end_date: {
       type: DataTypes.DATEONLY,
-      // allowNull: false,
+      default: Date.now(),
+      allowNull: false,
     },
   });
 

@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      voted: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
     },
     {
       timeStamp: true,
