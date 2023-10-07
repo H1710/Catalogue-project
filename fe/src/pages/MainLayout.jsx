@@ -19,7 +19,7 @@ const MainLayout = () => {
       </div>
 
       <div className="col-start-1 col-end-2 row-start-2 row-end-5 pl-4">
-       {showSidebar && <Sidebar />}
+       {<Sidebar />}
       </div> 
       <Outlet />
     </div>

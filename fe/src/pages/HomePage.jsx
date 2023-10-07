@@ -31,15 +31,9 @@ const HomePage = () => {
     console.log(input);
   };
 
-  const divStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'auto minmax(0, 1fr)',
-    gridTemplateRows: '0fr 0fr 1fr 0fr',
-    margin: '0 auto',
-    minHeight: '100vh',
-  };
+  
   return (
-    <div className="theme relative" style={divStyle}>
+    <div className="theme relative" >
       {/* <div className="col-start-1 col-end-3 row-start-1 row-end-2 w-full sticky absolute block" >
         <Header show={showSidebar}/>
       </div>
