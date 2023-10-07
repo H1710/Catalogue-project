@@ -93,7 +93,8 @@ function Header({setShowSidebar, showSidebar}) {
           style={customFontStyle}
         >
           <div className='text-[24px] px-[6px]'
-           onClick={setShowSidebar(!showSidebar)}
+           onClick={()=> setShowSidebar(!showSidebar)} 
+           
            >
             <FontAwesomeIcon icon={faBars}/>
              
