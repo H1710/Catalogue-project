@@ -10,6 +10,7 @@ db.servicePackage = require("./servicePackageModel")(sequelize, DataTypes);
 db.blogComment = require("./blogCommentModel")(sequelize, DataTypes);
 db.blogRating = require("./blogRatingModel")(sequelize, DataTypes);
 db.blog = require("./blogModel")(sequelize, DataTypes);
+db.voteBlogComment = require("./voteBlogCommentModel")(sequelize, DataTypes);
 
 db.product = require("./productModel")(sequelize, DataTypes);
 db.productPageDetail = require("./productPageDetailModel")(
@@ -20,6 +21,7 @@ db.productPageDetail = require("./productPageDetailModel")(
 db.templateRating = require("./templateRatingModel")(sequelize, DataTypes);
 db.templateComment = require("./templateCommentModel")(sequelize, DataTypes);
 db.template = require("./templateModel")(sequelize, DataTypes);
+db.voteTemplateComment = require("./voteTemplateComment")(sequelize, DataTypes);
 
 db.templatePageDetail = require("./templatePageDetailModel")(
   sequelize,
@@ -72,11 +74,16 @@ db.blogComment.belongsTo(db.blog, {
 
 db.blogComment.belongsTo(db.blogComment, {
   foreignKey: "replyCommentId",
-  useJunctionTable: false,
 });
 db.blogComment.hasMany(db.blogComment, {
   foreignKey: "replyCommentId",
-  useJunctionTable: false,
+});
+
+db.blogComment.belongsToMany(db.user, {
+  through: db.voteBlogComment,
+});
+db.user.belongsToMany(db.blogComment, {
+  through: db.voteBlogComment,
 });
 
 db.user.hasMany(db.blogRating);
@@ -97,6 +104,13 @@ db.templateComment.belongsTo(db.user, {
 db.template.hasMany(db.templateComment);
 db.templateComment.belongsTo(db.template, {
   foreignKey: "templateId",
+});
+
+db.templateComment.belongsToMany(db.user, {
+  through: db.voteTemplateComment,
+});
+db.user.belongsToMany(db.templateComment, {
+  through: db.voteTemplateComment,
 });
 
 db.templateComment.belongsTo(db.templateComment, {
