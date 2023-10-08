@@ -1,8 +1,12 @@
+const seq = require("../db/dbConnection");
 const db = require("../models/index");
 const uploadImage = require("../utils/uploadImage");
 const Blog = db.blog;
 const User = db.user;
 const blogRating = db.blogRating;
+const blogComment = db.blogComment;
+const voteBlogComment = db.voteBlogComment;
+
 
 class BlogController {
   static async createBlog(req, res) {
@@ -45,7 +49,126 @@ class BlogController {
     }
   }
 
-  static async getAllBlog(req, res) {}
+  static async getAllBlog(req, res) {
+    try {
+      let page = req.query.page;
+      if (page == '') {
+        page = 1;
+      }
+      let sort = req.query.sort;
+      if (sort == '') {
+        sort = 'asc';
+      }
+      const limit = 3;
+      const offset = (page - 1) * limit;
+      const blogs = await seq.query('SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b on br.blogId = b.id group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId order by b.createdAt ' + sort + ' limit ? offset ?', {
+        replacements: [limit, offset],
+        type: seq.QueryTypes.SELECT
+      })
+      res.json({
+        blogs: blogs
+      })
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async searchBlogByTitleByName(req, res) {
+    try {
+      const title = req.query.title;
+      const name = req.query.name;
+      let page = req.query.page;
+      const limit = 4;
+      const offset = (page - 1) * limit;
+      if(page == '') {
+        page = 1;
+      }
+      if(title == '' && name == '') {
+        res.status(500).json({ message: "Can not find blog without title or template's name. "});
+      }
+      if(title != '' && name == '') {
+        const blogsByTitle = await seq.query('SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating '
+        +'FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b '
+        +'on br.blogId = b.id '
+        +'where b.title like ? '
+        +'group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?',
+        { replacements: ['%' + title + '%', limit, offset], type: seq.QueryTypes.SELECT }
+      );
+      res.status(200).json({ blogsByTitle });
+      }
+      if(title == '' && name != '') {
+        const blogsByName = await seq.query('select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating '
+      +'from catalogue_project.blogs b '
+      +'join catalogue_project.product_blog pb on b.id = pb.blogId '
+      +'join catalogue_project.templates t on pb.templateId = t.id '
+      +'LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId '
+      +'where t.name like ? '
+      +'group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?',
+      { replacements: ['%' + name + '%', limit, offset], type: seq.QueryTypes.SELECT});
+      res.status(200).json({ blogsByName });
+      }
+      if(title != '' && name != '') {
+        const blogsByTitleAndName = await seq.query('select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating '
+      +'from catalogue_project.blogs b '
+      +'join catalogue_project.product_blog pb on b.id = pb.blogId '
+      +'join catalogue_project.templates t on pb.templateId = t.id '
+      +'LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId '
+      +'where t.name like ? and b.title like ? '
+      +'group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?',
+      { replacements: ['%' + name + '%', '%' + title + '%', limit, offset], type: seq.QueryTypes.SELECT});
+      res.status(200).json({ blogsByTitleAndName });
+      }
+
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async voteBlogCmt(req, res) {
+    try {
+      const userId = req.body.userId;
+      const commentId = req.body.commentId;
+      const voteType = req.body.voteType;
+      if(!userId || !commentId || !voteType) {
+        res.status(400).json({ message: "Missing required parameters." });
+      }
+      const comment = await blogComment.findByPk(commentId);
+      if(!comment) {
+        res.status(400).json({ message: "Comment not found." });
+      }
+      const existingVote = await voteBlogComment.findOne({
+        where: {
+          userId: userId,
+          blogCommentId: commentId
+        }
+      })
+      if(existingVote) {
+        if(existingVote.vote == voteType) {
+          res.status(200).json({ message: "You've already voted"})
+        } else {
+          existingVote.vote = voteType;
+          await existingVote.save();
+        }
+      } else {
+        await voteBlogComment.create({
+          userId: userId,
+          blogCommentId: commentId,
+          vote: voteType
+        });
+      }
+      const totalVote = await seq.query('select blogCommentId, sum(vote) as total_vote '
+      +'from catalogue_project.vote_blog_comments '
+      +'where blogCommentId = ? '
+      +'group by blogCommentId',
+      {replacements: [commentId], type: seq.QueryTypes.SELECT});
+      res.status(200).json({ totalVote });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
 
   static async deleteBlog(req, res) {
     try {

@@ -55,7 +55,7 @@ function Header({ setShowSidebar, showSidebar }) {
     {
       id: 2,
       title: "Blog Page",
-      to: "/blogpage",
+      to: "/blog",
       selected: false,
     },
   ]);
