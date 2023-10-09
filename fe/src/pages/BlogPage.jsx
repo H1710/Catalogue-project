@@ -1,40 +1,22 @@
 import Header from "../components/Header";
+import PreviewBlog from "../components/blog/PreviewBlog";
 
 function BlogPage() {
   const blog = {
     content: "",
     createdAt: "2023-10-07T11:39:21.097Z",
-    description: "asdjjansldb assadl bas asd ",
-    title: "hhh",
+    description:
+      " Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, comes from a line in section 1.10.32 Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. ",
+    title:
+      " has Contrary s ssssssssssto psssssssssssssssssssssopular belief, Lorem Ipsum is not simply random text. It has ",
     userId: 1,
   };
   return (
-    <div>
-      <div className="border border-gray-500 rounded h-[400px] px-3 py-1 gap-3 flex flex-col">
-        <p className="text-4xl w-full h-[70px] font-medium leading-none text-gray-900 break-words inline-block overflow-hidden">
-          {blog.title}
-        </p>
-        <div>
-          <p className="h-[10px]">
-            <small className="text-muted">
-              Posted on {new Date(blog.createdAt).toLocaleString()} by{" "}
-              <span className="text-green-300">HoangHuy</span>
-            </small>
-          </p>
-        </div>
-        <div className="flex items-start gap-4 mt-4">
-          {blog.thumbnail && (
-            <img
-              src={URL.createObjectURL(blog.thumbnail)}
-              className="w-[240px] h-[240px] object-cover"
-              alt="thumbnail"
-            />
-          )}
-          <p className="w-full h-[240px] break-words inline-block overflow-hidden text-justify">
-            {blog.description}
-          </p>
-        </div>
-      </div>
+    <div className="mx-32 shadow-lg mt-8 flex flex-col gap-12">
+      <PreviewBlog blog={blog} />
+      <PreviewBlog blog={blog} />
+      <PreviewBlog blog={blog} />
+      <PreviewBlog blog={blog} />
     </div>
   );
 }

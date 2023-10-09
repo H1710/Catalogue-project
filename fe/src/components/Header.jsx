@@ -11,7 +11,6 @@ import Menu from "./Menu";
 import { createContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
- 
 const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
@@ -73,7 +72,6 @@ function Header({ setShowSidebar, showSidebar }) {
     },
   ];
 
- 
   return (
     <div className="pl-[16px] pr-[32px] shadow-md w-full top-0 z-40 bg-white   ">
       <div
@@ -105,7 +103,6 @@ function Header({ setShowSidebar, showSidebar }) {
                     ? "bg-orange-300 bg-opacity-40 border-b-2 border-orange-900 "
                     : "border-transparent text-gray-900"
                 }`}
-               
               >
                 <p className="px-4">{nav.title}</p>
               </button>
@@ -123,8 +120,6 @@ function Header({ setShowSidebar, showSidebar }) {
             />
           </Menu>
         </div>
-
-       
       </div>
     </div>
   );

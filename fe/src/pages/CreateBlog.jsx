@@ -48,9 +48,11 @@ const CreateBlog = () => {
           <CreateForm blog={blog} setBlog={setBlog} />
         </div>
 
-        <div className="col-start-1 col-span-5 xl:col-start-3 xl:col-span-3 flex flex-col">
-          <p className="text-2xl mb-2 font-semibold">Preview</p>
-          <PreviewBlog blog={blog} />
+        <div className="col-start-1 col-span-5 xl:col-start-3 xl:col-span-3 flex flex-col ml-4">
+          <p className="text-2xl pl-4 mb-2 font-semibold">Preview</p>
+          <div className="border border-gray">
+            <PreviewBlog blog={blog} />
+          </div>
         </div>
       </div>
       <QuillEditor setBody={setBody} />
