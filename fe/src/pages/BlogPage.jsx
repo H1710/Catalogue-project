@@ -12,7 +12,7 @@ function BlogPage() {
     userId: 1,
   };
   return (
-    <div className="mx-32 shadow-lg mt-8 flex flex-col gap-12">
+    <div className="mx-32 col-span-full shadow-lg mt-8 flex flex-col gap-12">
       <PreviewBlog blog={blog} />
       <PreviewBlog blog={blog} />
       <PreviewBlog blog={blog} />
