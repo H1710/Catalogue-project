@@ -8,46 +8,70 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-// import { templateList } from '/shared/Template';
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function Slider({ templateList, isNotFullScreen }) {
   const sliderRef = useRef(null);
   const [star, setStar] = useState(3.4);
-  // const [slidesPerView, setSlidePerView] = useState(false)
-  // useEffect(() => {
-  //   setSlidePerView(!slidesPerView);
-  // }, [showSidebar]);
+  const [slidesPerView, setSlidePerView] = useState(4);
+  
+    useEffect(() => {
+      const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const newWidth = entry.contentRect.width;
+        if (newWidth > '1200'){
+          setSlidePerView(4)
+        }else{
+          setSlidePerView(3)
+        }
+        
+      }
+    });   
+      observer.observe(sliderRef.current);
+    
+    return () => {
+        observer.unobserve(sliderRef.current);
+      
+    };
+      
+    }, []);
 
+    const handleShowTemplateDetails = () => {
+
+
+    }
   return (
-    <div className="w-full">
-      <div className="content text-[18px] flex justify-start pb-2">
+    <div className="slider w-full ">
+      <div className="content text-[18px] flex justify-start pb-2  font-semibold" >
         Most popular catalogue
       </div>
-      <div className="h-[300px] w-full">
+      <div className="h-[300px] w-full relative flex justify-center items-center ml-5">
         <Swiper
           ref={sliderRef}
-          className="my-2  h-full "
+          className="my-2 h-full"
           modules={[Navigation, Scrollbar]}
           navigation={{
             prevEl: ".prev-arrow",
             nextEl: ".next-arrow",
           }}
           direction="horizontal"
-          spaceBetween={8}
+          spaceBetween={12}
           scrollbar={{
             draggable: true,
             hide: true,
           }}
-          slidesPerView={4}
+          slidesPerView={slidesPerView}
           loop={false}
         >
           {templateList.map((template, index) => (
             <SwiperSlide key={index} className="">
-              <div className="w-[300px] rounded-[4px] border-2 border-gray-200  ">
+              <Link className="w-[300px] rounded-[4px] border-2 border-gray-200 "
+              to={`/templatedetails/${template.id}`}
+              >
                 <img
                   src={template.thumbnailUrl}
                   alt=""
@@ -68,16 +92,16 @@ function Slider({ templateList, isNotFullScreen }) {
                     // }}
                   />
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
+        <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
           <FontAwesomeIcon icon={faChevronLeft} className="text-8" />
         </div>
-        <div className="next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10 mr-[-22px]">
+        <div className="next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10 mr-[20px]">
           <FontAwesomeIcon icon={faChevronRight} className="text-8" />
-        </div> */}
+        </div>
       </div>
     </div>
   );
