@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState ,useRef} from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getTemplateRoute } from "../utils/APIRoute";
 import axios from "axios";
@@ -14,7 +14,6 @@ import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Rating from "@mui/material/Rating";
 
- 
 const HomePage = () => {
   // const showSidebar = useContext(ShowSidebarContext)
   const [input, setInput] = useState("");
@@ -40,25 +39,24 @@ const HomePage = () => {
         </div>
       </div>
 
-
       <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
-       </div>
+      </div>
       <div className="content col-span-full text-[18px] flex justify-start pb-2 ml-5 font-semibold">
         Current Design
       </div>
-     
-        {templateList.map((product, index) => (
-          <div
-            className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
-            key={index}
-          >
-            <img src={product.thumbnailUrl} alt="" className="h-[170px] mt-3" />
-            <div className="absolute bg-white h-14 bottom-0 w-full">
-              <p className="p-2  ">{product.name}</p>
-            </div>
-        ))}
-      
+
+      {templateList.map((product, index) => (
+        <div
+          className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
+          key={index}
+        >
+          <img src={product.thumbnailUrl} alt="" className="h-[170px] mt-3" />
+          <div className="absolute bg-white h-14 bottom-0 w-full">
+            <p className="p-2  ">{product.name}</p>
+          </div>
+        </div>
+      ))}
 
       <div className="col-span-full">
         <Footer />
