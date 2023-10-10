@@ -28,21 +28,21 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="h-[250px] pt-4 pl-4 pr-8 pb-0 col-span-full">
+      <div className="h-[250px] pt-4 pl-4 pb-0 col-span-full">
         <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex justify-center items-center justify-items-center">
           <Search />
         </div>
       </div>
 
-      <div className="pt-6 pr-8 pb-12 pl-4 col-span-full">
+      <div className="col-span-full pl-4">
         <Slider templateList={templateList} />
       </div>
-      <div className="content col-span-full text-[18px] flex justify-start pb-2">
+      <div className="content pl-4 col-span-full text-[18px] flex justify-start pb-2">
         Current Design
       </div>
       {templateList.map((product, index) => (
         <div
-          className="  border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
+          className="ml-4 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
           key={index}
         >
           <img src={product.thumbnailUrl} alt="" className="h-[170px] mt-3" />

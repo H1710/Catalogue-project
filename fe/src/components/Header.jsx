@@ -73,7 +73,7 @@ function Header({ setShowSidebar, showSidebar }) {
   ];
 
   return (
-    <div className="pl-[16px] pr-[32px] shadow-md w-full top-0 z-40 bg-white   ">
+    <div className="px-[16px] shadow-md w-full top-0 z-40 bg-white   ">
       <div
         className="header flex py-2 h-[72px] items-center"
         style={customFontStyle}
