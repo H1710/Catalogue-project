@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const PreviewBlog = ({ blog }) => {
   return (
-    <div className="border border-gray-500 rounded h-[400px] px-3 py-1 gap-3 flex flex-col">
-      <p className="text-4xl w-full h-[70px] font-medium leading-none text-gray-900 break-words inline-block overflow-hidden">
+    <div className="border-b-2 pb-8 border-gray h-[416px] py-1 gap-3 flex flex-col px-4">
+      <p className="text-4xl w-full font-medium leading-none text-gray-900 break-words inline-block overflow-hidden">
         {blog.title}
       </p>
       <div>
@@ -15,10 +15,16 @@ const PreviewBlog = ({ blog }) => {
           </small>
         </p>
       </div>
-      <div className="flex items-start gap-4 mt-4">
-        {blog.thumbnail && (
+      <div className="flex items-start mt-8 gap-10">
+        {blog.thumbnail ? (
           <img
             src={URL.createObjectURL(blog.thumbnail)}
+            className="w-[240px] h-[240px] object-cover"
+            alt="thumbnail"
+          />
+        ) : (
+          <img
+            src="https://img.freepik.com/free-vector/collection-hand-drawn-blog-elements_23-2147572816.jpg"
             className="w-[240px] h-[240px] object-cover"
             alt="thumbnail"
           />

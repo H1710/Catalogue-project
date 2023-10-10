@@ -1,19 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faHouse,
-  faReceipt,
   faEarthAsia,
   faCircleQuestion,
-  faKeyboard,
   faUser,
   faSignOut,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import { f } from "@fortawesome/free-regular-svg-icons";
-import Tippy from "@tippyjs/react";
 import Menu from "./Menu";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MENU_ITEMS = [
@@ -44,7 +39,6 @@ const MENU_ITEMS = [
 ];
 
 function Header({ setShowSidebar, showSidebar }) {
-  // const [showSidebar, setShowSidebar] = useState(show)
   const [navList, setNavList] = useState([
     {
       id: 1,
@@ -78,14 +72,8 @@ function Header({ setShowSidebar, showSidebar }) {
     },
   ];
 
-  // const handleClick = (id) => {
-  //     const navSeleted = navList.map((nav) => {
-  //       return (nav.id === id) ? {...nav, selected:true} : {...nav, selected:false}
-  //     })
-  //     setNavList(navSeleted)
-  // };
   return (
-    <div className="pl-[16px] pr-[32px] shadow-md w-full top-0 z-40 bg-white   ">
+    <div className="px-[16px] shadow-md w-full top-0 z-40 bg-white   ">
       <div
         className="header flex py-2 h-[72px] items-center"
         style={customFontStyle}
@@ -96,7 +84,7 @@ function Header({ setShowSidebar, showSidebar }) {
         >
           <FontAwesomeIcon icon={faBars} />
         </div>
-        <div className="logoflex ml-2 w-1/5 font-bold">
+        <div className="logo flex ml-2 w-1/5 font-bold">
           <img
             className="  object-cover w-24"
             src="assets/images/logo_final.png"
@@ -115,13 +103,6 @@ function Header({ setShowSidebar, showSidebar }) {
                     ? "bg-orange-300 bg-opacity-40 border-b-2 border-orange-900 "
                     : "border-transparent text-gray-900"
                 }`}
-                // className={`flex h-full w-1/4
-                // <div className="w-3/5 flex text-xl h-full w-1/4 whitespace-nowrap border-b-2 px-1 text-xl font-medium items-center justify-center ${
-                //   nav.selected
-                //     ? 'border-indigo-600 text-indigo-600'
-                //     : 'border-transparent text-gray-900'
-                // }`}
-                // onClick={() => handleClick(nav.id)}
               >
                 <p className="px-4">{nav.title}</p>
               </button>
@@ -139,20 +120,6 @@ function Header({ setShowSidebar, showSidebar }) {
             />
           </Menu>
         </div>
-
-        {/* <div className="absolute flex gap-x-2.5 text-2xl mx-[400px] items-center mb-[5px]">
-              
-                <Tippy content={<span>Home Page</span>} >
-                    <div className="w-[100px] h-16 hover:bg-[#f9fafb] cursor-pointer flex flex-row items-center justify-center rounded-[12px]">
-                      <FontAwesomeIcon icon={faHouse} className='text-zinc-400 hover:text-zinc-700'/>
-                    </div>
-                </Tippy>
-                <Tippy content={<span>Blog Page</span>}  >
-                    <div className="w-[100px] h-16  hover:bg-[#f9fafb] cursor-pointer flex items-center justify-center rounded-[12px]  ">
-                      <FontAwesomeIcon icon={faReceipt} className='text-zinc-400  hover:text-zinc-700' /> 
-                    </div>
-                </Tippy>
-          </div> */}
       </div>
     </div>
   );

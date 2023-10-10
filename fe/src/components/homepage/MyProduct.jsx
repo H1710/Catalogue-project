@@ -1,17 +1,7 @@
+import { useContext } from "react";
 
-
-
-function MyProduct({myProduct}) {
-    return ( 
-        <div className="pd-[120px] pt-4 grid gap 4"> 
-            {myProduct.map((product, index) =>(
-                <div className="">
-
-                </div>
-            ))}
-
-        </div>
-     );
+function MyProduct({ myProduct }) {
+  return <div className="w-full"></div>;
 }
 
 export default MyProduct;
