@@ -34,14 +34,14 @@ function Menu({ children, items = [], onChange = defaultFn }) {
 
   return (
     <Tippy
-      offset={[10, 10]}
+    offset={[0, 5]}
       interactive
       placement='bottom-end'
       delay={[0, 700]}
       hideOnClick={false}
       render={(attrs) => (
         <div tabIndex={-1} {...attrs}
-        className='bg-[#fafaf9] w-[150px] text-base cursor-pointer rounded-md'
+        className='bg-[#fafaf9] min-w-[200px] text-base cursor-pointer rounded-md'
          
         >
           {history.length > 1 && 
@@ -49,7 +49,9 @@ function Menu({ children, items = [], onChange = defaultFn }) {
           onClick={()=> {
             setHistory(prev => prev.slice(0, prev.length - 1))
           }}
-          > {'Language'}</Button>}
+          >
+            {'Language'}
+          </Button>}
           {renderItems()}
         </div>
       )}

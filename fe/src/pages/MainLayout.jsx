@@ -22,7 +22,7 @@ const MainLayout = () => {
         <div
           className={`grid ${
             showSidebar ? "col-start-4 grid-cols-3" : "col-start-1 grid-cols-4"
-          } col-span-12 content-center`}
+          } col-span-12  `}
         >
           <Outlet />
         </div>
