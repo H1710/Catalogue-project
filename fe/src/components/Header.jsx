@@ -85,7 +85,7 @@ const notiRef = useRef(null)
     
   }, [])
   return (
-    <div className="pl-[16px] pr-[32px] shadow-md w-full top-0 z-40 bg-white   ">
+    <div className="px-[16px] shadow-md w-full top-0 z-40 bg-white   ">
       <div
         className="header flex h-[70px] items-center text-zinc-700"
         style={customFontStyle}

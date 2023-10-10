@@ -40,6 +40,7 @@ const HomePage = () => {
         </div>
       </div>
 
+
       <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
        </div>
@@ -56,7 +57,6 @@ const HomePage = () => {
             <div className="absolute bg-white h-14 bottom-0 w-full">
               <p className="p-2  ">{product.name}</p>
             </div>
-          </div>
         ))}
       
 
