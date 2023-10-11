@@ -340,44 +340,6 @@ class BlogController {
     }
   }
 
-  // static async filterBlog(req, res) {
-  //   const rating = req.query.rating;
-  //   const date = req.query.date;
-  //   if (date = '') {
-  //     date = Date.now();
-  //   }
-  //   if (!rating) {
-  //     return res.status(400).json({ message: "Missing required parameter 'rating'" });
-  //   }
-  //   let page = req.query.page;
-  //   const limit = 4;
-  //   const offset = (page - 1) * limit;
-  //   if (page == '') {
-  //     page = 1;
-  //   }
-
-  //   try {
-  //     const ratingBlogs = await seq.query(
-  //       'SELECT ' +
-  //       'b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating ' +
-  //       'FROM catalogue_project.blogs AS b ' +
-  //       'JOIN catalogue_project.blog_ratings AS br ' +
-  //       'ON b.id = br.blogId ' +
-  //       'GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt ' +
-  //       'HAVING AVG(br.rating) >= ? limit ? offset ?' +
-  //       'order by b.createdAt = ? asc',
-  //       {
-  //         replacements: [rating, date, limit, offset],
-  //         type: seq.QueryTypes.SELECT,
-  //       }
-  //     );
-
-  //     res.status(200).json({ ratingBlogs });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: "An error occurred while fetching ratingBlogs" });
-  //   }
-  // }
   static async filterBlog(req, res) {
     let { rating, sortDate, page } = req.query;
 
