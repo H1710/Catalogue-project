@@ -1,0 +1,120 @@
+import { useState } from "react";
+
+function AdminSidebar() {
+  const [showCategoryList, setShowCategoryList] = useState(true);
+  const categoryList = ["Education", "Social media", "Bussiness"];
+
+  return (
+    <aside className="h-[480px] w-full mt-8 flex flex-col px-2 bg-white">
+      <div className="rounded-[4px] mb-10 flex items-center gap-4">
+        <img
+          src="assets/images/Tom_and_Jerry.jpg"
+          alt=""
+          className="w-12 h-12 rounded-lg"
+        />
+        <div className="flex flex-col gap-1">
+          <p className="font-semibold text-lg">Person</p>
+          <p className="text-md">Free</p>
+        </div>
+      </div>
+      <div className="flex flex-col flex-1 w-[230px]">
+        <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+            />
+          </svg>
+          <p>Home</p>
+        </div>
+        <div
+          onClick={() => {
+            setShowCategoryList(!showCategoryList);
+          }}
+          className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+        >
+          <svg
+            className="w-6 h-6"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M25.333 4H6.667A2.667 2.667 0 0 0 4 6.667v18.666A2.667 2.667 0 0 0 6.667 28h18.666A2.667 2.667 0 0 0 28 25.333V6.667A2.667 2.667 0 0 0 25.333 4ZM6 6.667C6 6.298 6.298 6 6.667 6h10.666v20H6.667A.667.667 0 0 1 6 25.333V6.667Zm13.333 6.666V6h6c.369 0 .667.298.667.667v6.666h-6.667Zm0 2V26h6a.667.667 0 0 0 .667-.667v-10h-6.667Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <p className="flex-1">Template</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m8.55 5.78 5.96 5.97c.1.1.1.25 0 .35l-5.87 5.87a.75.75 0 0 0 1.06 1.06l5.87-5.87c.69-.68.69-1.79 0-2.47L9.61 4.72a.75.75 0 0 0-1.06 1.06z"
+            ></path>
+          </svg>
+        </div>
+        {showCategoryList &&
+          categoryList.map((category, index) => {
+            return (
+              <div className="cursor-pointer w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+                <p className="flex-1">{category}</p>
+              </div>
+            );
+          })}
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <svg
+            className="w-6 h-6"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M14.078 5.333H5.334A2.667 2.667 0 0 0 2.667 8v2.667c0 .203.023.402.066.592a2.315 2.315 0 0 0-.066.55v12.382c0 1.367 1.194 2.476 2.667 2.476h21.333c1.473 0 2.667-1.109 2.667-2.477V11.81c0-1.368-1.194-2.477-2.667-2.477h-9.333l-.726-2.176a2.667 2.667 0 0 0-2.53-1.824Zm-8.744 4h9.892L14.71 7.79a.667.667 0 0 0-.633-.456H5.334A.667.667 0 0 0 4.667 8v1.411c.213-.05.436-.078.667-.078Zm-.667 2.477c0-.229.267-.477.667-.477h21.333c.4 0 .667.248.667.477v12.38c0 .229-.267.477-.667.477H5.334c-.4 0-.667-.248-.667-.477V11.81Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+
+          <p>Product</p>
+        </div>
+      </div>
+
+      <div className="">
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+            />
+          </svg>
+
+          <p>Logout</p>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+export default AdminSidebar;

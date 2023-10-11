@@ -6,6 +6,8 @@ import BlogPage from "./pages/BlogPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateBlog from "./pages/CreateBlog";
 import MainLayout from "./pages/MainLayout";
+import TemplateDetailsPage from "./pages/TemplateDetailsPage";
+import StatiticsPage from "./pages/StatiticsPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "/blog",
         element: <BlogPage />,
+      },
+      {
+        path: "/templatedetails/:id",
+        element: <TemplateDetailsPage />,
+      },
+      {
+        path: "/statitics",
+        element: <StatiticsPage />,
       },
     ],
   },
