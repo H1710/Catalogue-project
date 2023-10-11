@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import PreviewBlog from "../components/blog/PreviewBlog";
+import { Pagination } from "@mui/material";
 
 function BlogPage() {
   const blog = {
@@ -12,10 +13,12 @@ function BlogPage() {
   };
   return (
     <div className="col-span-full shadow-lg flex flex-col px-32">
+      <div className="flex items-center justify-end"><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-[120px] rounded-full mb-[10px]">Create Blog</button></div>
       <PreviewBlog blog={blog} />
       <PreviewBlog blog={blog} />
       <PreviewBlog blog={blog} />
       <PreviewBlog blog={blog} />
+      <Pagination className="h-20 flex items-center justify-end" count={10} variant="outlined" shape="rounded" />
     </div>
   );
 }
