@@ -105,7 +105,7 @@ function Header({ setShowSidebar, showSidebar }) {
                 <span
                   className={
                     isActive
-                      ? 'active bg-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center rounded-[3px]'
+                      ? 'active border-b-2=4 border-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center rounded-[3px]'
                       : 'flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center hover:bg-green-100 rounded-[3px]'
                   }
                 >
