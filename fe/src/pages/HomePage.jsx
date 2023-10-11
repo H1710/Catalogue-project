@@ -7,8 +7,7 @@ import Search from "../components/Search";
 import Slider from "../components/homepage/Slider";
 import Footer from "../components/Footer";
 import { templateList } from "../shared/Template";
-import MyProduct from "../components/homepage/MyProduct";
-
+import { productList } from "../shared/Product";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,12 +46,12 @@ const HomePage = () => {
         Current Design
       </div>
      
-        {templateList.map((product, index) => (
+        {productList.map((product, index) => (
           <div
             className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
             key={index}
           >
-            <img src={product.thumbnailUrl} alt="" className="h-[170px] mt-3" />
+            <img src={product.thumbnailUrl} alt="" className="w-1/2 mt-3" />
             <div className="absolute bg-white h-14 bottom-0 w-full">
               <p className="p-2  ">{product.name}</p>
             </div>

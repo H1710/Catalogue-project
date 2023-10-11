@@ -33,10 +33,12 @@ function Button({
   }
   
   return (
-    <Comp className='p-2 bg-[#fafaf9] min-w-full flex rounded-md hover:bg-[#e2e8f0] ' {...props}>
-      {icon && <span className="">{icon}</span>}
-      <span className="px-3">{children.title || children}</span>
-    </Comp>
+   <div className="p-1 min-w-full flex rounded-[5px] min-h-[40px]  " {...props}>
+      <Comp className='hover:bg-green-100 min-w-full rounded-[5px] flex justify-start items-center'  >
+        {icon && <span className="px-2">{icon}</span>}
+        <span className="px-2">{children.title || children}</span>
+      </Comp>
+   </div>
   );
 }
 
