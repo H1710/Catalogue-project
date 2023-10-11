@@ -1,26 +1,32 @@
+import { useNavigate } from "react-router-dom";
+
 function AdminSidebar() {
+  const navigate = useNavigate();
   return (
-    <aside className="w-[290px] h-[620px] flex flex-col pr-4 px-2">
+    <aside className="h-[480px] mr-4 mt-8 flex flex-col px-2 bg-white">
       <div className="rounded-[4px] mb-10 flex items-center gap-4">
         <img
           src="assets/images/Tom_and_Jerry.jpg"
           alt=""
-          className="w-14 h-14 rounded-lg"
+          className="w-12 h-12 rounded-lg"
         />
         <div className="flex flex-col gap-1">
-          <p className="font-semibold text-xl">Admin</p>
-          <p className="text-lg"></p>
+          <p className="font-semibold text-lg">Admin</p>
+          <p className="text-md">Free</p>
         </div>
       </div>
-      <div className="flex flex-col flex-1">
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+      <div className="flex flex-col flex-1 w-[230px]">
+        <div
+          onClick={() => navigate("/home")}
+          className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -30,14 +36,14 @@ function AdminSidebar() {
           </svg>
           <p>Home</p>
         </div>
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -47,14 +53,14 @@ function AdminSidebar() {
           </svg>
           <p>Blog Management</p>
         </div>
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -65,14 +71,14 @@ function AdminSidebar() {
 
           <p>Template Management</p>
         </div>
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -83,14 +89,19 @@ function AdminSidebar() {
 
           <p>Revenue</p>
         </div>
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div
+          onClick={() => {
+            navigate("/statitics");
+          }}
+          className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -104,14 +115,14 @@ function AdminSidebar() {
       </div>
 
       <div className="">
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"

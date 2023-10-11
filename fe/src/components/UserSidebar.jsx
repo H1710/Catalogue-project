@@ -5,27 +5,27 @@ function AdminSidebar() {
   const categoryList = ["Education", "Social media", "Bussiness"];
 
   return (
-    <aside className="w-[290px] h-[620px] flex flex-col pr-4 px-2">
+    <aside className="h-[480px] w-full mt-8 flex flex-col px-2 bg-white">
       <div className="rounded-[4px] mb-10 flex items-center gap-4">
         <img
           src="assets/images/Tom_and_Jerry.jpg"
           alt=""
-          className="w-14 h-14 rounded-lg"
+          className="w-12 h-12 rounded-lg"
         />
         <div className="flex flex-col gap-1">
-          <p className="font-semibold text-xl">Person</p>
-          <p className="text-lg">Free</p>
+          <p className="font-semibold text-lg">Person</p>
+          <p className="text-md">Free</p>
         </div>
       </div>
-      <div className="flex flex-col flex-1">
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+      <div className="flex flex-col flex-1 w-[230px]">
+        <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -39,11 +39,10 @@ function AdminSidebar() {
           onClick={() => {
             setShowCategoryList(!showCategoryList);
           }}
-          className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+          className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
         >
           <svg
-            width="32"
-            height="32"
+            className="w-6 h-6"
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -58,8 +57,7 @@ function AdminSidebar() {
           <p className="flex-1">Template</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            className="w-6 h-6"
             viewBox="0 0 24 24"
           >
             <path
@@ -71,15 +69,14 @@ function AdminSidebar() {
         {showCategoryList &&
           categoryList.map((category, index) => {
             return (
-              <div className="w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+              <div className="cursor-pointer w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
                 <p className="flex-1">{category}</p>
               </div>
             );
           })}
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
-            width="32"
-            height="32"
+            className="w-6 h-6"
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -97,14 +94,14 @@ function AdminSidebar() {
       </div>
 
       <div className="">
-        <div className="w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"

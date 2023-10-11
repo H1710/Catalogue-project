@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faEarthAsia,
@@ -6,38 +6,38 @@ import {
   faUser,
   faSignOut,
   faBars,
-} from '@fortawesome/free-solid-svg-icons';
-import Menu from './Menu';
-import { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+} from "@fortawesome/free-solid-svg-icons";
+import Menu from "./Menu";
+import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 
-import { NotifList } from '../shared/Notification';
-import Tippy from '@tippyjs/react';
+import { NotifList } from "../shared/Notification";
+import Tippy from "@tippyjs/react";
 
 const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
-    title: 'Language',
+    title: "Language",
     children: {
-      title: 'Languge',
+      title: "Languge",
       data: [
         {
-          code: 'en',
-          title: 'English',
-          type: 'language',
+          code: "en",
+          title: "English",
+          type: "language",
         },
         {
-          code: 'vi',
-          title: 'Vietnamese',
-          type: 'language',
+          code: "vi",
+          title: "Vietnamese",
+          type: "language",
         },
       ],
     },
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-    title: 'Help',
-    to: '/help',
+    title: "Help",
+    to: "/help",
   },
 ];
 
@@ -47,13 +47,13 @@ function Header({ setShowSidebar, showSidebar }) {
   const [navList, setNavList] = useState([
     {
       id: 1,
-      title: 'Home',
-      to: '/home',
+      title: "Home",
+      to: "/home",
     },
     {
       id: 2,
-      title: 'Blog',
-      to: '/blog',
+      title: "Blog",
+      to: "/blog",
     },
   ]);
   const customFontStyle = {
@@ -63,15 +63,15 @@ function Header({ setShowSidebar, showSidebar }) {
   const userMenu = [
     {
       icon: <FontAwesomeIcon icon={faUser} />,
-      title: 'View Profile',
-      to: '/profile',
+      title: "View Profile",
+      to: "/profile",
     },
     ...MENU_ITEMS,
     {
       separate: true,
       icon: <FontAwesomeIcon icon={faSignOut} />,
-      title: 'Log out',
-      to: '/logout',
+      title: "Log out",
+      to: "/logout",
     },
   ];
   // const openNoti = () => {
@@ -80,14 +80,12 @@ function Header({ setShowSidebar, showSidebar }) {
   // const closeNoti = () => {
   //   setShowNoti(false);
   // }
-const notiRef = useRef(null)
-  useEffect(()=> {
-    
-  }, [])
+  const notiRef = useRef(null);
+  useEffect(() => {}, []);
   return (
-    <div className="px-[16px] shadow-md w-full top-0 z-40 bg-white   ">
+    <div className="px-[16px] shadow-md h-full w-full top-0 z-40 bg-white   ">
       <div
-        className="header flex h-[70px] items-center text-zinc-700"
+        className="header flex h-full items-center text-zinc-700"
         style={customFontStyle}
       >
         <div
@@ -110,8 +108,8 @@ const notiRef = useRef(null)
                 <span
                   className={
                     isActive
-                      ? 'active bg-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center rounded-[3px]'
-                      : 'flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center hover:bg-green-100 rounded-[3px]'
+                      ? "active bg-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center rounded-[3px]"
+                      : "flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center hover:bg-green-100 rounded-[3px]"
                   }
                 >
                   {nav.title}
@@ -130,21 +128,24 @@ const notiRef = useRef(null)
               interactive
               visible={showNoti}
               interactiveBorder={10}
-             
               render={({ ...attrs }) => (
                 <div
                   tabIndex="-1"
                   {...attrs}
                   className="w-[300px] bg-[#f9fafb] inline-block rounded-[3px] z-100 p-2 max-h-[500px] overflow-auto"
                 >
-                  <h2 className='font-semibold  border-b-2 border-slate-500 p-2'>Notifications</h2>
+                  <h2 className="font-semibold  border-b-2 border-slate-500 p-2">
+                    Notifications
+                  </h2>
                   {NotifList.map((noti, index) => (
                     <div
                       key={index}
                       className="flex flex-col justify-start  boder-neutral-700 cursor-pointer hover:bg-zinc-100  "
                     >
-                     <div className='px-4 text-[15px]'> {noti.value}</div>
-                      <div className='text-[10px] flex justify-end px-2'>{noti.time}</div>
+                      <div className="px-4 text-[15px]"> {noti.value}</div>
+                      <div className="text-[10px] flex justify-end px-2">
+                        {noti.time}
+                      </div>
                     </div>
                   ))}
                 </div>

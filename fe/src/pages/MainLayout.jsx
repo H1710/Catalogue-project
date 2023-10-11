@@ -8,21 +8,23 @@ import ThemeSwitcher from "../components/ThemeSwitcher";
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   return (
-    <div className="w-full relative">
-      <div className="w-full !fixed top-0 z-10 h-[60px]">
+    <div className={`w-full`}>
+      <div className="w-full !fixed top-0 z-50 h-[60px]">
         <Header showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
       </div>
-      <div className="grid grid-cols-15 mt-[100px] px-[16px]">
+      <div className="grid grid-cols-5 lg:grid-cols-12 mt-[80px] px-[16px]">
         {showSidebar && (
-          <div className="col-start-1 col-span-3 border-r-2 border-gray-100">
-            {/* <AdminSidebar /> */}
+          <div className="lg:col-start-1 fixed z-40 top-10 lg:col-span-2">
             <UserSidebar />
+            {/* <AdminSidebar /> */}
           </div>
         )}
         <div
-          className={`grid ${
-            showSidebar ? "col-start-4 grid-cols-3" : "col-start-1 grid-cols-4"
-          } col-span-12  `}
+          className={`grid col-start-1 grid-cols-2 ${
+            showSidebar
+              ? "lg:col-start-3 lg:grid-cols-3"
+              : "lg:col-start-1 lg:grid-cols-4"
+          } col-span-full`}
         >
           <Outlet />
         </div>

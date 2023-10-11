@@ -61,7 +61,7 @@ const CreateForm = ({ blog, setBlog }) => {
           className="absolute"
           style={{ bottom: 0, right: "3px", opacity: "0.3" }}
         >
-          {blog.description.length}/200
+          {blog.description.length}/300
         </small>
       </div>
     </form>
