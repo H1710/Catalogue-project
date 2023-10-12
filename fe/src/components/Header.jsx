@@ -67,12 +67,7 @@ function Header({ setShowSidebar, showSidebar }) {
       to: "/profile",
     },
     ...MENU_ITEMS,
-    {
-      separate: true,
-      icon: <FontAwesomeIcon icon={faSignOut} />,
-      title: "Log out",
-      to: "/logout",
-    },
+    
   ];
   // const openNoti = () => {
   //   setShowNoti(true);
@@ -94,21 +89,21 @@ function Header({ setShowSidebar, showSidebar }) {
         >
           <FontAwesomeIcon icon={faBars} />
         </div>
-        <div className="logo flex ml-2 w-1/4 font-bold">
+        <div className="logo flex ml-2 w-1/6 font-bold">
           <img
-            className="  object-cover w-24"
+            className="  object-cover w-20"
             src="assets/images/logo_final.png"
             alt="logo"
           />
         </div>
-        <div className=" nav w-1/2 flex text-xl h-full inline-block ">
+        <div className=" nav w-2/3 flex text-xl h-full inline-block ">
           {navList.map((nav) => (
             <NavLink to={nav.to} key={nav.id}>
               {({ isActive, isPending }) => (
                 <span
                   className={
                     isActive
-                      ? "active bg-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center rounded-[3px]"
+                      ? "active  border-b-4 border-green-400 flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center"
                       : "flex text-xl h-full w-[120px] text-xl font-semibold items-center justify-center hover:bg-green-100 rounded-[3px]"
                   }
                 >
@@ -119,12 +114,12 @@ function Header({ setShowSidebar, showSidebar }) {
           ))}
         </div>
 
-        <div className="flex text-xl items-center w-1/4  gap-x-3 ">
-          <div className="w-2/3"></div>
+        <div className="flex text-xl items-center w-1/6  gap-x-3 ">
+          <div className="w-1/3"></div>
           <div>
             <Tippy
-              offset={[0, 5]}
-              placement="bottom-end"
+              offset={[0, 10]}
+              placement="bottom"
               interactive
               visible={showNoti}
               interactiveBorder={10}
@@ -132,18 +127,18 @@ function Header({ setShowSidebar, showSidebar }) {
                 <div
                   tabIndex="-1"
                   {...attrs}
-                  className="w-[300px] bg-[#f9fafb] inline-block rounded-[3px] z-100 p-2 max-h-[500px] overflow-auto"
+                  className="w-[300px] shadow-xl bg-white inline-block rounded-[3px] z-100 p-2 max-h-[500px] overflow-auto"
                 >
-                  <h2 className="font-semibold  border-b-2 border-slate-500 p-2">
+                  <h2 className="font-semibold  border-b-2 border-slate-500 p-2 mb-2">
                     Notifications
                   </h2>
                   {NotifList.map((noti, index) => (
                     <div
                       key={index}
-                      className="flex flex-col justify-start  boder-neutral-700 cursor-pointer hover:bg-zinc-100  "
+                      className="flex flex-col justify-start rounded-[5px]  cursor-pointer hover:bg-green-50  "
                     >
-                      <div className="px-4 text-[15px]"> {noti.value}</div>
-                      <div className="text-[10px] flex justify-end px-2">
+                      <div className="px-2 text-[15px]"> {noti.value}</div>
+                      <div className="text-[10px] flex justify-end px-2 text-teal-600">
                         {noti.time}
                       </div>
                     </div>
@@ -163,9 +158,9 @@ function Header({ setShowSidebar, showSidebar }) {
 
           <Menu items={userMenu}>
             <img
-              src="https://bookvexe.vn/wp-content/uploads/2023/04/chon-loc-25-avatar-facebook-mac-dinh-chat-nhat_2.jpg"
+              src="https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep-652x580.jpg"
               alt=""
-              className="w-10 h-10 rounded-[50%] object-cover mx-auto cursor-pointer"
+              className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
             />
           </Menu>
         </div>

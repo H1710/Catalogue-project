@@ -80,23 +80,23 @@ function Search() {
           </div>
         )}
       >
-        <div className="flex relative h-14 bg-zinc-100 border-neutral-100 focus-within:border-neutral-300 rounded-[5px]">
+        <div className="flex relative h-14 border-neutral-100 focus-within:border-neutral-300 rounded-[5px] justify-end">
           <input
-            className="w-[500px]  bg-zinc-100 rounded-l-[5px] h-14 text-xl px-6 outline-none border-none"
+            className="w-[500px] shadow-2xl rounded-full h-16 text-xl pl-8 outline-none border-none"
             type="text"
             value={searchValue}
             spellCheck={false}
             ref={inputRef}
-            placeholder="Search template name..."
+            placeholder="Catalogue ..."
             onChange={handleChange}
           />
-          <div className="absolute w-[2px] h-10  top-[8px] bg-[#ccc] ml-[500px] "></div>
+          {/* <div className="absolute w-[2px] h-10  top-[8px] bg-[#ccc] ml-[500px] "></div> */}
           <button
-            className=" text-2xl rounded-r-[5px] h-14 w-14 flex items-center justify-center
-            border-neutral-100 hover:bg-neutral-200 text-zinc-400 hover:text-zinc-700   "
+            className=" text-2xl rounded-full h-16 w-16 flex items-center justify-center
+            bg-teal-900 hover:bg-teal-950 text-zinc-400 hover:text-zinc-700  absolute r-0 shadow-2xl"
             onClick={()=> handleSearch}
           >
-            <FontAwesomeIcon icon={faMagnifyingGlass} className=" " />
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-white" />
           </button>
         </div>
       </Tippy>

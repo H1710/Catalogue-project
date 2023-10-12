@@ -33,8 +33,8 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="h-[250px] pt-4 pl-8 pr-8 pb-0 col-span-full">
-        <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex justify-center items-center justify-items-center">
+      <div className="h-[250px] pt-0 pl-8 pr-8 pb-0 col-span-full">
+        <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 flex justify-center items-center justify-items-center">
           <Search />
         </div>
       </div>
