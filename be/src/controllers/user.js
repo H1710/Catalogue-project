@@ -12,7 +12,7 @@ class UserController {
         password: req.body.password,
         endDate: req.body.date,
       };
-
+      console.log(info)
       const user = await User.create(info);
       res.status(200).send(user);
     } catch (error) {
