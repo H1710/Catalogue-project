@@ -6,7 +6,7 @@ import AdminSidebar from "../components/AdminSidebar";
 import ThemeSwitcher from "../components/ThemeSwitcher";
 
 const MainLayout = () => {
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
   return (
     <div className={`w-full`}>
       <div className="w-full !fixed top-0 z-50 h-[60px]">
