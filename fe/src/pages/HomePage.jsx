@@ -45,7 +45,7 @@ const HomePage = () => {
         Current Design
       </div>
 
-      {templateList.map((product, index) => (
+      {productList.map((product, index) => (
         <div
           className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
           key={index}
