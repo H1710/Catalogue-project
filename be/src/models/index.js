@@ -29,6 +29,7 @@ db.templatePageDetail = require("./templatePageDetailModel")(
 );
 db.notification = require("./notificationModel")(sequelize, DataTypes);
 db.role = require("./roleModel")(sequelize, DataTypes);
+db.tag = require("./tagModel")(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Re-sync success");
@@ -132,8 +133,8 @@ db.templateRating.belongsTo(db.template, {
   foreignKey: "templateId",
 });
 
-db.template.belongsToMany(db.blog, { through: "product_blog" });
-db.blog.belongsToMany(db.template, { through: "product_blog" });
+db.template.belongsToMany(db.blog, { through: db.tag });
+db.blog.belongsToMany(db.template, { through: db.tag });
 
 db.user.hasMany(db.product);
 db.product.belongsTo(db.user, {

@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CreateBlog from "./pages/CreateBlog";
 import MainLayout from "./pages/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
+import StatiticsPage from "./pages/StatiticsPage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
+      },
+      {
+        path: "/statitics",
+        element: <StatiticsPage />,
       },
     ],
   },

@@ -49,7 +49,8 @@ function Slider({ templateList, isNotFullScreen }) {
       <div className="content text-[18px] flex justify-start pb-2  font-semibold" >
         Most popular catalogue
       </div>
-      <div className="h-[300px] w-full relative flex justify-center items-center ml-5">
+      <div className="h-[300px]   relative flex justify-center items-center ml-6">
+       {/* <div className="w-1/7"></div> */}
         <Swiper
           ref={sliderRef}
           className="my-2 h-full"
@@ -59,7 +60,7 @@ function Slider({ templateList, isNotFullScreen }) {
             nextEl: ".next-arrow",
           }}
           direction="horizontal"
-          spaceBetween={12}
+          spaceBetween={20}
           scrollbar={{
             draggable: true,
             hide: true,
@@ -70,29 +71,29 @@ function Slider({ templateList, isNotFullScreen }) {
           {templateList.map((template, index) => (
             <SwiperSlide key={index} className="">
               <div className="w-[300px] rounded-[4px] border-2 border-gray-200 "
-              
-              > 
-                <Link  to={`/templatedetails/${template.id}`} >
-                  <img
-                    src={template.thumbnailUrl}
-                    alt=""
-                    className="p-1 h-[220px] w-[300px] object-cover"
+              // to={`/templatedetails/${template.id}`}
+              >
+                <Link to={`/templatedetails/${template.id}`}> 
+                <img
+                  src={template.thumbnailUrl}
+                  alt=""
+                  className="p-1 h-[220px] w-[300px] object-cover"
+                />
+                <p className=" text-[16px] px-1 pt-[2px] pb-0 start-1">
+                  {template.name}
+                </p>
+                <div className="grid justify-items-end pb-1">
+                  <Rating
+                    className="pr-2"
+                    name="readonly"
+                    readOnly={true}
+                    precision={0.1}
+                    value={star}
+                    // onChange={(event, star) => {
+                    //   setStar(star);
+                    // }}
                   />
-                  <p className=" text-[16px] px-1 pt-[2px] pb-0 start-1">
-                    {template.name}
-                  </p>
-                  <div className="grid justify-items-end pb-1">
-                    <Rating
-                      className="pr-2"
-                      name="readonly"
-                      readOnly={true}
-                      precision={0.1}
-                      value={star}
-                      // onChange={(event, star) => {
-                      //   setStar(star);
-                      // }}
-                    />
-                  </div>
+                </div>
                 </Link>
               </div>
             </SwiperSlide>
@@ -101,7 +102,7 @@ function Slider({ templateList, isNotFullScreen }) {
         <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
           <FontAwesomeIcon icon={faChevronLeft} className="text-8" />
         </div>
-        <div className="next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10 mr-[20px]">
+        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10   ${slidesPerView > 3 ? "mr-[4px]": " mr-[34px]"}  `}>
           <FontAwesomeIcon icon={faChevronRight} className="text-8" />
         </div>
       </div>
