@@ -8,6 +8,7 @@ import CreateBlog from "./pages/CreateBlog";
 import MainLayout from "./pages/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
+import ProductPage from "./pages/ProductPage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductPage />,
       },
       {
         path: "/statitics",
