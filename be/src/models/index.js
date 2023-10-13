@@ -44,8 +44,10 @@ db.user.belongsTo(db.role, {
 
 const order = require("./orderModel")(sequelize, DataTypes);
 db.order = order;
-db.user.belongsToMany(db.servicePackage, { through: order });
-db.servicePackage.belongsToMany(db.user, { through: order });
+db.user.hasMany(db.order);
+db.order.belongsTo(db.user);
+db.servicePackage.hasMany(db.order);
+db.order.belongsTo(db.servicePackage);
 
 db.user.belongsTo(db.servicePackage);
 db.servicePackage.hasMany(db.user);

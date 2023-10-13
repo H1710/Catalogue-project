@@ -27,12 +27,12 @@ const router = createBrowserRouter([
         element: <DesignerPage />,
       },
       {
-        path: "/blog/create",
-        element: <CreateBlog />,
-      },
-      {
         path: "/blog",
         element: <BlogPage />,
+      },
+      {
+        path: "/create-blog",
+        element: <CreateBlog />,
       },
       {
         path: "/templatedetails/:id",

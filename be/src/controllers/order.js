@@ -36,28 +36,17 @@ class OrderController {
       if (userList.length === 0) {
         return res.status(400).json({ message: 'No users found.' });
       }
-      const packageIds = [1, 2, 3, 4];
-      const randomPackageId = packageIds[Math.floor(Math.random() * packageIds.length)];
-
       for (let index = 0; index < numOfPackage; index++) {
         const randomUser = userList[Math.floor(Math.random() * userList.length)];
-        const existingOrder = await Order.findOne({
-          where: {
-            userId: randomUser.id,
-            servicePackageId: faker.number.int({ min: 1, max: 4 })
-            // faker.number.int({ min: 1, max: 4 })
-          }
-        })
-        if (!existingOrder) {
-          let fakeInfo = {
-            userId: randomUser.id,
-            servicePackageId: faker.number.int({ min: 1, max: 4 }),
-            createdAt: faker.date.past(),
-            updatedAt: faker.date.past(),
-          }
-          const fakeOrder = await Order.create(fakeInfo);
-          listOfPackage.push(fakeOrder);
+        console.log(randomUser.id);
+        let fakeInfo = {
+          userId: randomUser.id,
+          servicePackageId: faker.number.int({ min: 1, max: 4 }),
+          createdAt: faker.date.past(),
+          updatedAt: faker.date.past(),
         }
+        const fakeOrder = await Order.create(fakeInfo);
+          listOfPackage.push(fakeOrder);
       }
       res.status(200).json({ listOfPackage });
     } catch (error) {

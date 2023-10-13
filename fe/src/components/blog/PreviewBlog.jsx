@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const PreviewBlog = ({ blog }) => {
   return (
-    <div className="h-[296px] py-1 gap-3 flex flex-col px-4 rounded border border-gray-400 mb-[20px]">
+    <div className="h-[306px] py-1 gap-3 flex flex-col px-4 rounded border border-gray-400 mb-[20px]">
       <p className="text-2xl w-full mt-2 font-bold leading-none text-gray-900 break-words inline-block overflow-hidden">
         {blog.title}
       </p>

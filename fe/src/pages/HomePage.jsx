@@ -7,8 +7,7 @@ import Search from "../components/Search";
 import Slider from "../components/homepage/Slider";
 import Footer from "../components/Footer";
 import { templateList } from "../shared/Template";
-import MyProduct from "../components/homepage/MyProduct";
-
+import { productList } from "../shared/Product";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,8 +32,8 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="h-[250px] pt-4 pl-8 pr-8 pb-0 col-span-full">
-        <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex justify-center items-center justify-items-center">
+      <div className="h-[250px] pt-0 pl-8 pr-8 pb-0 col-span-full">
+        <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 flex justify-center items-center justify-items-center">
           <Search />
         </div>
       </div>
@@ -42,7 +41,7 @@ const HomePage = () => {
       <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
       </div>
-      <div className="content col-span-full text-[18px] flex justify-start pb-2 ml-5 font-semibold">
+      <div className="content col-span-full select-none text-[18px] flex justify-start pb-2 ml-5 font-semibold">
         Current Design
       </div>
 
