@@ -62,13 +62,23 @@ class OrderController {
       const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'];
       for (let index = 1; index <= 12; index++) {
-        const query = 'select servicePackageId, count(servicePackageId) as quantity '
+        const query = 'select sum(total) as totalRevenue, sum(numOfPurchase) as quantity '
+        +'from ('
+        +'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
+                +'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
+                +'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
+                +'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
+                +' else 0 end) as total '
+        +'from ('
+        +'select servicePackageId, count(servicePackageId) as numOfPurchase '
         +'from catalogue_project.orders '
-        +'where month(createdAt) = '
-        + index
-        +' and year(createdAt) = '
-        + year
-        +' group by servicePackageId';
+        +'where year(createdAt) = '+ year +' and month(createdAt) = ' + index
+        +' group by servicePackageId'
+        +') as subquery '
+        +'join catalogue_project.service_packages as sp '
+        +'on subquery.servicePackageId = sp.id '
+        +'group by servicePackageId, numOfPurchase'
+        +') as subquery2';
         const result = await seq.query(query);
         monthlyData.push({ monthname:  monthName[index-1], result: result[0]});
       }
@@ -84,11 +94,23 @@ class OrderController {
       const yearlyData = [];
       const yearName = [2023, 2024, 2025, 2026];
       for (let index = 0; index < yearName.length; index++) {
-        const query = 'select servicePackageId, count(servicePackageId) as quantity '
+        const query = 'select sum(total) as totalRevenue, sum(numOfPurchase) as quantity '
+        +'from ('
+        +'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
+                +'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
+                +'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
+                +'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
+                +'else 0 end) as total '
+        +'from ('
+        +'select servicePackageId, count(servicePackageId) as numOfPurchase '
         +'from catalogue_project.orders '
-        +'where year(createdAt) = '
-        + yearName[index]
-        +' group by servicePackageId';
+        +'where year(createdAt) = '+ yearName[index]
+        +' group by servicePackageId'
+        +') as subquery '
+        +'join catalogue_project.service_packages as sp '
+        +'on subquery.servicePackageId = sp.id '
+        +'group by servicePackageId, numOfPurchase'
+        +') as subquery2';
         const result = await seq.query(query);
         yearlyData.push({ yearName:  yearName[index], result: result[0]});
       }
