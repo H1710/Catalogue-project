@@ -81,7 +81,7 @@ class OrderController {
         + year
         +' group by servicePackageId';
         const result = await seq.query(query);
-        monthlyData.push({ monthname:  monthName[index], result: result[0]});
+        monthlyData.push({ monthname:  monthName[index-1], result: result[0]});
       }
       return res.status(200).json({ monthlyData });
     } catch (error) {
