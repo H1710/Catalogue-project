@@ -36,8 +36,6 @@ const CreateBlog = () => {
       formData.append(key, newData[key]);
     }
     const data = await axios.post(createBlogRoute, formData);
-
-    console.log(data);
   };
 
   return (

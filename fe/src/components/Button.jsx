@@ -1,5 +1,6 @@
 // button like Logout, view profile
 
+ 
 import { Link } from "react-router-dom";
 function Button({
   to,
@@ -33,10 +34,12 @@ function Button({
   }
   
   return (
-    <Comp className='p-2 bg-[#fafaf9] min-w-full flex rounded-md hover:bg-[#e2e8f0] ' {...props}>
-      {icon && <span className="">{icon}</span>}
-      <span className="px-3">{children.title || children}</span>
-    </Comp>
+    <div className=" flex py-1 justify-center  " {...props}>
+      <Comp className='p-2 rounded-[5px] w-[150px] hover:bg-green-50 justify-start flex'  >
+        {icon && <span className="px-1 ">{icon}</span>}
+        <span className="px-2">{children.title || children}</span>
+      </Comp>
+    </div>
   );
 }
 
