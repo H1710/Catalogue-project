@@ -41,7 +41,7 @@ const HomePage = () => {
       <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
       </div>
-      <div className="content col-span-full text-[18px] flex justify-start pb-2 ml-5 font-semibold">
+      <div className="content col-span-full select-none text-[18px] flex justify-start pb-2 ml-5 font-semibold">
         Current Design
       </div>
 
