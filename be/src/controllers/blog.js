@@ -378,6 +378,31 @@ class BlogController {
     }
   }
 
+  static async autoCreateBlog(req, res) {
+    try {
+      const { numOfBlog } = req.body;
+      if (!numOfBlog) {
+        res.status(400).json({ message: 'Number of user is required.' });
+      }
+      const listOfBlogs = [];
+      for (let index = 0; index < numOfBlog; index++) {
+        let fakeInfo = {
+          name: faker.person.fullName(),
+          // address: faker.address.streetAddress(),
+          type_register: faker.helpers.arrayElement(['Free', 'Premium']),
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+          endDate: faker.date.future(),
+          // servicePackageId: faker.number.int({ min: 1, max: 4}),
+          createdAt: faker.date.past(),
+          updatedAt: faker.date.past(),
+        }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Something went wrong." });
+    }
+  }
+
 
 }
 
