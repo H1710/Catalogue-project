@@ -91,12 +91,12 @@ function Header({ setShowSidebar, showSidebar }) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="w-6 h-6"
+            className="w-6 h-6"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </div>
@@ -186,7 +186,7 @@ function Header({ setShowSidebar, showSidebar }) {
 
           <Menu items={userMenu}>
             <img
-              src="https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep-652x580.jpg"
+              src="assets/images/Tom_and_Jerry.jpg"
               alt=""
               className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
             />

@@ -15,6 +15,7 @@ router.get("/rating", BlogController.ratingBlog);
 router.get("/search-ByStatus", BlogController.searchBlogByStatus);
 router.patch("/accept-blog", BlogController.acceptBlog);
 router.patch("/cancel-blog", BlogController.cancelBlog);
-router.get("/filter", BlogController.filterBlog)
+router.get("/filter", BlogController.filterBlog);
+router.post("/auto-create-blog", BlogController.autoCreateBlog);
 
 module.exports = router;
