@@ -4,5 +4,7 @@ export const createTemplateRoute = `${host}/template/create`;
 export const getTemplateRoute = `${host}/template/get`;
 
 export const createBlogRoute = `${host}/blog/create`;
+export const getAllBlogRoute = `${host}/blog/get-all`;
+export const getBlogByIdRoute = `${host}/blog/get`;
 
 export const uploadImageRoute = `${host}/upload`;
