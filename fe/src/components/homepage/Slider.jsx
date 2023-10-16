@@ -24,7 +24,7 @@ function Slider({ templateList }) {
       <div className="content text-[18px] flex justify-start pb-2 select-none font-semibold">
         Most popular catalogue
       </div>
-      <div className="h-[300px] relative flex justify-center items-center ml-6">
+      <div className="h-[260px] relative flex justify-center items-center ml-6">
         <Swiper
           ref={sliderRef}
           className="my-2 h-full"
@@ -53,33 +53,31 @@ function Slider({ templateList }) {
         >
           {templateList.map((template, index) => (
             <SwiperSlide key={index} className="">
-              <div
-                className="w-[300px] rounded-[4px] border-2 border-gray-200 "
-                // to={`/templatedetails/${template.id}`}
-              >
-                <Link to={`/templatedetails/${template.id}`}>
+              <Link className="" to={`/templatedetails/${template.id}`}>
+                <div className="className=w-[270px] rounded-[4px] border border-gray-200">
                   <img
                     src={template.thumbnailUrl}
                     alt=""
-                    className="p-1 h-[220px] w-[300px] object-cover"
+                    className="p-1 h-[170px] w-[266px] object-cover"
                   />
-                  <p className=" text-[16px] px-1 pt-[2px] pb-0 start-1">
-                    {template.name}
-                  </p>
-                  <div className="grid justify-items-end pb-1">
-                    <Rating
-                      className="pr-2"
-                      name="readonly"
-                      readOnly={true}
-                      // precision={0.1}
-                      value={star}
-                      // onChange={(event, star) => {
-                      //   setStar(star);
-                      // }}
-                    />
-                  </div>
-                </Link>
-              </div>
+                </div>
+
+                <p className=" text-[16px] px-1 pt-[2px] pb-0 start-1">
+                  {template.name}
+                </p>
+                <div className="grid justify-items-end pb-1">
+                  <Rating
+                    className="pr-2"
+                    name="readonly"
+                    readOnly={true}
+                    // precision={0.1}
+                    value={star}
+                    // onChange={(event, star) => {
+                    //   setStar(star);
+                    // }}
+                  />
+                </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
