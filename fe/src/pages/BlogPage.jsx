@@ -22,7 +22,7 @@ function BlogPage() {
   });
 
   return (
-    <div className="col-span-full shadow-lg flex flex-col px-32">
+    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
       <div className="flex justify-end">
         <Link
           to="/create-blog"
@@ -45,7 +45,7 @@ function BlogPage() {
           ))}
       </div>
       <Pagination
-        className="h-20 flex items-center justify-end"
+        className="h-20 flex justify-end"
         count={10}
         variant="outlined"
         shape="rounded"
