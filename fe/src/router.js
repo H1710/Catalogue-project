@@ -8,6 +8,8 @@ import CreateBlog from "./pages/CreateBlog";
 import MainLayout from "./pages/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
+import BlogPageDetail from "./pages/BlogPageDetail";
+import UserListPage from "./pages/UserListPage";
 
 const router = createBrowserRouter([
   {
@@ -27,16 +29,24 @@ const router = createBrowserRouter([
         element: <DesignerPage />,
       },
       {
-        path: "/blog/create",
-        element: <CreateBlog />,
-      },
-      {
         path: "/blog",
         element: <BlogPage />,
       },
       {
+        path: "/blog/:blogId",
+        element: <BlogPageDetail />,
+      },
+      {
+        path: "/create-blog",
+        element: <CreateBlog />,
+      },
+      {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
+      },
+      {
+        path: "/account-list",
+        element: <UserListPage />,
       },
       {
         path: "/statitics",
