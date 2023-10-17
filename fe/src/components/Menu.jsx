@@ -38,7 +38,7 @@ function Menu({ children, items = [], onChange = defaultFn }) {
       interactive
       placement='bottom-end'
       delay={[0, 700]}
-      hideOnClick={false}
+      // hideOnClick={false}
       render={(attrs) => (
         <div tabIndex={-1} {...attrs}
         className=' shadow bg-white min-w-[160px] text-base cursor-pointer rounded-md '

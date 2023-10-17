@@ -47,11 +47,11 @@ const HomePage = () => {
 
       {productList.map((product, index) => (
         <div
-          className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-stone-100 rounded-[5px] "
+          className=" ml-5 border-slate-300 h-[250px] w-[320px] object-cover justify-center relative flex bg-slate-100 rounded-[5px] "
           key={index}
         >
          <Link to={`/product/:id`}>
-            <img src={product.thumbnailUrl} alt="" className="h-[170px] mt-3" />
+            <img src={product.thumbnailUrl} alt="" className="h-[200px] mt-3" />
             <div className="absolute bg-white h-14 bottom-0 w-full left-0">
               <p className="py-2  px-4">{product.name}</p>
             </div>

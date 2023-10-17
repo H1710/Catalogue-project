@@ -47,13 +47,14 @@ const router = createBrowserRouter([
         path: "/statitics",
         element: <StatiticsPage />,
       },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+  
 ]);
 
 export default router;

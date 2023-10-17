@@ -19,26 +19,26 @@ function Slider({ templateList, isNotFullScreen }) {
   const [star, setStar] = useState(3.4);
   const [slidesPerView, setSlidePerView] = useState(4);
   
-    useEffect(() => {
-      const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        const newWidth = entry.contentRect.width;
-        if (newWidth > '1200'){
-          setSlidePerView(4)
-        }else{
-          setSlidePerView(3)
-        }
+    // useEffect(() => {
+    //   const observer = new ResizeObserver(entries => {
+    //   for (const entry of entries) {
+    //     const newWidth = entry.contentRect.width;
+    //     if (newWidth > '1200'){
+    //       setSlidePerView(4)
+    //     }else{
+    //       setSlidePerView(3)
+    //     }
         
-      }
-    });   
-      observer.observe(sliderRef.current);
+    //   }
+    // });   
+    //   observer.observe(sliderRef.current);
     
-    return () => {
-        observer.unobserve(sliderRef.current);
+    // return () => {
+    //     observer.unobserve(sliderRef.current);
       
-    };
+    // };
       
-    }, []);
+    // }, []);
 
     const handleShowTemplateDetails = () => {
 
@@ -49,7 +49,7 @@ function Slider({ templateList, isNotFullScreen }) {
       <div className="content text-[18px] flex justify-start pb-2  font-semibold" >
         Most popular catalogue
       </div>
-      <div className="h-[300px]   relative flex justify-center items-center ml-6">
+      <div className="h-[260px]   relative flex justify-center items-center ml-6">
        {/* <div className="w-1/7"></div> */}
         <Swiper
           ref={sliderRef}
@@ -60,7 +60,7 @@ function Slider({ templateList, isNotFullScreen }) {
             nextEl: ".next-arrow",
           }}
           direction="horizontal"
-          spaceBetween={20}
+          spaceBetween={85}
           scrollbar={{
             draggable: true,
             hide: true,
@@ -70,14 +70,14 @@ function Slider({ templateList, isNotFullScreen }) {
         >
           {templateList.map((template, index) => (
             <SwiperSlide key={index} className="">
-              <div className="w-[300px] rounded-[4px] border-2 border-gray-200 "
+              <div className="w-[270px] rounded-[6px] border-2 border-gray-200 "
               // to={`/templatedetails/${template.id}`}
               >
                 <Link to={`/templatedetails/${template.id}`}> 
                 <img
                   src={template.thumbnailUrl}
                   alt=""
-                  className="p-1 h-[220px] w-[300px] object-cover"
+                  className="p-1  w-[266px] h-[170px] object-fill"
                 />
                 <p className=" text-[16px] px-1 pt-[2px] pb-0 start-1">
                   {template.name}
@@ -87,7 +87,7 @@ function Slider({ templateList, isNotFullScreen }) {
                     className="pr-2"
                     name="readonly"
                     readOnly={true}
-                    precision={0.1}
+                    // precision={0.1}
                     value={star}
                     // onChange={(event, star) => {
                     //   setStar(star);
@@ -102,7 +102,7 @@ function Slider({ templateList, isNotFullScreen }) {
         <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
           <FontAwesomeIcon icon={faChevronLeft} className="text-8" />
         </div>
-        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10   ${slidesPerView > 3 ? "mr-[4px]": " mr-[34px]"}  `}>
+        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10    mr-[-22px]  `}>
           <FontAwesomeIcon icon={faChevronRight} className="text-8" />
         </div>
       </div>

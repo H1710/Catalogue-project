@@ -57,9 +57,7 @@ function Header({ setShowSidebar, showSidebar }) {
       to: "/blog",
     },
   ]);
-  const customFontStyle = {
-    // fontFamily: " 'Be Vietnam Pro', sans-serif",
-  };
+  
 
   const userMenu = [
     {
@@ -70,19 +68,11 @@ function Header({ setShowSidebar, showSidebar }) {
     ...MENU_ITEMS,
     
   ];
-  // const openNoti = () => {
-  //   setShowNoti(true);
-  // }
-  // const closeNoti = () => {
-  //   setShowNoti(false);
-  // }
-  // const notiRef = useRef(null);
   useEffect(() => {}, []);
   return (
     <div className="px-[16px] shadow-md h-full w-full top-0 z-40 bg-white   ">
       <div
-        className="header flex h-full items-center text-zinc-700"
-        // style={customFontStyle}
+        className="header flex h-full items-center  "
       >
         <div
           className="text-[24px] px-[6px] cursor-pointer"
@@ -159,9 +149,9 @@ function Header({ setShowSidebar, showSidebar }) {
 
           <Menu items={userMenu}>
             <img
-              src="https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep-652x580.jpg"
+              src="https://demoda.vn/wp-content/uploads/2023/01/hinh-anh-avatar-cute-1-600x600.jpg"
               alt=""
-              className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
+              className="w-10 h-10 rounded-[50%] border-2 border-slate-50 object-cover mx-auto cursor-pointer"
             />
           </Menu>
         </div>

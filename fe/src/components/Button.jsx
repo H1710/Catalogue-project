@@ -35,7 +35,7 @@ function Button({
   
   return (
     <div className=" flex py-1 justify-center  " {...props}>
-      <Comp className='p-2 rounded-[5px] w-[150px] hover:bg-green-50 justify-start flex'  >
+      <Comp className='p-2 rounded-[5px] w-[150px] hover:bg-green-50 justify-start flex' >
         {icon && <span className="px-1 ">{icon}</span>}
         <span className="px-2">{children.title || children}</span>
       </Comp>
