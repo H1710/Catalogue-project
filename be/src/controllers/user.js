@@ -1,6 +1,5 @@
 const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
-
 const { faker } = require("@faker-js/faker");
 
 const User = db.user;
@@ -81,10 +80,6 @@ class UserController {
     try {
       const { numOfUser } = req.body;
       if (!numOfUser) {
-
-        res.status(400).json({ message: 'Number of user is required.' });
-      }
-
         res.status(400).json({ message: "Number of user is required." });
       }
       const countries = [
@@ -99,15 +94,16 @@ class UserController {
       for (let index = 0; index < numOfUser; index++) {
         let fakeInfo = {
           name: faker.person.fullName(),
-          // address: faker.address.streetAddress(),
-          type_register: faker.helpers.arrayElement(['Free', 'Premium']),
+          country: faker.helpers.arrayElement(countries),
+          typeRegister: faker.helpers.arrayElement(["Normal", "Google"]),
           email: faker.internet.email(),
           password: faker.internet.password(),
           endDate: faker.date.future(),
-          // servicePackageId: faker.number.int({ min: 1, max: 4}),
+          servicePackageId: faker.number.int({ min: 1, max: 4 }),
+          roleId: faker.number.int({ min: 1, max: 4 }),
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
-        }
+        };
         const fakeUser = await User.create(fakeInfo);
         listOfUsers.push(fakeUser);
       }

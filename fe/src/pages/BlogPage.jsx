@@ -22,9 +22,7 @@ function BlogPage() {
   });
 
   return (
-
     <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
-
       <div className="flex justify-end">
         <Link
           to="/create-blog"

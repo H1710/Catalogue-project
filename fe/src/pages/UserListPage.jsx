@@ -91,9 +91,6 @@ const UserListPage = () => {
         </tbody>
       </table>
     </div>
-
-
-  </div>;
 };
 
 export default UserListPage;
