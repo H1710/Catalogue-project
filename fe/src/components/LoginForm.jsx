@@ -107,6 +107,19 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                       <h1 className="font-medium text-2xl text-center">Register</h1>
                       <form className="mt-6">
                         <div className="my-4 text-sm">
+                          <label htmlFor="name" className="block text-black">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            autoComplete="off"
+                            className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                            placeholder="Name"
+                            name="name"
+                            required
+                          />
+                        </div>
+                        <div className="my-4 text-sm">
                           <label htmlFor="email" className="block text-black">
                             Email
                           </label>
@@ -120,11 +133,25 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                           />
                         </div>
                         <div className="my-4 text-sm">
-                          <label className="block text-black">
+                          <label htmlFor="address" className="block text-black">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            autoComplete="off"
+                            className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                            placeholder="Address"
+                            name="address"
+                            required
+                          />
+                        </div>
+                        <div className="my-4 text-sm">
+                          <label htmlFor="password" className="block text-black">
                             Password
                           </label>
                           <input
                             type="password"
+                            autoComplete="new-password"
                             className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                             placeholder="Password"
                             name="password"
@@ -132,11 +159,12 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                           />
                         </div>
                         <div className="my-4 text-sm">
-                          <label className="block text-black">
+                          <label htmlFor="confirmPassword" className="block text-black">
                             Confirm Password
                           </label>
                           <input
                             type="password"
+                            autoComplete="new-password"
                             className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                             placeholder="Confirm Password"
                             name="confirmPassword"
@@ -163,8 +191,8 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                         </div>
                         <div className="mt-4 text-center flex items-center justify-center">
                           <div className="flex items-center">
-                            <p className="flex justify-center text-xs text-gray-600 mt-[3px]">Already have an account?</p>
-                            <a to="/login" className="flex justify-center text-[#3386ff] text-sm font-medium ml-1">Login</a>
+                            <p className="flex justify-center text-xs text-gray-600 mt-[5px]">Already have an account?</p>
+                            <a to="/login" className="flex justify-center mt-[5px] text-[#3386ff] text-sm font-medium ml-1">Login</a>
                           </div>
                         </div>
                         <div className="bg-gray-200 gap-2 mt-7 flex items-center justify-center">
@@ -176,8 +204,6 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                       </form>
                     </div>
                   </div>
-
-
                 </Dialog.Title>
               </Dialog.Panel>
             </Transition.Child>
