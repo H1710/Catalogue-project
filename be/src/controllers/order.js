@@ -71,17 +71,17 @@ class OrderController {
       const monthlyData = [];
       const year = req.body.year;
       const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'];
+        'July', 'August', 'September', 'October', 'November', 'December'];
       for (let index = 1; index <= 12; index++) {
         const query = 'select servicePackageId, count(servicePackageId) as quantity '
-        +'from catalogue_project.orders '
-        +'where month(createdAt) = '
-        + index
-        +' and year(createdAt) = '
-        + year
-        +' group by servicePackageId';
+          + 'from catalogue_project.orders '
+          + 'where month(createdAt) = '
+          + index
+          + ' and year(createdAt) = '
+          + year
+          + ' group by servicePackageId';
         const result = await seq.query(query);
-        monthlyData.push({ monthname:  monthName[index-1], result: result[0]});
+        monthlyData.push({ monthname: monthName[index - 1], result: result[0] });
       }
       return res.status(200).json({ monthlyData });
     } catch (error) {
@@ -96,12 +96,12 @@ class OrderController {
       const yearName = [2023, 2024, 2025, 2026];
       for (let index = 0; index < yearName.length; index++) {
         const query = 'select servicePackageId, count(servicePackageId) as quantity '
-        +'from catalogue_project.orders '
-        +'where year(createdAt) = '
-        + yearName[index]
-        +' group by servicePackageId';
+          + 'from catalogue_project.orders '
+          + 'where year(createdAt) = '
+          + yearName[index]
+          + ' group by servicePackageId';
         const result = await seq.query(query);
-        yearlyData.push({ yearName:  yearName[index], result: result[0]});
+        yearlyData.push({ yearName: yearName[index], result: result[0] });
       }
       return res.status(200).json({ yearlyData });
     } catch (error) {
@@ -109,6 +109,35 @@ class OrderController {
       return res.status(500).json({ message: "Something went wrong!" });
     }
   }
+
+  static async getHistoricalOrder(req, res) {
+    try {
+      const { userId } = req.body;
+      if (userId == null) {
+        return res.status(400).json("User Id is null");
+      } else {
+        const query =
+          'SELECT DISTINCT s.id, s.name, s.price, s.remain_day, s.classService, o.createdAt ' +
+          'FROM catalogue_project.orders o ' +
+          'JOIN catalogue_project.service_packages s ' +
+          'ON o.servicePackageId = s.id ' +
+          'WHERE o.userId = ' + userId;
+        const result = await seq.query(query, { raw: true });
+
+        if (result.length >= 1) {
+          // Use the first array from the result
+          return res.status(200).json({ result: result[0] });
+        } else {
+          // Handle the case when no results are found
+          return res.status(200).json({ result: [] });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong!" });
+    }
+  }
+
 }
 
 exports.OrderController = OrderController;
