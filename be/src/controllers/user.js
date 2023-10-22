@@ -1,5 +1,6 @@
 const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
+
 const { faker } = require("@faker-js/faker");
 
 const User = db.user;
@@ -22,10 +23,68 @@ class UserController {
     }
   }
 
+  static async getUserById(req, res) {
+    try {
+      const userId = req.params.id;
+      const user = await db.user.findByPk(userId);
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send({ message: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async updateUser(req, res) {
+    try {
+      const userId = req.params.id;
+      const newData = {
+        name: req.body.name,
+        address: req.body.address,
+        type_register: req.body.type_register,
+        email: req.body.email,
+        password: req.body.password,
+        end_date: req.body.end_date,
+      };
+
+      const user = await db.user.findByPk(userId);
+      if (user) {
+        await user.update(newData);
+        res.status(200).send(user);
+      } else {
+        res.status(404).send({ message: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async deleteUser(req, res) {
+    try {
+      const userId = req.params.id;
+      const user = await db.user.findByPk(userId);
+      if (user) {
+        await user.destroy();
+        res.status(204).send();
+      } else {
+        res.status(404).send({ message: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+
   static async autoCreateUser(req, res) {
     try {
       const { numOfUser } = req.body;
       if (!numOfUser) {
+
+        res.status(400).json({ message: 'Number of user is required.' });
+      }
+
         res.status(400).json({ message: "Number of user is required." });
       }
       const countries = [
@@ -40,6 +99,19 @@ class UserController {
       for (let index = 0; index < numOfUser; index++) {
         let fakeInfo = {
           name: faker.person.fullName(),
+          // address: faker.address.streetAddress(),
+          type_register: faker.helpers.arrayElement(['Free', 'Premium']),
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+          endDate: faker.date.future(),
+          // servicePackageId: faker.number.int({ min: 1, max: 4}),
+          createdAt: faker.date.past(),
+          updatedAt: faker.date.past(),
+        }
+        const fakeUser = await User.create(fakeInfo);
+        listOfUsers.push(fakeUser);
+      }
+      res.status(200).json({ listOfUsers });   
           country: faker.helpers.arrayElement(countries),
           typeRegister: faker.helpers.arrayElement(["Normal", "Google"]),
           email: faker.internet.email(),
