@@ -14,9 +14,11 @@ const MainLayout = () => {
       </div>
       <div className="grid grid-cols-5 lg:grid-cols-12 mt-[80px] px-[16px]">
         {showSidebar && (
-          <div className="lg:col-start-1 fixed z-40 top-10 lg:col-span-2">
-            <UserSidebar />
-            {/* <AdminSidebar /> */}
+          <div
+            className={`lg:col-start-1 shadow-xl fixed z-40 top-10 left-1 lg:col-span-2`}
+          >
+            {/* <UserSidebar /> */}
+            <AdminSidebar />
           </div>
         )}
         <div
