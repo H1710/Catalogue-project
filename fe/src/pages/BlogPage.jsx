@@ -14,7 +14,7 @@ function BlogPage() {
     queryFn: () => {
       return getAPI(getAllBlogRoute);
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => { },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
