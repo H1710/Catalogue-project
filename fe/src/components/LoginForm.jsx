@@ -41,6 +41,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                 >
                   Login
                 </Dialog.Title>
+                <div></div>
                 <div className="flex gap-20 mt-4">
                   <div
                     onClick={() => {
