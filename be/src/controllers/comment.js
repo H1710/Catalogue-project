@@ -1,6 +1,8 @@
 const db = require("../models/index");
-const Commentblog = db.commentblog;
-
+const ServicePackage = db.servicePackage;
+const User = db.user;
+const Comment = db.blogComment;
+  
 class CommentController {
   static async createComment(req, res) {
     try {
@@ -22,19 +24,24 @@ class CommentController {
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
-  static async getComments(req, res) {
+ static async getComments(req, res) {
     try {
-
-      const comments = await BlogComment.findAll();
-
-      if (comments) {
-        res.status(200).json(comments);
-      } else {
-        res.status(404).json({ message: "No comments found" });
-      }
+      const blogId = req.params.blogId;
+      // const blogId = req.body.blogId;
+      console.log(blogId);
+      const comment = await Comment.findAll({
+        where: { blogId },
+        attributes: ["id", "content", "total_votes", "createdAt", "userId", "replyCommentId"],
+        include: [
+          {
+            model: User, // Thay User bằng mô hình tương ứng cho bảng User
+            attributes: ["name", "avatar"], // Lựa chọn các thuộc tính bạn muốn lấy từ bảng User
+          },
+        ],
+      });
+      res.status(200).json({ comment })
     } catch (error) {
-      console.error("Error getting comments:", error);
-      res.status(500).json({ message: "Something went wrong!" });
+      res.status(500).json({ message: "somehitng went wrong"});
     }
   }
   static async replyComment(req, res) {
@@ -116,6 +123,5 @@ class CommentController {
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
-
 }
 exports.CommentController = CommentController;
