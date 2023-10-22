@@ -1,4 +1,5 @@
 import React from "react";
+import { minidenticon } from "minidenticons";
 
 const UserListPage = () => {
   return <div className="col-span-full shadow-lg flex flex-col px-32">

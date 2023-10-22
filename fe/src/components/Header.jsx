@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 
 import { NotifList } from "../shared/Notification";
 import Tippy from "@tippyjs/react";
+import LoginForm from "./LoginForm";
 
 const MENU_ITEMS = [
   {
@@ -44,6 +45,7 @@ const MENU_ITEMS = [
 function Header({ setShowSidebar, showSidebar }) {
   const newNotification = 5;
   const [showNoti, setShowNoti] = useState(false);
+  const [loginForm, setLoginForm] = useState(false);
   // console.log(showNoti);
   const navList = [
     {
@@ -77,6 +79,7 @@ function Header({ setShowSidebar, showSidebar }) {
   // }
   // const notiRef = useRef(null);
   useEffect(() => {}, []);
+  console.log(loginForm);
   return (
     <div className="px-[16px] shadow-md h-full w-full top-0 z-40 bg-white   ">
       <div
@@ -184,15 +187,25 @@ function Header({ setShowSidebar, showSidebar }) {
             </Tippy>
           </div>
 
-          <Menu items={userMenu}>
+          <div>
+            {/* <Menu items={userMenu}>
             <img
               src="assets/images/Tom_and_Jerry.jpg"
               alt=""
               className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
             />
-          </Menu>
+          </Menu> */}
+            <button
+              onClick={() => {
+                setLoginForm(true);
+              }}
+            >
+              Login
+            </button>
+          </div>
         </div>
       </div>
+      <LoginForm openLogin={loginForm} setOpenLogin={setLoginForm} />
     </div>
   );
 }
