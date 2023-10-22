@@ -59,7 +59,6 @@ class AuthController {
 
       sendEmail(email, OTP);
       const hashedPassword = await bcrypt.hash(password, 10);
-
       if (user) {
         user.otpCode = OTP;
         user.password = hashedPassword;
@@ -69,11 +68,11 @@ class AuthController {
           email: email,
           otpCode: OTP,
           password: hashedPassword,
-          type_register: "normal-register",
+          typeRegister: "normal-register",
         });
       }
       return res.status(200).send({
-        message: "Succcess. Check your mail to get OPTcode",
+        message: "Succcess. Check your mail to get OTP code",
       });
     } catch (error) {
       return res

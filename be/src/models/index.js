@@ -44,8 +44,10 @@ db.user.belongsTo(db.role, {
 
 const order = require("./orderModel")(sequelize, DataTypes);
 db.order = order;
-db.user.belongsToMany(db.servicePackage, { through: order });
-db.servicePackage.belongsToMany(db.user, { through: order });
+db.user.hasMany(db.order);
+db.order.belongsTo(db.user);
+db.servicePackage.hasMany(db.order);
+db.order.belongsTo(db.servicePackage);
 
 db.user.belongsTo(db.servicePackage);
 db.servicePackage.hasMany(db.user);
@@ -93,9 +95,7 @@ db.blogRating.belongsTo(db.user, {
 });
 
 db.blog.hasMany(db.blogRating);
-db.blogRating.belongsTo(db.blog, {
-  foreignKey: "blogId",
-});
+db.blogRating.belongsTo(db.blog);
 
 db.user.hasMany(db.templateComment);
 db.templateComment.belongsTo(db.user, {
@@ -133,8 +133,11 @@ db.templateRating.belongsTo(db.template, {
   foreignKey: "templateId",
 });
 
-db.template.belongsToMany(db.blog, { through: db.tag });
-db.blog.belongsToMany(db.template, { through: db.tag });
+db.template.belongsToMany(db.tag, { through: "teamplate_tag" });
+db.tag.belongsToMany(db.template, { through: "teamplate_tag" });
+
+db.blog.belongsToMany(db.tag, { through: "blog_tag" });
+db.tag.belongsToMany(db.blog, { through: "blog_tag" });
 
 db.user.hasMany(db.product);
 db.product.belongsTo(db.user, {

@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    address: {
+    country: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    type_register: {
+    typeRegister: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    end_date: {
-      type: DataTypes.DATEONLY,
-      defaultValue: Date.now(),
-      allowNull: false,
+    endDate: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.NOW,
+      allowNull: true,
     },
   });
 

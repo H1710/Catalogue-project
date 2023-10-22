@@ -1,24 +1,55 @@
-import Header from "../components/Header";
+import { Link, useNavigate } from "react-router-dom";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import { Pagination } from "@mui/material";
+import { getAllBlogRoute } from "../utils/APIRoute";
+import { getAPI } from "../utils/FetchData";
+import { useState } from "react";
+import { useQuery } from "react-query";
 
 function BlogPage() {
-  const blog = {
-    content: "",
-    createdAt: "2023-10-07T11:39:21.097Z",
-    description:
-      "  Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable",
-    title: "Lorem Ipsum is not simply random text. It has ",
-    userId: 1,
-  };
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const { data: blogsData, isLoading } = useQuery({
+    queryKey: ["blogs", page],
+    queryFn: () => {
+      return getAPI(getAllBlogRoute);
+    },
+    onSuccess: (data) => {},
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    // enabled: logged,
+  });
+
   return (
-    <div className="col-span-full shadow-lg flex flex-col px-32">
-      <div className="flex items-center justify-end"><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-[120px] rounded-full mb-[10px]">Create Blog</button></div>
-      <PreviewBlog blog={blog} />
-      <PreviewBlog blog={blog} />
-      <PreviewBlog blog={blog} />
-      <PreviewBlog blog={blog} />
-      <Pagination className="h-20 flex items-center justify-end" count={10} variant="outlined" shape="rounded" />
+    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
+      <div className="flex justify-end">
+        <Link
+          to="/create-blog"
+          className="w-[120px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-md mb-[10px]"
+        >
+          Create Blog
+        </Link>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        {!isLoading &&
+          blogsData.data.blogs.map((blog, index) => (
+            <div
+              className="cursor-pointer"
+              onClick={() => navigate(`${blog.id}`)}
+              key={index}
+            >
+              <PreviewBlog blog={blog} />
+            </div>
+          ))}
+      </div>
+      <Pagination
+        className="h-20 flex justify-end"
+        count={10}
+        variant="outlined"
+        shape="rounded"
+      />
     </div>
   );
 }

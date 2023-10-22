@@ -9,6 +9,8 @@ import MainLayout from "./pages/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
 import ProductPage from "./pages/ProductPage";
+import BlogPageDetail from "./pages/BlogPageDetail";
+import UserListPage from "./pages/UserListPage";
 
 const router = createBrowserRouter([
   {
@@ -28,20 +30,20 @@ const router = createBrowserRouter([
         element: <DesignerPage />,
       },
       {
-        path: "/blog/create",
-        element: <CreateBlog />,
-      },
-      {
         path: "/blog",
         element: <BlogPage />,
       },
       {
-        path: "/templatedetails/:id",
-        element: <TemplateDetailsPage />,
+        path: "/blog/:blogId",
+        element: <BlogPageDetail />,
       },
       {
-        path: "/product/:id",
-        element: <ProductPage />,
+        path: "/create-blog",
+        element: <CreateBlog />,
+      },
+      {
+        path: "/templatedetails/:id",
+        element: <TemplateDetailsPage />,
       },
       {
         path: "/statitics",

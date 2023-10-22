@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-function Slider({ templateList, isNotFullScreen }) {
+function Slider({ templateList }) {
   const sliderRef = useRef(null);
   const [star, setStar] = useState(3.4);
   const [slidesPerView, setSlidePerView] = useState(4);
@@ -46,7 +46,7 @@ function Slider({ templateList, isNotFullScreen }) {
     }
   return (
     <div className="slider w-full ">
-      <div className="content text-[18px] flex justify-start pb-2  font-semibold" >
+      <div className="content text-[18px] flex justify-start pb-2 select-none font-semibold">
         Most popular catalogue
       </div>
       <div className="h-[260px]   relative flex justify-center items-center ml-6">
@@ -65,7 +65,17 @@ function Slider({ templateList, isNotFullScreen }) {
             draggable: true,
             hide: true,
           }}
-          slidesPerView={slidesPerView}
+          breakpoints={{
+            576: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
           loop={false}
         >
           {templateList.map((template, index) => (
@@ -94,15 +104,17 @@ function Slider({ templateList, isNotFullScreen }) {
                     // }}
                   />
                 </div>
-                </Link>
+              </Link>
               </div>
             </SwiperSlide>
+            
           ))}
+          
         </Swiper>
         <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
           <FontAwesomeIcon icon={faChevronLeft} className="text-8" />
         </div>
-        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10    mr-[-22px]  `}>
+        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10   ${slidesPerView > 3 ? "mr-[4px]": " mr-[34px]"}  `}>
           <FontAwesomeIcon icon={faChevronRight} className="text-8" />
         </div>
       </div>

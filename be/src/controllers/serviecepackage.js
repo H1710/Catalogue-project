@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const { faker } = require('@faker-js/faker');
 const ServicePackage = db.servicePackage;
 
 class servicePackageController {
@@ -70,5 +71,7 @@ class servicePackageController {
       return res.status(500).json({ message: "Can not edit!" });
     }
   }
+
+  
 }
 exports.servicePackageController = servicePackageController;
