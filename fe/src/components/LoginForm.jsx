@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ openLogin, setOpenLogin }) => {
   console.log(openLogin);
-  // Login
   return (
     <Transition appear show={openLogin} as={Fragment}>
       <Dialog
@@ -38,6 +37,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                   {/* <div class="bg-white w-[400px] m-auto my-10 shadow-lg border border-gray-300">
+                  <div class="bg-white w-[400px] m-auto my-10 shadow-lg border border-gray-300">
                     <div class="py-8 px-8 rounded-xl">
                       <h1 class="font-medium text-2xl text-center">Login</h1>
                       <form class="mt-6">
@@ -206,7 +206,6 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                   </div>
                 </Dialog.Title>
               </Dialog.Panel>
-            </Transition.Child>
           </div>
         </div>
       </Dialog >
