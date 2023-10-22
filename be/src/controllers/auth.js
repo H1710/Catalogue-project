@@ -68,7 +68,7 @@ class AuthController {
           email: email,
           otpCode: OTP,
           password: hashedPassword,
-          type_register: "normal-register",
+          typeRegister: "normal-register",
         });
       }
       return res.status(200).send({
