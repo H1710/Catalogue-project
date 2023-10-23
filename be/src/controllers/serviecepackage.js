@@ -1,5 +1,5 @@
 const db = require("../models/index");
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 const ServicePackage = db.servicePackage;
 
 class servicePackageController {
@@ -32,6 +32,43 @@ class servicePackageController {
       return res.status(500).json({ message: "Something went wrong!" });
     }
   }
+
+  static async autoGenerateServiecePackage(req, res) {
+    try {
+      await ServicePackage.create({
+        name: "Free",
+        price: 0,
+        remain_day: 0,
+        classService: 0,
+      });
+
+      await ServicePackage.create({
+        name: "Monthly Premium",
+        price: 100000,
+        remain_day: 30,
+        classService: 1,
+      });
+
+      await ServicePackage.create({
+        name: "Yearly Premium",
+        price: 900000,
+        remain_day: 365,
+        classService: 1,
+      });
+
+      // await ServicePackage.create({
+      //   name: "",
+      //   price: 900000,
+      //   remain_day: 365,
+      //   classService: 1,
+      // });
+
+      res.status(200).json({ message: "Add packages successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: "Something went wrong!" });
+    }
+  }
+
   static async removeServiecePackage(req, res) {
     try {
       const id = req.body.id;
@@ -71,7 +108,5 @@ class servicePackageController {
       return res.status(500).json({ message: "Can not edit!" });
     }
   }
-
-  
 }
 exports.servicePackageController = servicePackageController;
