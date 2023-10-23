@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getBlogCmtByIdRoute } from "../../utils/APIRoute";
 import { getAPI } from "../../utils/FetchData";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import {ThumbUpOffAltIcon} from "@mui/icons-material/ThumbUpOffAlt";
+import {ThumbDownOffAltIcon} from "@mui/icons-material/ThumbDownOffAlt";
 import LoginForm from "../LoginForm";
 
 export default function BlogComment() {
@@ -44,8 +44,8 @@ export default function BlogComment() {
             </div>
             <h1>{comment.content}</h1>
             <div className="flex items-center gap-3">
-              <ThumbUpOffAltIcon />
-              <ThumbDownOffAltIcon />
+              {/* <ThumbUpOffAltIcon />
+              <ThumbDownOffAltIcon /> */}
             </div>
             {renderReplyComments(commentList, comment.id)}
           </div>
