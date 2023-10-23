@@ -2,7 +2,6 @@ import React from "react";
 import Tag from "../Tag";
 
 const PreviewBlog = ({ blog }) => {
-  console.log(blog);
   return (
     <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-gray-400">
       <p className="text-xl w-full font-bold py-[3px] leading-none text-gray-900 break-words overflow-hidden">
@@ -15,7 +14,6 @@ const PreviewBlog = ({ blog }) => {
         </small>
       </div>
       {blog?.tags &&
-        blog.tags.length &&
         blog.tags[0] &&
         (typeof blog.thumbnail === "string" ? (
           <div className="flex gap-2 overflow-hidden h-[30px]">

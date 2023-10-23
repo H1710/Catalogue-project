@@ -483,30 +483,27 @@ class BlogController {
 
   static async autoCreateBlog(req, res) {
     try {
-      const numOfBlogs = req.body.numOfBlogs;
-      if (!numOfBlogs) {
-        res.status(400).json({ message: "Number of blog is required." });
-      }
-      const userList = await User.findAll({ attributes: ["id"] });
-      if (userList.length === 0) {
-        return res.status(400).json({ message: "No users found." });
-      }
+      // const userList = await User.findAll({ attributes: ["id"] });
+      // if (userList.length === 0) {
+      //   return res.status(400).json({ message: "No users found." });
+      // }
       const listOfBlogs = [];
       //const randomLink = 'https://source.boringavatars.com/bauhaus/120/'+ faker.person.userName() +'?colors=264653%2C2a9d8f%2Ce9c46a&fbclid=IwAR1YSPuMMagyuxBdUnVD0jeBYkNBLTYTce5DaajXTDJRWQTr6TIp_cflhQg'
-      for (let index = 0; index < numOfBlogs; index++) {
-        const randomUser =
-          userList[Math.floor(Math.random() * userList.length)];
+      for (let index = 0; index < 100; index++) {
+        const randomUser = await User.findByPk(
+          faker.number.int({ min: 10, max: 100 })
+        );
         let fakeInfo = {
           title: faker.lorem.sentence(),
           content: faker.lorem.paragraphs(),
           description: faker.lorem.paragraphs(),
-          thumbnail: faker.image.avatar(),
+          thumbnail: `https://source.boringavatars.com/bauhaus/180/${index}?square`,
           status: faker.helpers.arrayElement(["No Process", "In Process"]),
-          userId: randomUser.id,
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };
         const fakeBlog = await Blog.create(fakeInfo);
+        await randomUser.addBlog(fakeBlog);
         listOfBlogs.push(fakeBlog);
       }
       res.status(200).json({ listOfBlogs });
