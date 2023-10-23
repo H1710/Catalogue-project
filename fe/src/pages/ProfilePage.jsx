@@ -32,12 +32,12 @@ function ProfilePage() {
   console.log('rerendering');
 
   return (
-    <div className="px-4  col-span-2  ">
-      <Disclosure>
+    <div className="px-4  col-span-2 grid gap-y-4 ">
+      <Disclosure >
         {({ open }) => (
           <>
-            <Disclosure.Button className="text-[20px]  border-2 border-slate-300 rounded  flex justify-center items-center bg-slate-50 hover:bg-emerald-300 shadow">
-              <span className='px-2'>Your profile</span>
+            <Disclosure.Button className="text-[18px] w-[300px] border-2 border-slate-300 rounded  flex   items-center bg-slate-50 hover:bg-emerald-300 shadow">
+              <span className='px-2 text-left'>Profile</span>
               <FontAwesomeIcon
                 icon={faChevronDown}
                 className={`${
@@ -59,6 +59,24 @@ function ProfilePage() {
                 />
               </div>
             </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+      <Disclosure>
+        {({open})=> (
+          <>
+          <Disclosure.Button className="text-[18px] w-[300px] border-2 border-slate-300 rounded  flex   items-center bg-slate-50 hover:bg-emerald-300 shadow">
+            <span className='px-2'>Historical Orders</span>
+            <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`${
+                  open ? 'rotate-180 transform' : ''
+                } h-5 w-5 text-emerald-900 p-4`}
+              />
+          </Disclosure.Button>
+          <Disclosure.Panel>
+            
+          </Disclosure.Panel>
           </>
         )}
       </Disclosure>
