@@ -49,9 +49,6 @@ db.order.belongsTo(db.user);
 db.servicePackage.hasMany(db.order);
 db.order.belongsTo(db.servicePackage);
 
-db.user.belongsTo(db.servicePackage);
-db.servicePackage.hasMany(db.user);
-
 db.template.belongsTo(db.servicePackage);
 db.servicePackage.hasMany(db.template);
 

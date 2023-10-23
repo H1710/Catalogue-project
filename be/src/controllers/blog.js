@@ -7,6 +7,7 @@ const Tag = db.tag;
 const TagBlog = db.TagBlog;
 const blogRating = db.blogRating;
 const voteBlogComment = db.voteBlogComment;
+const { faker } = require("@faker-js/faker");
 
 class BlogController {
   static async createBlog(req, res) {
@@ -477,6 +478,38 @@ class BlogController {
       res
         .status(500)
         .json({ message: "An error occurred while fetching ratingBlogs" });
+    }
+  }
+
+  static async autoCreateBlog(req, res) {
+    try {
+      // const userList = await User.findAll({ attributes: ["id"] });
+      // if (userList.length === 0) {
+      //   return res.status(400).json({ message: "No users found." });
+      // }
+      const listOfBlogs = [];
+      //const randomLink = 'https://source.boringavatars.com/bauhaus/120/'+ faker.person.userName() +'?colors=264653%2C2a9d8f%2Ce9c46a&fbclid=IwAR1YSPuMMagyuxBdUnVD0jeBYkNBLTYTce5DaajXTDJRWQTr6TIp_cflhQg'
+      for (let index = 0; index < 100; index++) {
+        const randomUser = await User.findByPk(
+          faker.number.int({ min: 10, max: 100 })
+        );
+        let fakeInfo = {
+          title: faker.lorem.sentence(),
+          content: faker.lorem.paragraphs(),
+          description: faker.lorem.paragraphs(),
+          thumbnail: `https://source.boringavatars.com/bauhaus/180/${index}?square`,
+          status: faker.helpers.arrayElement(["No Process", "In Process"]),
+          createdAt: faker.date.past(),
+          updatedAt: faker.date.past(),
+        };
+        const fakeBlog = await Blog.create(fakeInfo);
+        await randomUser.addBlog(fakeBlog);
+        listOfBlogs.push(fakeBlog);
+      }
+      res.status(200).json({ listOfBlogs });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong" });
     }
   }
 }
