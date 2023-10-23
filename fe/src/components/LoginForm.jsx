@@ -89,7 +89,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                         class="flex justify-center text-black p-3 duration-300 rounded-sm hover:bg-gray-300 w-full"
                       >
                         <img
-                          class="w-6 h-5 rounded-full mr-2"
+                          class="w-6 h-5 rounded-full mr-2 mt-1"
                           src="https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png"
                           alt="Google"
                         />
