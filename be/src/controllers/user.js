@@ -161,6 +161,25 @@ class UserController {
     }
   }
 
+  static async selectPackage(req, res) {
+    try {
+      const { serviceId, userId } = req.body;
+      if (serviceId == null && userId == null) {
+        res.status(400).json({ message: "The user has not selected a package" });
+      } else {
+        let info = {
+          userId: userId,
+          servicePackageId: serviceId
+        };
+        const order = await Order.create(info);
+        res.status(201).json({ message: "The user selected a package successfully", order: order });
+      }
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+
 }
 
 exports.UserController = UserController;
