@@ -4,6 +4,7 @@ const { faker } = require("@faker-js/faker");
 
 const User = db.user;
 const Order = db.order;
+const Role = db.role;
 const ServicePackage = db.servicePackage;
 class UserController {
   static async createUser(req, res) {
@@ -120,6 +121,46 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+  static async getAllUser(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
+      const perPage = 7; // Number of users to show per page
+      const offset = (page - 1) * perPage; // Calculate the offset based on the page
+
+      const users = await User.findAll({
+        attributes: [
+          "avatar",
+          "name",
+          "email",
+          "country",
+        ],
+        include: [
+          {
+            model: Role,
+            attributes: ["name"],
+          },
+          {
+            model: Order,
+            include: {
+              model: ServicePackage,
+              attributes: ["name"],
+            },
+          },
+        ],
+        limit: perPage, // Limit the number of results per page
+        offset: offset, // Offset for pagination
+      });
+
+      res.json({
+        users: users
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
 }
 
 exports.UserController = UserController;
