@@ -120,6 +120,49 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+  static async getAllOrderOfUser(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
+      const perPage = 7; // Number of orders to show per page
+      const offset = (page - 1) * perPage; // Calculate the offset based on the page
+
+      const { userId } = req.body; // Get userId from the query parameters
+
+      if (userId == null) {
+        return res.status(400).json({
+          message: "User not found"
+        });
+      }
+
+      const orders = await Order.findAndCountAll({
+        attributes: ["id", "createdAt", "updatedAt"],
+        where: {
+          userId: userId,
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["id", "name", "email", "endDate"],
+          },
+          {
+            model: ServicePackage,
+            attributes: ["name", "price", "remain_day", "classService"]
+          }
+        ],
+        limit: perPage, // Limit the number of results per page
+        offset: offset, // Offset for pagination
+      });
+
+      res.status(200).json({
+        message: orders
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Something went wrong." });
+    }
+  }
+
 }
 
 exports.UserController = UserController;
