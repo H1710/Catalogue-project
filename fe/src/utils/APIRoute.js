@@ -9,3 +9,4 @@ export const getBlogByIdRoute = `${host}/blog/get`;
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 
 export const uploadImageRoute = `${host}/upload`;
+export const getAllOrderRoute = `${host}/order/get-all-order`

@@ -10,7 +10,7 @@ import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
 import BlogPageDetail from "./pages/BlogPageDetail";
 import UserListPage from "./pages/UserListPage";
-
+import OrderListPage from "./pages/OrdersListPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/statitics",
         element: <StatiticsPage />,
+      },
+      {
+        path: "/order-list",
+        element: <OrderListPage />,
       },
     ],
   },

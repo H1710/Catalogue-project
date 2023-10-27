@@ -132,13 +132,15 @@ class OrderController {
           "id",
           "createdAt",
           "updatedAt",
-          "userId",
-          "servicePackageId",
         ],
         include: [
           {
             model: User,
             attributes: ["name", "email"],
+          },
+          {
+            model: ServicePackage,
+            attributes: ["name", "price"],
           }
         ],
         limit: perPage, // Limit the number of results per page
