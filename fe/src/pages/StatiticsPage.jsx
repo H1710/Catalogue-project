@@ -1,24 +1,23 @@
-import React from "react";
-import PreviewBlog from "../components/blog/PreviewBlog";
+import React from 'react';
+import PreviewBlog from '../components/blog/PreviewBlog';
+import UserStats from '../components/staticpage/UserStats';
+import RevenueStats from '../components/staticpage/RevenueStats';
 
-import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
-const data = [
-  { name: 0, uv: 0 },
-  { name: "January", uv: 400 },
-  { name: "Febuary", uv: 200 },
-  { name: "March", uv: 600 },
-  { name: "April", uv: 400 },
-];
+ 
+ 
 const StatiticsPage = () => {
   return (
-    <div className="col-span-full shadow-lg flex flex-col gap-12 px-32">
-      <LineChart width={400} height={200} data={data}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        <XAxis dataKey="name" className="text-green-400" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-    </div>
+   <div className='flex flex-col col-span-full items-center  '>
+      <div className='h-10 px-4 text-[20px]  font-bold '>
+        Dashboard
+      </div>
+      <div className='justify-center items-center'>
+        <span className='text-[18px]   font-semibold   bg-emerald-200  px-2 ring-1 ml-4'>User Stats</span>
+      <UserStats/>
+      <span className='text-[18px]   font-semibold   bg-emerald-200  px-2 ring-1 ml-4'>Revenue stats</span>
+      <RevenueStats/>
+      </div>
+   </div>
   );
 };
 

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Button } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { getBlogCmtByIdRoute } from "../../utils/APIRoute";
-import { getAPI } from "../../utils/FetchData";
-import {ThumbUpOffAltIcon} from "@mui/icons-material/ThumbUpOffAlt";
-import {ThumbDownOffAltIcon} from "@mui/icons-material/ThumbDownOffAlt";
-import LoginForm from "../LoginForm";
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { getBlogCmtByIdRoute } from '../../utils/APIRoute';
+import { getAPI } from '../../utils/FetchData';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import LoginForm from '../LoginForm';
 
 export default function BlogComment() {
   const [loginForm, setLoginForm] = useState(false);
   const { blogId } = useParams();
   const { data: comments, isLoading } = useQuery({
-    queryKey: ["comment", blogId],
+    queryKey: ['comment', blogId],
     queryFn: () => {
       return getAPI(`${getBlogCmtByIdRoute}/${blogId}`);
     },
@@ -44,8 +44,8 @@ export default function BlogComment() {
             </div>
             <h1>{comment.content}</h1>
             <div className="flex items-center gap-3">
-              {/* <ThumbUpOffAltIcon />
-              <ThumbDownOffAltIcon /> */}
+              <ThumbUpOffAltIcon />
+              <ThumbDownOffAltIcon />
             </div>
             {renderReplyComments(commentList, comment.id)}
           </div>
@@ -55,14 +55,14 @@ export default function BlogComment() {
 
   const renderReplyComments = (commentList, parentId) => {
     const replyComments = commentList.filter(
-      (comment) => comment.replyCommentId === parentId
+      (comment) => comment.replyCommentId === parentId,
     );
     if (replyComments.length === 0) {
       return null;
     }
 
     return (
-      <div className="pl-5 bg-info" style={{ backgroundColor: "lightblue" }}>
+      <div className="pl-5 bg-info" style={{ backgroundColor: 'lightblue' }}>
         {replyComments.map((comment) => (
           <div key={comment.id} className="border border-gray-300 py-3 px-5">
             <div className="flex items-center gap-3">

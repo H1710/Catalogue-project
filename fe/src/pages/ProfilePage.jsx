@@ -67,7 +67,7 @@ function ProfilePage() {
           <>
           <Disclosure.Button className="text-[18px] w-[300px] border-2 border-slate-300 rounded  flex   items-center bg-slate-50 hover:bg-emerald-300 shadow">
             <span className='px-2'>Historical Orders</span>
-            <FontAwesomeIcongit 
+            <FontAwesomeIcon
                 icon={faChevronDown}
                 className={`${
                   open ? 'rotate-180 transform' : ''
