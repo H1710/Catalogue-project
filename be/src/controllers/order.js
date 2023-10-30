@@ -4,6 +4,7 @@ const User = db.user;
 const { faker } = require('@faker-js/faker');
 const seq = require("../db/dbConnection");
 const ServicePackage = db.servicePackage;
+const Sequelize = require("sequelize");
 
 class OrderController {
   static async addOrder(req, res) {
@@ -46,7 +47,7 @@ class OrderController {
           updatedAt: faker.date.past(),
         }
         const fakeOrder = await Order.create(fakeInfo);
-          listOfPackage.push(fakeOrder);
+        listOfPackage.push(fakeOrder);
       }
       res.status(200).json({ listOfPackage });
     } catch (error) {
@@ -60,27 +61,27 @@ class OrderController {
       const monthlyData = [];
       const year = req.body.year;
       const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'];
+        'July', 'August', 'September', 'October', 'November', 'December'];
       for (let index = 1; index <= 12; index++) {
         const query = 'select sum(total) as totalRevenue, sum(numOfPurchase) as quantity '
-        +'from ('
-        +'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
-                +'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
-                +'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
-                +'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
-                +' else 0 end) as total '
-        +'from ('
-        +'select servicePackageId, count(servicePackageId) as numOfPurchase '
-        +'from catalogue_project.orders '
-        +'where year(createdAt) = '+ year +' and month(createdAt) = ' + index
-        +' group by servicePackageId'
-        +') as subquery '
-        +'join catalogue_project.service_packages as sp '
-        +'on subquery.servicePackageId = sp.id '
-        +'group by servicePackageId, numOfPurchase'
-        +') as subquery2';
+          + 'from ('
+          + 'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
+          + 'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
+          + 'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
+          + 'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
+          + ' else 0 end) as total '
+          + 'from ('
+          + 'select servicePackageId, count(servicePackageId) as numOfPurchase '
+          + 'from catalogue_project.orders '
+          + 'where year(createdAt) = ' + year + ' and month(createdAt) = ' + index
+          + ' group by servicePackageId'
+          + ') as subquery '
+          + 'join catalogue_project.service_packages as sp '
+          + 'on subquery.servicePackageId = sp.id '
+          + 'group by servicePackageId, numOfPurchase'
+          + ') as subquery2';
         const result = await seq.query(query);
-        monthlyData.push({ monthname:  monthName[index-1], result: result[0]});
+        monthlyData.push({ monthname: monthName[index - 1], result: result[0] });
       }
       return res.status(200).json({ monthlyData });
     } catch (error) {
@@ -95,24 +96,24 @@ class OrderController {
       const yearName = [2023, 2024, 2025, 2026];
       for (let index = 0; index < yearName.length; index++) {
         const query = 'select sum(total) as totalRevenue, sum(numOfPurchase) as quantity '
-        +'from ('
-        +'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
-                +'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
-                +'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
-                +'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
-                +'else 0 end) as total '
-        +'from ('
-        +'select servicePackageId, count(servicePackageId) as numOfPurchase '
-        +'from catalogue_project.orders '
-        +'where year(createdAt) = '+ yearName[index]
-        +' group by servicePackageId'
-        +') as subquery '
-        +'join catalogue_project.service_packages as sp '
-        +'on subquery.servicePackageId = sp.id '
-        +'group by servicePackageId, numOfPurchase'
-        +') as subquery2';
+          + 'from ('
+          + 'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
+          + 'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
+          + 'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
+          + 'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
+          + 'else 0 end) as total '
+          + 'from ('
+          + 'select servicePackageId, count(servicePackageId) as numOfPurchase '
+          + 'from catalogue_project.orders '
+          + 'where year(createdAt) = ' + yearName[index]
+          + ' group by servicePackageId'
+          + ') as subquery '
+          + 'join catalogue_project.service_packages as sp '
+          + 'on subquery.servicePackageId = sp.id '
+          + 'group by servicePackageId, numOfPurchase'
+          + ') as subquery2';
         const result = await seq.query(query);
-        yearlyData.push({ yearName:  yearName[index], result: result[0]});
+        yearlyData.push({ yearName: yearName[index], result: result[0] });
       }
       return res.status(200).json({ yearlyData });
     } catch (error) {
@@ -120,6 +121,48 @@ class OrderController {
       return res.status(500).json({ message: "Something went wrong!" });
     }
   }
+
+
+
+  static async getOrderByYear(req, res) {
+    try {
+      const { year } = req.body;
+
+      const orders = await Order.findAll({
+        attributes: [
+          [Sequelize.literal('YEAR(createdAt)'), 'year'],
+          [Sequelize.literal('MONTH(createdAt)'), 'month'],
+          [Sequelize.literal('COUNT(*)'), 'order_count'],
+          [Sequelize.literal('SUM(price)'), 'monthly_revenue'],
+          [
+            Sequelize.literal('SUM(SUM(price)) OVER (PARTITION BY YEAR(createdAt))'),
+            'yearly_revenue',
+          ],
+        ],
+        include: [
+          {
+            model: ServicePackage,
+            attributes: [],
+          },
+        ],
+        where: {
+          createdAt: {
+            [Sequelize.Op.between]: [`${year}-01-01`, `${year}-12-31`],
+          },
+        },
+        group: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        order: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        raw: true,
+      });
+
+      res.status(200).json(orders);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+
 }
 
 exports.OrderController = OrderController;
