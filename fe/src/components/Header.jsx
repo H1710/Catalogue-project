@@ -81,7 +81,7 @@ function Header({ setShowSidebar, showSidebar }) {
   useEffect(() => {}, []);
   console.log(loginForm);
   return (
-    <div className="px-[16px] shadow-md h-full w-full top-0 z-40 bg-white   ">
+    <div className="px-[16px] shadow-md h-full w-full top-0 z-40 bg-white  ">
       <div
         className="header flex h-full items-center text-zinc-700"
         style={customFontStyle}
