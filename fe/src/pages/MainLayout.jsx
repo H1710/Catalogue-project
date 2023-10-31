@@ -8,7 +8,7 @@ import ServicePackage from "../components/ServicePackage";
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showServiePackages, setShowServiePackages] = useState(true)
+  const [showServiePackages, setShowServiePackages] = useState(false)
   const fontFamily = {
     fontFamily: " 'Mukta', sans-serif"
   };
