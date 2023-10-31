@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 export default function ListBoxLanguage({ languages, info, setInfo }) {
   const [language, setLanguage] = useState(info.language);
   const handleLanguageChange = (languageSelected) => {
+    console.log(languageSelected)
     setLanguage(languageSelected);
     setInfo({ ...info, language: languageSelected });
   };

@@ -4,11 +4,11 @@ import React, { Fragment, useState } from 'react';
 
 import { NotifList } from '../shared/Notification';
 export default function Notifications() {
-  const numberOfNewNoti = useState('2');
+  const [numberOfNewNoti, setNumberOfNewNoti] = useState(2);
   return (
     <div>
-      <Menu>
-        <Menu.Button>
+      <Menu as='div'>
+        <Menu.Button as="div">
           <div className="relative px-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +39,7 @@ export default function Notifications() {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items
+          as='div'
             className={
               'absolute top-14 right-4 h-[500px] divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto'
             }

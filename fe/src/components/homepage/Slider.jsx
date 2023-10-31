@@ -19,26 +19,26 @@ function Slider({ templateList }) {
   const [star, setStar] = useState(3.4);
   const [slidesPerView, setSlidePerView] = useState(4);
   
-    // useEffect(() => {
-    //   const observer = new ResizeObserver(entries => {
-    //   for (const entry of entries) {
-    //     const newWidth = entry.contentRect.width;
-    //     if (newWidth > '1200'){
-    //       setSlidePerView(4)
-    //     }else{
-    //       setSlidePerView(3)
-    //     }
+    useEffect(() => {
+      const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const newWidth = entry.contentRect.width;
+        if (newWidth > '1200'){
+          setSlidePerView(4)
+        }else{
+          setSlidePerView(3)
+        }
         
-    //   }
-    // });   
-    //   observer.observe(sliderRef.current);
+      }
+    });   
+      observer.observe(sliderRef.current);
     
-    // return () => {
-    //     observer.unobserve(sliderRef.current);
+    return () => {
+        observer.unobserve(sliderRef.current);
       
-    // };
+    };
       
-    // }, []);
+    }, []);
 
     const handleShowTemplateDetails = () => {
 
@@ -65,6 +65,8 @@ function Slider({ templateList }) {
             draggable: true,
             hide: true,
           }}
+
+          slidesPerView={slidesPerView}
           breakpoints={{
             576: {
               slidesPerView: 1,
@@ -114,7 +116,7 @@ function Slider({ templateList }) {
         <div className="prev-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] start-1 z-10 ml-[-22px]">
           <FontAwesomeIcon icon={faChevronLeft} className="text-8" />
         </div>
-        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10   ${slidesPerView > 3 ? "mr-[4px]": " mr-[34px]"}  `}>
+        <div className={`next-arrow flex items-center justify-center cursor-pointer absolute  bg-slate-100 border-2 border-zinc-400 h-10 w-10 rounded-[50%] end-1 z-10   ${slidesPerView > 3 ? "mr-[-20px]": " mr-[26px]"}  `}>
           <FontAwesomeIcon icon={faChevronRight} className="text-8" />
         </div>
       </div>

@@ -139,23 +139,23 @@ function Header({ setShowSidebar, showSidebar }) {
           </div> */}
 
           <div>
-            <MenuUser >
+            {/* <MenuUser >
             <img
               src="https://demoda.vn/wp-content/uploads/2023/01/hinh-anh-avatar-cute-1-600x600.jpg"
               alt=""
               className="w-10 h-10 rounded-[50%] border-2 border-slate-50 object-cover mx-auto cursor-pointer"
             />
-            </MenuUser>
+            </MenuUser> */}
             {/* <Menu items={userMenu}>
              
           </Menu> */}
-            {/* <button
+            <button
               onClick={() => {
                 setLoginForm(true);
               }}
             >
               Login
-            </button> */}
+            </button>
           </div>
         </div>
       </div>

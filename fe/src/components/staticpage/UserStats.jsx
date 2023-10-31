@@ -71,20 +71,20 @@ export default function UserStats() {
           fill="url(#colorpv)"
         />
       </AreaChart>
-      <div className="ring-1 ">
-        <div className="p-2 flex flex-col justify-center items-center">
+      {/* <div className="ring-1 "> */}
+        <div className="ring-1 w-[316px]  items-center justify-center flex flex-col">
           <div className="text-[20px] font-semibold ">TOTAL USER</div>
-          <PieChart width={300} height={150}>
+          <PieChart width={300} height={100}>
             <Pie
               data={dataUsers}
               cx={150}
-              cy={130}
+              cy={100}
               startAngle={180}
               endAngle={0}
-              innerRadius={60}
+              innerRadius={45}
               outerRadius={80}
               fill="#8884d8"
-              paddingAngle={5}
+              paddingAngle={1}
               dataKey="value"
               label
             >
@@ -107,7 +107,7 @@ export default function UserStats() {
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 }

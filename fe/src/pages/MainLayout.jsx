@@ -4,11 +4,16 @@ import Header from "../components/Header";
 import UserSidebar from "../components/UserSidebar";
 import AdminSidebar from "../components/AdminSidebar";
 import ThemeSwitcher from "../components/ThemeSwitcher";
+import ServicePackage from "../components/ServicePackage";
 
 const MainLayout = () => {
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showServiePackages, setShowServiePackages] = useState(true)
+  const fontFamily = {
+    fontFamily: " 'Mukta', sans-serif"
+  };
   return (
-    <div className={`w-full`}>
+    <div className={`w-full`} style={fontFamily}>
       <div className="w-full !fixed top-0 z-50 h-[60px]">
         <Header showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
       </div>
@@ -30,6 +35,7 @@ const MainLayout = () => {
         >
           <Outlet />
         </div>
+      {showServiePackages && <ServicePackage showServiePackages={showServiePackages} setShowServiePackages={setShowServiePackages}/>}
       </div>
       <ThemeSwitcher />
     </div>
