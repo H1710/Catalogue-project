@@ -10,6 +10,8 @@ import { NavLink } from "react-router-dom";
 import { NotifList } from "../shared/Notification";
 import Tippy from "@tippyjs/react";
 import AuthenticationForm from "./AuthenticationForm";
+import { Menu } from "@headlessui/react";
+import MinidenticonImg from "./MinidenticonImg";
 
 const MENU_ITEMS = [
   {
@@ -38,7 +40,7 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header({ setShowSidebar, showSidebar }) {
+function Header({ setShowSidebar, showSidebar, user }) {
   const newNotification = 5;
   const [showNoti, setShowNoti] = useState(false);
   const [openForm, setOpenForm] = useState(false);
@@ -185,20 +187,29 @@ function Header({ setShowSidebar, showSidebar }) {
           </NavLink>
 
           <div>
-            {/* <Menu items={userMenu}>
-            <img
-              src="assets/images/Tom_and_Jerry.jpg"
-              alt=""
-              className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
-            />
-          </Menu> */}
-            <button
-              onClick={() => {
-                setOpenForm(true);
-              }}
-            >
-              Login
-            </button>
+            {user ? (
+              <Menu items={userMenu}>
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
+                  />
+                ) : (
+                  <MinidenticonImg
+                    username={user.name}
+                    className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
+                  />
+                )}
+              </Menu>
+            ) : (
+              <button
+                onClick={() => {
+                  setOpenForm(true);
+                }}
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       </div>

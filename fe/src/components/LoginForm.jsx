@@ -1,12 +1,47 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import { loginRoute } from "../utils/APIRoute";
+import { useMutation } from "react-query";
+import { postAPI } from "../utils/FetchData";
+import { useDispatch } from "react-redux";
+import { seft } from "../redux/reducers/authReducer";
 
 const LoginForm = ({ setState, setOpenForm }) => {
+  const dispatch = useDispatch();
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    mutate(values);
+  };
+  const navigate = useNavigate();
+
+  const { mutate, isLoading: loadingLogin } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(loginRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      dispatch(seft({ ...data.data.user }));
+      setOpenForm(false);
+      // toast.success(data.data.message, toastOptions);
+      // localStorage.setItem("signed", "chat-app");
+      // navigate("/");
+    },
+  });
+
   return (
     <div class="px-12 py-6 rounded-xl">
       <h1 class="font-medium text-2xl text-center">Login</h1>
-      <form class="mt-6">
+      <form class="mt-6" onSubmit={(e) => handleSubmit(e)}>
         <div class="my-4 text-sm">
           <label htmlFor="email" class="block text-black">
             Email
@@ -17,6 +52,7 @@ const LoginForm = ({ setState, setOpenForm }) => {
             class="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
             placeholder="Email"
             name="email"
+            onChange={(e) => handleChange(e)}
             required
           />
         </div>
@@ -27,6 +63,7 @@ const LoginForm = ({ setState, setOpenForm }) => {
             class="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
             placeholder="Password"
             name="password"
+            onChange={(e) => handleChange(e)}
             required
           />
           <div class="flex justify-end mt-2 text-xs text-gray-600">

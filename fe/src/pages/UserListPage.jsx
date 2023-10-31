@@ -19,7 +19,6 @@ const UserListPage = () => {
     },
     // enabled: logged,
   });
-  console.log(userList);
   return (
     <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
       <div class="p-8">

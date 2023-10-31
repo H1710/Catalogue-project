@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import { Pagination } from "@mui/material";
 import { getAllBlogRoute } from "../utils/APIRoute";
@@ -6,18 +6,19 @@ import { getAPI } from "../utils/FetchData";
 import { useState } from "react";
 import { useQuery } from "react-query";
 
-function BlogPage() {
+function BlogPage({}) {
+  const [user] = useOutletContext();
+  console.log(user);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   let url = `${getAllBlogRoute}?page=${page}&sort=desc`;
-  console.log(url);
   const { data: blogsData, isLoading } = useQuery({
     queryKey: ["blogs", page],
     queryFn: () => {
       return getAPI(`${getAllBlogRoute}?page=${page}&sort=desc`);
     },
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
