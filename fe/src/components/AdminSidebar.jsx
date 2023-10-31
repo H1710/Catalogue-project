@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 function AdminSidebar() {
   const navigate = useNavigate();
   return (
-    <aside className="h-[95vh] w-full pt-8 flex flex-col px-2 bg-white">
+    <aside className="h-[95vh] w-full pt-8 flex flex-col pl-2 bg-white">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
         <img
           src="assets/images/Tom_and_Jerry.jpg"
@@ -15,7 +15,7 @@ function AdminSidebar() {
           <p className="text-md">Free</p>
         </div>
       </div>
-      <div className="flex flex-col flex-1 w-[230px]">
+      <div className="flex flex-col flex-1 w-full">
         <div className="flex flex-col gap-2">
           <p>General</p>
           <div
