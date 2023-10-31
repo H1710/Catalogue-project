@@ -8,4 +8,6 @@ export const getAllBlogRoute = `${host}/blog/get-all`;
 export const getBlogByIdRoute = `${host}/blog/get`;
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 
+export const getAllUserRoute = `${host}/user/get-all`
+
 export const uploadImageRoute = `${host}/upload`;
