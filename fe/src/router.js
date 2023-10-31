@@ -53,6 +53,10 @@ const router = createBrowserRouter([
         path: "/statitics",
         element: <StatiticsPage />,
       },
+      {
+        path: "/account-list",
+        element: <UserListPage />,
+      },
     ],
   },
 
