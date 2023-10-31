@@ -10,6 +10,8 @@ import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
 import BlogPageDetail from "./pages/BlogPageDetail";
 import UserListPage from "./pages/UserListPage";
+import DesignPage from "./pages/DesignPage";
+import OrderListPage from "./pages/OrderListPage";
 
 const router = createBrowserRouter([
   {
@@ -41,16 +43,24 @@ const router = createBrowserRouter([
         element: <CreateBlog />,
       },
       {
+        path: "/design",
+        element: <DesignPage />,
+      },
+      {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
+      },
+      {
+        path: "/statitics",
+        element: <StatiticsPage />,
       },
       {
         path: "/account-list",
         element: <UserListPage />,
       },
       {
-        path: "/statitics",
-        element: <StatiticsPage />,
+        path: "/order-list",
+        element: <OrderListPage />,
       },
     ],
   },

@@ -95,25 +95,15 @@ class BlogController {
   static async getAllBlog(req, res) {
     try {
       let page = req.query.page;
-      if (page == "") {
+      if (!page) {
         page = 1;
       }
       let sort = req.query.sort;
       if (sort == "") {
         sort = "asc";
       }
-      const limit = 3;
+      const limit = 10;
       const offset = (page - 1) * limit;
-      // const blogs = await seq.query(
-      //   "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) " +
-      //    "as avgRating FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b on br.blogId = b.id group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId order by b.createdAt " +
-      //     sort +
-      //     " limit ? offset ?",
-      //   {
-      //     replacements: [limit, offset],
-      //     type: seq.QueryTypes.SELECT,
-      //   }
-      // );
       const blogs = await Blog.findAll({
         include: [
           {
@@ -143,7 +133,11 @@ class BlogController {
           "blog.id",
           "tags.id",
         ],
+        offset: (page - 1) * limit,
+        limit: limit,
+        subQuery: false,
       });
+
       res.json({
         blogs: blogs,
       });
@@ -171,10 +165,10 @@ class BlogController {
       if (title != "" && name == "") {
         const blogsByTitle = await seq.query(
           "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
-            "on br.blogId = b.id " +
-            "where b.title like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
+          "on br.blogId = b.id " +
+          "where b.title like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -185,12 +179,12 @@ class BlogController {
       if (title == "" && name != "") {
         const blogsByName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "from catalogue_project.blogs b " +
-            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-            "join catalogue_project.templates t on pb.templateId = t.id " +
-            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-            "where t.name like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "from catalogue_project.blogs b " +
+          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+          "join catalogue_project.templates t on pb.templateId = t.id " +
+          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+          "where t.name like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -201,12 +195,12 @@ class BlogController {
       if (title != "" && name != "") {
         const blogsByTitleAndName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "from catalogue_project.blogs b " +
-            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-            "join catalogue_project.templates t on pb.templateId = t.id " +
-            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-            "where t.name like ? and b.title like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "from catalogue_project.blogs b " +
+          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+          "join catalogue_project.templates t on pb.templateId = t.id " +
+          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+          "where t.name like ? and b.title like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", "%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -254,9 +248,9 @@ class BlogController {
       }
       const totalVote = await seq.query(
         "select blogCommentId, sum(vote) as total_vote " +
-          "from catalogue_project.vote_blog_comments " +
-          "where blogCommentId = ? " +
-          "group by blogCommentId",
+        "from catalogue_project.vote_blog_comments " +
+        "where blogCommentId = ? " +
+        "group by blogCommentId",
         { replacements: [commentId], type: seq.QueryTypes.SELECT }
       );
       res.status(200).json({ totalVote });
@@ -455,17 +449,17 @@ class BlogController {
     try {
       const ratingBlogs = await seq.query(
         "SELECT " +
-          "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
-          "FROM catalogue_project.blogs AS b " +
-          "JOIN catalogue_project.blog_ratings AS br " +
-          "ON b.id = br.blogId " +
-          "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
-          "Having AVG(br.rating) >= ?" +
-          "ORDER BY b.createdAt" +
-          " " +
-          (sortDate === "descDate" ? "DESC" : "ASC") +
-          " " +
-          "LIMIT ? OFFSET ?",
+        "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
+        "FROM catalogue_project.blogs AS b " +
+        "JOIN catalogue_project.blog_ratings AS br " +
+        "ON b.id = br.blogId " +
+        "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
+        "Having AVG(br.rating) >= ?" +
+        "ORDER BY b.createdAt" +
+        " " +
+        (sortDate === "descDate" ? "DESC" : "ASC") +
+        " " +
+        "LIMIT ? OFFSET ?",
         {
           replacements: [rating, limit, offset],
           type: seq.QueryTypes.SELECT,

@@ -2,30 +2,45 @@ const db = require("../models/index");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
 const uploadImage = require("../utils/uploadImage");
+const { Token } = require("../utils/generateToken");
 const User = db.user;
 
 class AuthController {
   static async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ where: { email: email } });
       if (!user)
         return res
           .status(400)
           .send({ message: "This account does not exist." });
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      // const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = password === user.password;
       if (!isMatch) {
         return res.status(400).send({ message: "Password incorrect." });
       }
 
-      if (!user.name) {
-        return res
-          .status(400)
-          .send({ message: "Account has not been registered" });
-      }
+      // if (!user.name) {
+      //   return res
+      //     .status(400)
+      //     .send({ message: "Account has not been registered" });
+      // }
+
+      const access_token = await Token.generateAccessToken({ _id: user.id });
+      const refresh_token = await Token.generateRefreshToken({ _id: user.id });
+      await res.cookie("refreshtoken", refresh_token, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
+        sameSite: "none",
+        secure: true,
+      });
       return res.status(200).send({
         message: "Login successful",
+        user: {
+          ...user.dataValues,
+          access_token: access_token,
+        },
       });
     } catch (error) {
       return res
@@ -33,7 +48,6 @@ class AuthController {
         .json({ message: "Failed to do somthing exceptional" });
     }
   }
-
   static async logout(req, res) {
     try {
       await res.clearCookie("refreshtoken", {

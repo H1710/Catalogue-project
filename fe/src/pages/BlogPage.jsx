@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import { Pagination } from "@mui/material";
 import { getAllBlogRoute } from "../utils/APIRoute";
@@ -6,15 +6,20 @@ import { getAPI } from "../utils/FetchData";
 import { useState } from "react";
 import { useQuery } from "react-query";
 
-function BlogPage() {
+function BlogPage({}) {
+  const [user] = useOutletContext();
+  console.log(user);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  let url = `${getAllBlogRoute}?page=${page}&sort=desc`;
   const { data: blogsData, isLoading } = useQuery({
     queryKey: ["blogs", page],
     queryFn: () => {
-      return getAPI(getAllBlogRoute);
+      return getAPI(`${getAllBlogRoute}?page=${page}&sort=desc`);
     },
-    onSuccess: (data) => { },
+    onSuccess: (data) => {
+      // console.log(data);
+    },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
@@ -22,7 +27,7 @@ function BlogPage() {
   });
 
   return (
-    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
+    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between mt-4">
       <div className="flex justify-end">
         <Link
           to="/create-blog"

@@ -1,13 +1,5 @@
-
-
-
 function TemplateDetailsPage() {
-
-    
-    return (  
-        <>
-        </>
-    );
+  return <></>;
 }
 
 export default TemplateDetailsPage;
