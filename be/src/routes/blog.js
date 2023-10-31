@@ -6,6 +6,7 @@ const upload = require("../utils/storageImage");
 router.post("/create", upload.single("thumbnail"), BlogController.createBlog);
 router.get("/get/:id", BlogController.getBlogById);
 router.get("/get-all", BlogController.getAllBlog);
+router.get("/search", BlogController.searchAllBlog);
 router.post("/searchByTitleName", BlogController.searchBlogByTitleByName);
 router.post("/vote-blog-cmt", BlogController.voteBlogCmt);
 router.delete("/delete/:id", BlogController.deleteBlog);

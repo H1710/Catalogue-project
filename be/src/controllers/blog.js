@@ -8,6 +8,7 @@ const TagBlog = db.TagBlog;
 const blogRating = db.blogRating;
 const voteBlogComment = db.voteBlogComment;
 const { faker } = require("@faker-js/faker");
+const { Op } = require('sequelize');
 
 class BlogController {
   static async createBlog(req, res) {
@@ -95,25 +96,22 @@ class BlogController {
   static async getAllBlog(req, res) {
     try {
       let page = req.query.page;
-      if (page == "") {
+      if (!page) {
         page = 1;
       }
+      console.log(page);
       let sort = req.query.sort;
       if (sort == "") {
         sort = "asc";
       }
-      const limit = 3;
+      const limit = 10;
       const offset = (page - 1) * limit;
-      // const blogs = await seq.query(
-      //   "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) " +
-      //    "as avgRating FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b on br.blogId = b.id group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId order by b.createdAt " +
-      //     sort +
-      //     " limit ? offset ?",
-      //   {
-      //     replacements: [limit, offset],
-      //     type: seq.QueryTypes.SELECT,
-      //   }
-      // );
+
+      const totalBlogs = await Blog.count();
+      // console.log("total blog: ", totalBlogs);
+      const blogsperPage = 10;
+      const totalPages = Math.ceil(totalBlogs / blogsperPage);
+      console.log("total page: ", totalPages);
       const blogs = await Blog.findAll({
         include: [
           {
@@ -142,16 +140,91 @@ class BlogController {
           "description",
           "blog.id",
           "tags.id",
+          "blog_ratings.rating"
         ],
+        limit: limit,
+        offset: offset,
+        subQuery: false
       });
       res.json({
         blogs: blogs,
+        totalPages: totalPages
       });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
     }
   }
+
+  static async searchAllBlog(req, res) {
+    try {
+      let page = req.query.page;
+      if (!page) {
+        page = 1;
+      }
+      let sort = req.query.sort;
+      if (sort == "") {
+        sort = "asc";
+      }
+      
+      const limit = 10;
+      const offset = (page - 1) * limit;
+  
+      const search = req.query.search; 
+
+      const where = search ? { title: { [Op.like]: `%${search}%` } } : {};
+  
+      const totalBlogs = await Blog.count({ where });
+  
+      const blogsperPage = 10;
+      const totalPages = Math.ceil(totalBlogs / blogsperPage);
+  
+      const blogs = await Blog.findAll({
+        where,
+        include: [
+          {
+            model: blogRating,
+            attributes: [],
+          },
+          {
+            model: Tag,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        attributes: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          [seq.fn("AVG", seq.col("blog_ratings.rating")), "avgRating"],
+        ],
+        group: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "blog.id",
+          "tags.id",
+          "blog_ratings.rating"
+        ],
+        limit: limit,
+        offset: offset,
+        subQuery: false
+      });
+  
+      res.json({
+        blogs: blogs,
+        totalPages: totalPages
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+  
 
   static async searchBlogByTitleByName(req, res) {
     try {
@@ -507,6 +580,19 @@ class BlogController {
         listOfBlogs.push(fakeBlog);
       }
       res.status(200).json({ listOfBlogs });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+
+  static async searchBlogByTitle(req, res) {
+    try {
+      const { title } = req.body;
+      if(!title) {
+        res.status(400).json({ message: "Title is required."})
+      }
+      
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Something went wrong" });

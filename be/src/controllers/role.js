@@ -11,8 +11,9 @@ class RoleController {
           name: item,
         });
       });
-      return res.status.send({ message: "Sucesss" });
+      return res.status(200).json({ message: "Sucesss" });
     } catch (error) {
+      console.log(error)
       return res.status(500).json({ message: "Something went wrong!" });
     }
   }

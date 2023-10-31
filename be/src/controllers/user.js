@@ -1,6 +1,7 @@
 const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
+const { OrderController } = require("./order");
 
 const User = db.user;
 const Order = db.order;
