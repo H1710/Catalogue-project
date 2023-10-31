@@ -22,8 +22,8 @@ const MainLayout = () => {
           <div
             className={`lg:col-start-1 shadow-xl fixed z-40 top-10 left-1 lg:col-span-2`}
           >
-            {/* <UserSidebar /> */}
-            <AdminSidebar />
+            <UserSidebar />
+            {/* <AdminSidebar /> */}
           </div>
         )}
         <div

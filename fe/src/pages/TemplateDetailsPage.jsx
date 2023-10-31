@@ -1,8 +1,11 @@
+import { useLocation } from "react-router-dom";
 
 
 
 function TemplateDetailsPage() {
 
+    const loc = useLocation();
+    
     
     return (  
         <div>

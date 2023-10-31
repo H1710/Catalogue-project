@@ -11,6 +11,7 @@ export default function InfoDetail({ info, setInfo, name }) {
   const handleChange = (e) => {
       setInputvalue(e.target.value);
   }
+  
   return (
     <div className="profile-details pb-4 border-b-2 border-slate-50">
       <div className="flex  flex-col justify-start  h-[72px]   w-full relative">

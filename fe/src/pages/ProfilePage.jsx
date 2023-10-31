@@ -30,7 +30,8 @@ function ProfilePage() {
   const [info, setInfo] = useState(initInfo);
 
   console.log('rerendering');
-
+  console.log(info);
+ 
   return (
     <div className="px-4  col-span-2 grid gap-y-4 ">
       <Disclosure >

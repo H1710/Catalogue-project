@@ -1,9 +1,18 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ openLogin, setOpenLogin }) => {
-  // console.log(openLogin);
+  const initInfoUser = {
+    name: '',
+    email: '',
+    password: ''
+  }
+  const [dataUser, setDataUser] = useState(initInfoUser);
+  const nameRef = useRef();
+  const passwordRef = useRef();
+  const emailRef = useRef();
+  console.log(dataUser);
   return (
     <Transition appear show={openLogin} as={Fragment}>
       <Dialog
@@ -31,6 +40,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                         Email
                       </label>
                       <input
+                      ref={emailRef}
                         type="email"
                         autoComplete="off"
                         class="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
@@ -42,6 +52,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                     <div class="my-4 text-sm">
                       <label class="block text-black">Password</label>
                       <input
+                      ref={passwordRef}
                         type="password"
                         class="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                         placeholder="Password"
@@ -63,7 +74,7 @@ const LoginForm = ({ openLogin, setOpenLogin }) => {
                       </div>
                       <button
                         onClick={() => {
-                          // Add your login logic here.
+                          setDataUser({...dataUser, 'email': emailRef, 'password': passwordRef});
                         }}
                         className="flex-1 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
                       >

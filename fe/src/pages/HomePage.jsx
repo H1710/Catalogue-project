@@ -20,6 +20,7 @@ const HomePage = () => {
   // const [templateNumber, setTemplateNumber] = useState(0);
   const [template, setTemplate] = useState("");
   const [loginForm, setLoginForm] = useState(false);
+ 
   // useEffect(() => {
   //   const handleAPI = async () => {
   //     const res = await axios.get(`${getTemplateRoute}/1`);
