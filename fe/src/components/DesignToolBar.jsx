@@ -41,6 +41,12 @@ const DesignToolBar = ({ currentComponent, setColor, components }) => {
                 onClick={() => window.open(url, "_blank")}
                 className="px-3 py-[6px] outline-none bg-[#252627] rounded-sm"
               >
+                Save
+              </button>
+              <button
+                onClick={() => window.open(url, "_blank")}
+                className="px-3 py-[6px] outline-none bg-[#252627] rounded-sm"
+              >
                 View
               </button>
               <button

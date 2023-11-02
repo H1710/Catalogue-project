@@ -5,13 +5,15 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { NotifList } from "../shared/Notification";
 import Tippy from "@tippyjs/react";
-import AuthenticationForm from "./AuthenticationForm";
 import { Menu } from "@headlessui/react";
 import MinidenticonImg from "./MinidenticonImg";
+import { createProductRoute } from "../utils/APIRoute";
+import { postAPI } from "../utils/FetchData";
+import { useMutation } from "react-query";
 
 const MENU_ITEMS = [
   {
@@ -40,10 +42,10 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header({ setShowSidebar, showSidebar, user }) {
+function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   const newNotification = 5;
   const [showNoti, setShowNoti] = useState(false);
-  const [openForm, setOpenForm] = useState(false);
+  const navigate = useNavigate();
   // console.log(showNoti);
   const navList = [
     {
@@ -76,7 +78,40 @@ function Header({ setShowSidebar, showSidebar, user }) {
   //   setShowNoti(false);
   // }
   // const notiRef = useRef(null);
-  useEffect(() => {}, []);
+
+  const { mutate, isLoading: loadingLogin } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(createProductRoute, {
+        data: info,
+      });
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      // toast.success(data.data.message, toastOptions);
+      // localStorage.setItem("signed", "chat-app");
+      // navigate("/");
+    },
+  });
+  const handleCreateProduct = () => {
+    mutate([
+      [
+        {
+          name: "main_frame",
+          type: "rect",
+          id: Math.floor(Math.random() * 100 + 1),
+          height: 418,
+          width: 600,
+          z_index: 1,
+          color: "#fff",
+          image: "",
+        },
+      ],
+    ]);
+    navigate("design");
+  };
   return (
     <div className="px-[16px] shadow h-full w-full top-0 z-40 bg-white   ">
       <div
@@ -179,12 +214,12 @@ function Header({ setShowSidebar, showSidebar, user }) {
               </div>
             </Tippy>
           </div>
-          <NavLink
-            to={"/design"}
+          <button
+            onClick={() => handleCreateProduct()}
             className="bg-[#8b3dff] hover:bg-[#7300e6] text-white px-2 py-[6px] rounded-md text-[16px] font-medium"
           >
             Create a design
-          </NavLink>
+          </button>
 
           <div>
             {user ? (
@@ -204,7 +239,7 @@ function Header({ setShowSidebar, showSidebar, user }) {
             ) : (
               <button
                 onClick={() => {
-                  setOpenForm(true);
+                  setOpenAuthForm(true);
                 }}
               >
                 Login
@@ -213,7 +248,6 @@ function Header({ setShowSidebar, showSidebar, user }) {
           </div>
         </div>
       </div>
-      <AuthenticationForm openForm={openForm} setOpenForm={setOpenForm} />
     </div>
   );
 }

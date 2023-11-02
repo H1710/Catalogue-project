@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 
-const RegisterForm = ({ setState, setOpenForm }) => {
+const RegisterForm = ({ setState, setOpenAuthForm }) => {
   return (
     <div class="px-12 py-6 rounded-xl">
       <h1 class="font-medium text-2xl text-center">Register</h1>
@@ -50,7 +50,7 @@ const RegisterForm = ({ setState, setOpenForm }) => {
         <div class="flex gap-2 mt-7">
           <div
             onClick={() => {
-              setOpenForm(false);
+              setOpenAuthForm(false);
             }}
             className="cursor-pointer rounded-md flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
           >

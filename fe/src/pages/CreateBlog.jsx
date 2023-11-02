@@ -4,10 +4,23 @@ import PreviewBlog from "../components/blog/PreviewBlog";
 import QuillEditor from "../components/textEditor/QuillEditor";
 import axios from "axios";
 import { createBlogRoute } from "../utils/APIRoute";
+import { useMutation } from "react-query";
+import { postAPI } from "../utils/FetchData";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CreateBlog = () => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!state?.user) {
+      navigate("/");
+    }
+  }, [state, navigate]);
+
+  const { user } = state;
+  console.log(user);
   const initState = {
-    userId: 1,
+    userId: user.id,
     title: "",
     content: "",
     description: "",
@@ -21,13 +34,32 @@ const CreateBlog = () => {
 
   const divRef = useRef(null);
 
+  const { mutate, isLoading: loadingLogin } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(createBlogRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      // dispatch(seft({ ...data.data.user }));
+      // setOpenForm(false);
+      // toast.success(data.data.message, toastOptions);
+      // localStorage.setItem("signed", "chat-app");
+      // navigate("/");
+    },
+  });
+
   const handleCreateBlog = async () => {
     const newData = { ...blog, content: body };
+    console.log(newData);
     let formData = new FormData();
     for (let key in newData) {
       formData.append(key, newData[key]);
     }
-    const data = await axios.post(createBlogRoute, formData);
+    console.log(formData);
+    mutate(formData);
   };
 
   return (
@@ -41,7 +73,7 @@ const CreateBlog = () => {
         <div className="col-start-1 col-span-5 xl:col-start-3 xl:col-span-3 flex flex-col xl:ml-4">
           <p className="text-xl pl-4 mb-2 font-semibold">Preview</p>
           <div className="">
-            <PreviewBlog blog={blog} />
+            <PreviewBlog blog={blog} author={user.name} />
           </div>
         </div>
       </div>

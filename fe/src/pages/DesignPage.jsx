@@ -28,12 +28,10 @@ const DesignPage = () => {
         z_index: 1,
         color: "#fff",
         image: "",
-        setCurrentComponent: (a) => setCurrentComponent(a),
       },
     ],
   ]);
 
-  console.log(currentComponent);
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -231,6 +229,7 @@ const DesignPage = () => {
     setPage((prev) => prev + 1);
   };
 
+  console.log(components);
   const changeText = useCallback((e) => {
     setText(e.target.value);
   }, []);
@@ -318,6 +317,7 @@ const DesignPage = () => {
                     info={c}
                     currentComponent={currentComponent}
                     removeComponent={removeComponent}
+                    setCurrentComponent={setCurrentComponent}
                   />
                 ))}
               </div>

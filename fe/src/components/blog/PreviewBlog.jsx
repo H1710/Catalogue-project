@@ -1,7 +1,7 @@
 import React from "react";
 import Tag from "../Tag";
 
-const PreviewBlog = ({ blog }) => {
+const PreviewBlog = ({ blog, author }) => {
   return (
     <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-gray-400">
       <p className="text-xl w-full font-bold py-[3px] leading-none text-gray-900 break-words overflow-hidden">
@@ -10,7 +10,7 @@ const PreviewBlog = ({ blog }) => {
       <div>
         <small className="text-muted font-medium">
           Posted on {new Date(blog.createdAt).toLocaleString()} by{" "}
-          <span className="text-blue-600 italic">HoangHuy</span>
+          <span className="text-blue-600 italic">{author}</span>
         </small>
       </div>
       {blog?.tags &&

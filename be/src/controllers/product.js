@@ -1,18 +1,16 @@
 const db = require("../models/index");
 
-const Template = db.template;
-const TemplatePage = db.template_page;
-const TemplatePageDetail = db.templatePageDetail;
+const Product = db.product;
+const ProductPage = db.product_page;
+const ProductPageDetail = db.productPageDetail;
 
-class TemplateController {
+class ProductController {
   static async createTemplate(req, res) {
     try {
       const { data } = req.body;
       console.log(data);
-      const template = await Template.create({
+      const Product = await Product.create({
         name: "UnKnow",
-        rating: 5.0,
-        styleGeneric: data.info.styleGeneric,
       });
 
       // for (let i = 0; i < data.info.pages.length; i++) {
@@ -41,22 +39,5 @@ class TemplateController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-  static async getTemplate(req, res) {
-    try {
-      const id = req.params.id;
-      const template = await Template.findAll({
-        include: [
-          {
-            model: TemplatePage,
-            include: [TemplatePageDetail],
-          },
-        ],
-      });
-      res.status(200).send({ data: template });
-    } catch (error) {
-      res.status(500).send({ message: "Something went wrong" });
-    }
-  }
 }
-
-exports.TemplateController = TemplateController;
+exports.ProductController = ProductController;

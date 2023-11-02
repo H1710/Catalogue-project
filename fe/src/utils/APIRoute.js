@@ -5,6 +5,8 @@ export const loginRoute = `${host}/auth/login`;
 export const createTemplateRoute = `${host}/template/create`;
 export const getTemplateRoute = `${host}/template/get`;
 
+export const createProductRoute = `${host}/product/create`;
+
 export const createBlogRoute = `${host}/blog/create`;
 export const getAllBlogRoute = `${host}/blog/get-all`;
 export const getBlogByIdRoute = `${host}/blog/get`;

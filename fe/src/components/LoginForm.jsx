@@ -7,7 +7,7 @@ import { postAPI } from "../utils/FetchData";
 import { useDispatch } from "react-redux";
 import { seft } from "../redux/reducers/authReducer";
 
-const LoginForm = ({ setState, setOpenForm }) => {
+const LoginForm = ({ setState, setOpenAuthForm }) => {
   const dispatch = useDispatch();
   const [values, setValues] = useState({
     email: "",
@@ -31,7 +31,7 @@ const LoginForm = ({ setState, setOpenForm }) => {
     },
     onSuccess: (data) => {
       dispatch(seft({ ...data.data.user }));
-      setOpenForm(false);
+      setOpenAuthForm(false);
       // toast.success(data.data.message, toastOptions);
       // localStorage.setItem("signed", "chat-app");
       // navigate("/");
@@ -73,7 +73,7 @@ const LoginForm = ({ setState, setOpenForm }) => {
         <div class="flex gap-2 mt-7">
           <div
             onClick={() => {
-              setOpenForm(false);
+              setOpenAuthForm(false);
             }}
             className="cursor-pointer rounded-md flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
           >
