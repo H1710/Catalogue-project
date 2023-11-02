@@ -1,7 +1,9 @@
 const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
+const Sequelize = require("sequelize");
 
+const Role = db.role;
 const User = db.user;
 const Order = db.order;
 const Role = db.role;
@@ -122,42 +124,44 @@ class UserController {
     }
   }
 
-  static async getAllUser(req, res) {
+  static async getUserByYear(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
-      const perPage = 7; // Number of users to show per page
-      const offset = (page - 1) * perPage; // Calculate the offset based on the page
-
-      const users = await User.findAll({
+      const { year } = req.body;
+      if (year == null) {
+        res.status(404).send({ message: "Year not found" });
+      }
+      const userRegistrations = await User.findAll({
         attributes: [
-          "avatar",
-          "name",
-          "email",
-          "country",
+          [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
+          [
+            Sequelize.fn('SUM', Sequelize.literal("CASE WHEN `roleId` = 2 THEN 1 ELSE 0 END")),
+            'customer_count',
+          ],
+          [
+            Sequelize.fn('SUM', Sequelize.literal("CASE WHEN `roleId` = 4 THEN 1 ELSE 0 END")),
+            'designer_count',
+          ],
         ],
-        include: [
-          {
-            model: Role,
-            attributes: ["name"],
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
-          {
-            model: Order,
-            include: {
-              model: ServicePackage,
-              attributes: ["name"],
-            },
-          },
-        ],
-        limit: perPage, // Limit the number of results per page
-        offset: offset, // Offset for pagination
+        },
+        group: [Sequelize.fn('MONTH', Sequelize.col('createdAt'))],
+        raw: true,
+        order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
       });
 
-      res.json({
-        users: users
-      });
+
+
+
+      res.status(200).json({
+        Count: userRegistrations
+      })
     } catch (error) {
       console.error(error);
-      res.status(400).send({ message: "Something went wrong." });
+      res.status(500).send({ message: "Something went wrong" });
     }
   }
 
@@ -178,8 +182,6 @@ class UserController {
       res.status(400).send({ message: "Something went wrong." });
     }
   }
-
-
 }
 
 exports.UserController = UserController;

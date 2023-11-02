@@ -6,6 +6,8 @@ const routes = require("./src/routes/index");
 
 const app = express();
 const server = http.createServer(app);
+
+const jwt = require("./src/middleware/JWT");
 require("dotenv").config();
 
 // app.use(cookieParser());
@@ -25,6 +27,9 @@ server.listen(5000, () => {
 });
 
 //http://localhost:5000
+
+jwt.createToken();
+jwt.vertifyToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibm90byIsImlhdCI6MTY5ODY4MjYzMH0.R-9en1ETaOrodGz3EeeZO6UrMZO9af4K471RMGTtezk");
 
 sequelize
   .authenticate()
