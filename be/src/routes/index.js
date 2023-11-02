@@ -7,6 +7,7 @@ const orderRoute = require("./order");
 const blogRoute = require("./blog");
 const commentRoute = require("./comment");
 const roleRoute = require("./role");
+const productRoute = require("./product");
 
 router.use("/user", userRoute);
 router.use("/template", templateRoute);
@@ -16,6 +17,7 @@ router.use("/order", orderRoute);
 router.use("/blog", blogRoute);
 router.use("/comment", commentRoute);
 router.use("/role", roleRoute);
+router.use("/product", productRoute);
 
 const upload = require("../utils/storageImage");
 

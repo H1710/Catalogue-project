@@ -33,7 +33,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="h-[250px] pt-0 pl-8 pr-8 pb-0 col-span-full">
+      <div className="h-[250px] pt-0 pl-8 pr-8 mt-4 col-span-full">
         <div className="rounded-[5px] w-full h-full bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 flex justify-center items-center justify-items-center">
           <Search />
         </div>
@@ -57,10 +57,6 @@ const HomePage = () => {
           </div>
         </div>
       ))}
-
-      <div className="col-span-full">
-        <Footer />
-      </div>
     </>
   );
 };

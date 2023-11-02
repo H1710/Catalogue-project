@@ -7,17 +7,19 @@ import { getAPI } from "../../utils/FetchData";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import LoginForm from "../LoginForm";
+import { useSelector } from "react-redux";
 
-export default function BlogComment() {
+export default function BlogComment({ setOpenAuthForm }) {
   const [loginForm, setLoginForm] = useState(false);
   const { blogId } = useParams();
+  const user = useSelector((state) => state.auth.auth);
+  console.log(user);
   const { data: comments, isLoading } = useQuery({
     queryKey: ["comment", blogId],
     queryFn: () => {
       return getAPI(`${getBlogCmtByIdRoute}/${blogId}`);
     },
     onSuccess: (data) => {
-      console.log(1111111111111111111111111111111111111);
       console.log({ comments });
     },
     onError: (error) => {
@@ -92,20 +94,23 @@ export default function BlogComment() {
     <div>
       <div className="flex flex-col gap-3">
         <h2 className="text-2xl font-bold">Comments</h2>
-        <Button
-          onClick={() => setLoginForm(true)}
-          className="h-[50px] w-full"
-          variant="outlined"
-        >
-          Login to comment
-        </Button>
-        {comments && comments.data.comment ? (
-          renderCommentTree(comments.data.comment)
-        ) : (
-          <p>No comments available</p>
+        {!user && (
+          <Button
+            onClick={() => setOpenAuthForm(true)}
+            className="h-[50px] w-full"
+            variant="outlined"
+          >
+            Login to comment
+          </Button>
         )}
+        <div className="mb-4">
+          {comments && comments.data.comment ? (
+            renderCommentTree(comments.data.comment)
+          ) : (
+            <p>No comments available</p>
+          )}
+        </div>
       </div>
-      <LoginForm openLogin={loginForm} setOpenLogin={setLoginForm} />
     </div>
   );
 }

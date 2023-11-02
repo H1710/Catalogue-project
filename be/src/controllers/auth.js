@@ -3,7 +3,10 @@ const sendEmail = require("../utils/sendEmail");
 const { Token } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const uploadImage = require("../utils/uploadImage");
+
 const { where, Model } = require("sequelize");
+const { Token } = require("../utils/generateToken");
+
 const User = db.user;
 const Order = db.order;
 const Package = db.servicePackage;
@@ -39,8 +42,9 @@ class AuthController {
           .status(400)
           .send({ message: "This account does not exist." });
 
-      console.log(user.password)
-      const isMatch = await bcrypt.compare(password, user.password);
+
+      // const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = password === user.password;
       if (!isMatch) {
         return res.status(400).send({ message: "Password incorrect." });
       }
@@ -53,15 +57,18 @@ class AuthController {
 
       const access_token = await Token.generateAccessToken({ _id: user.id });
       const refresh_token = await Token.generateRefreshToken({ _id: user.id });
-      await res.cookie('refreshtoken', refresh_token, {
+      await res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
-        sameSite: 'none',
+        sameSite: "none",
         secure: true,
       });
       return res.status(200).send({
         message: "Login successful",
-        access_token: access_token
+        user: {
+          ...user.dataValues,
+          access_token: access_token,
+        },
       });
     } catch (error) {
       return res

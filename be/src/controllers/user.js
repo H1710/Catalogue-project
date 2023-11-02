@@ -6,6 +6,7 @@ const Sequelize = require("sequelize");
 const Role = db.role;
 const User = db.user;
 const Order = db.order;
+const Role = db.role;
 const ServicePackage = db.servicePackage;
 class UserController {
   static async createUser(req, res) {
@@ -161,6 +162,24 @@ class UserController {
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async selectPackage(req, res) {
+    try {
+      const { serviceId, userId } = req.body;
+      if (serviceId == null && userId == null) {
+        res.status(400).json({ message: "The user has not selected a package" });
+      } else {
+        let info = {
+          userId: userId,
+          servicePackageId: serviceId
+        };
+        const order = await Order.create(info);
+        res.status(201).json({ message: "The user selected a package successfully", order: order });
+      }
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
     }
   }
 }

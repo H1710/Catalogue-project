@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken');
 
 class Token {
@@ -15,3 +16,4 @@ class Token {
 }
 
 exports.Token = Token;
+

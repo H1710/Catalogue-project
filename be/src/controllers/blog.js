@@ -95,25 +95,15 @@ class BlogController {
   static async getAllBlog(req, res) {
     try {
       let page = req.query.page;
-      if (page == "") {
+      if (!page) {
         page = 1;
       }
       let sort = req.query.sort;
       if (sort == "") {
         sort = "asc";
       }
-      const limit = 3;
+      const limit = 10;
       const offset = (page - 1) * limit;
-      // const blogs = await seq.query(
-      //   "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) " +
-      //    "as avgRating FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b on br.blogId = b.id group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId order by b.createdAt " +
-      //     sort +
-      //     " limit ? offset ?",
-      //   {
-      //     replacements: [limit, offset],
-      //     type: seq.QueryTypes.SELECT,
-      //   }
-      // );
       const blogs = await Blog.findAll({
         include: [
           {
@@ -126,6 +116,10 @@ class BlogController {
             through: {
               attributes: [],
             },
+          },
+          {
+            model: User,
+            attributes: ["name"],
           },
         ],
         attributes: [
@@ -143,7 +137,11 @@ class BlogController {
           "blog.id",
           "tags.id",
         ],
+        offset: (page - 1) * limit,
+        limit: limit,
+        subQuery: false,
       });
+
       res.json({
         blogs: blogs,
       });

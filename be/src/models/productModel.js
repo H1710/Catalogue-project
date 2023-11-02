@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    styleGeneric: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
   });
 
   return Product;
