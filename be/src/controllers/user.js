@@ -123,12 +123,19 @@ class UserController {
     }
   }
 
+
   static async getUserByYear(req, res) {
     try {
       const { year } = req.body;
       if (year == null) {
         res.status(404).send({ message: "Year not found" });
+        return;
       }
+
+      // Tạo một mảng với tất cả các tháng trong năm
+      const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+
+      // Truy vấn cơ sở dữ liệu
       const userRegistrations = await User.findAll({
         attributes: [
           [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
@@ -152,17 +159,30 @@ class UserController {
         order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
       });
 
+      // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
+      const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
 
+      // Tạo kết quả cuối cùng với đủ 12 tháng
+      const result = allMonths.map(month => {
+        const data = userMap.get(month);
+        if (data) {
+          return data;
+        } else {
+          return {
+            month,
+            customer_count: 0,
+            designer_count: 0,
+          };
+        }
+      });
 
-
-      res.status(200).json({
-        Count: userRegistrations
-      })
+      res.status(200).json(result);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
 }
 
 exports.UserController = UserController;
