@@ -2,6 +2,10 @@ const { ProductController } = require("../controllers/product");
 
 const router = require("express").Router();
 
-router.post("/create", ProductController.createTemplate);
-// router.get("/get/:id", TemplateController.getTemplate);
+router.post("/create", ProductController.createProduct);
+router.get("/get/:userId", ProductController.getProductByUser);
+router.get("/get/product/:productId", ProductController.getProductById);
+router.post("/save", ProductController.saveProduct);
+router.post("/clone", ProductController.cloneTemplate);
+
 module.exports = router;

@@ -7,13 +7,11 @@ import {
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { NotifList } from "../shared/Notification";
+import { NotifList } from "../../shared/Notification";
 import Tippy from "@tippyjs/react";
 import { Menu } from "@headlessui/react";
 import MinidenticonImg from "./MinidenticonImg";
-import { createProductRoute } from "../utils/APIRoute";
-import { postAPI } from "../utils/FetchData";
-import { useMutation } from "react-query";
+import Dropdown from "./Dropdown";
 
 const MENU_ITEMS = [
   {
@@ -45,6 +43,7 @@ const MENU_ITEMS = [
 function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   const newNotification = 5;
   const [showNoti, setShowNoti] = useState(false);
+  const [dropDown, setDropdown] = useState(false);
   const navigate = useNavigate();
   // console.log(showNoti);
   const navList = [
@@ -79,47 +78,18 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   // }
   // const notiRef = useRef(null);
 
-  const { mutate, isLoading: loadingLogin } = useMutation({
-    mutationFn: (info) => {
-      return postAPI(createProductRoute, {
-        data: info,
-      });
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      // toast.success(data.data.message, toastOptions);
-      // localStorage.setItem("signed", "chat-app");
-      // navigate("/");
-    },
-  });
-  const handleCreateProduct = () => {
-    mutate([
-      [
-        {
-          name: "main_frame",
-          type: "rect",
-          id: Math.floor(Math.random() * 100 + 1),
-          height: 418,
-          width: 600,
-          z_index: 1,
-          color: "#fff",
-          image: "",
-        },
-      ],
-    ]);
-    navigate("design");
-  };
   return (
-    <div className="px-[16px] shadow h-full w-full top-0 z-40 bg-white   ">
+    <div className="p-2 h-[60px] shadow w-full sticky top-0 z-40 bg-white">
       <div
         className="header flex h-full items-center justify-between text-zinc-700 px-2"
         style={customFontStyle}
       >
-        <div className="flex text-xl h-full items-center gap-6">
-          <div className="" onClick={() => setShowSidebar(!showSidebar)}>
+        <div className="flex text-xl h-full items-center gap-6 ">
+          <div
+            className="p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out delay-50 rounded-sm"
+            onClick={() => setShowSidebar(!showSidebar)}
+            aria-readonly
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -135,20 +105,24 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
           </div>
           <div className="logo flex font-bold">
             <img
-              className="  object-cover w-20"
-              src="assets/images/logo_final.png"
+              className="object-cover w-24 h-6"
+              src="assets/images/noto-logo.svg"
               alt="logo"
             />
           </div>
           {navList.map((nav) => (
-            <NavLink to={nav.to} key={nav.id} className="h-full">
+            <NavLink
+              to={nav.to}
+              key={nav.id}
+              className="h-full flex items-center text-[--primary-text]"
+            >
               {({ isActive, isPending }) => (
                 <span
                   className={`${
                     isActive
-                      ? "border-b-[2px] px-2 border-green-400 hover:bg-white transition-all ease-in-out delay-150"
-                      : "hover:bg-gray-100 hover:rounded-sm"
-                  }  flex text-xl h-full w-[120px] font-medium select-none items-center justify-center`}
+                      ? "bg-[#ededed] font-medium"
+                      : "hover:bg-gray-100 transition-all ease-in-out delay-50 font-normal "
+                  } flex px-6 py-1 text-lg rounded-sm select-none items-center justify-center`}
                 >
                   {nav.title}
                 </span>
@@ -157,8 +131,8 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
           ))}
         </div>
 
-        <div className="flex text-xl items-center gap-6 h-full">
-          <div>
+        <div className="flex items-center gap-6 h-full">
+          {/* <div>
             <Tippy
               offset={[0, 10]}
               placement="bottom"
@@ -213,29 +187,26 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
                 </div>
               </div>
             </Tippy>
-          </div>
-          <button
-            onClick={() => handleCreateProduct()}
-            className="bg-[#8b3dff] hover:bg-[#7300e6] text-white px-2 py-[6px] rounded-md text-[16px] font-medium"
-          >
-            Create a design
-          </button>
+          </div> */}
 
           <div>
             {user ? (
-              <Menu items={userMenu}>
+              <div className="relative">
                 {user?.avatar ? (
                   <img
                     src={user.avatar}
-                    className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
+                    className="w-12 h-12 rounded-[5px] object-cover mx-auto cursor-pointer"
                   />
                 ) : (
                   <MinidenticonImg
                     username={user.name}
-                    className="w-10 h-10 rounded-[5px] object-cover mx-auto cursor-pointer"
+                    onClick={() => setDropdown((prev) => !prev)}
+                    className="w-12 rounded-full object-cover mx-auto cursor-pointer border border-[#ccc]"
                   />
                 )}
-              </Menu>
+
+                {dropDown && <Dropdown user={user} />}
+              </div>
             ) : (
               <button
                 onClick={() => {

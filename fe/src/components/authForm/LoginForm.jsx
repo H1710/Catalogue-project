@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { loginRoute } from "../utils/APIRoute";
+import { loginRoute } from "../../utils/APIRoute";
 import { useMutation } from "react-query";
-import { postAPI } from "../utils/FetchData";
+import { postAPI } from "../../utils/FetchData";
 import { useDispatch } from "react-redux";
-import { seft } from "../redux/reducers/authReducer";
+import { seft } from "../../redux/reducers/authReducer";
 
 const LoginForm = ({ setState, setOpenAuthForm }) => {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
     },
     onSuccess: (data) => {
       dispatch(seft({ ...data.data.user }));
+      localStorage.setItem("signed", "catalogue-app");
       setOpenAuthForm(false);
       // toast.success(data.data.message, toastOptions);
       // localStorage.setItem("signed", "chat-app");
@@ -75,7 +76,7 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
             onClick={() => {
               setOpenAuthForm(false);
             }}
-            className="cursor-pointer rounded-md flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
+            className="cursor-pointer  flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
           >
             Cancel
           </div>
@@ -83,7 +84,7 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
             onClick={() => {
               // Add your login logic here.
             }}
-            className="flex-1 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
+            className="flex-1 text-center  text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
           >
             Login
           </button>

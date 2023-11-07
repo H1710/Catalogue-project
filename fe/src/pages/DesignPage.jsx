@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import DesignNavbar from "../components/DesignNavbar";
-import DesignTable from "../components/DesignTable";
-import CreateComponent from "../components/CreateComponent";
-import DesignToolBar from "../components/DesignToolBar";
+import DesignNavbar from "../components/design/DesignNavbar";
+import DesignTable from "../components/design/DesignTable";
+import CreateComponent from "../components/design/CreateComponent";
+import DesignToolBar from "../components/design/DesignToolBar";
+import { getProductById } from "../utils/APIRoute";
+import { useOutletContext, useParams } from "react-router-dom";
+import { getAPI, postAPI } from "../utils/FetchData";
+import { useQuery } from "react-query";
 
 const DesignPage = () => {
   const [state, setState] = useState("");
@@ -10,47 +14,96 @@ const DesignPage = () => {
   const [color, setColor] = useState("");
   const [image, setImage] = useState("");
   const [rotate, setRotate] = useState(0);
-  const [left, setLeft] = useState("");
-  const [top, setTop] = useState("");
+  const [left, setLeft] = useState(0);
+  const [top, setTop] = useState(0);
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
   const [text, setText] = useState("");
   const [page, setPage] = useState(0);
   const [currentComponent, setCurrentComponent] = useState("");
+
+  const { productId } = useParams();
+  const [user] = useOutletContext();
+
+  useEffect(() => {
+    const intiComponents = async () => {
+      const data = await getAPI(`${getProductById}/${productId}`);
+
+      const { product_pages } = data.data.product;
+      let newComponents = [];
+
+      for (const page of product_pages) {
+        let componentPage = {
+          id: page.id,
+          productId: page.productId,
+          product_page_details: [],
+        };
+        for (const component of page.product_page_details) {
+          componentPage.product_page_details.push({
+            ...component,
+            setCurrentComponent: (a) => setCurrentComponent(a),
+            moveElement,
+            resizeElement,
+            rotateElement,
+            removeComponent,
+          });
+        }
+        newComponents = [...newComponents, componentPage];
+      }
+      setComponents(newComponents);
+    };
+    intiComponents();
+  }, []);
+
   const [components, setComponents] = useState([
-    [
-      {
-        name: "main_frame",
-        type: "rect",
-        id: Math.floor(Math.random() * 100 + 1),
-        height: 418,
-        width: 600,
-        z_index: 1,
-        color: "#fff",
-        image: "",
-      },
-    ],
+    {
+      id: 1,
+      productId: 1,
+      product_page_details: [
+        {
+          name: "main_frame",
+          type: "rect",
+          id: Math.floor(Math.random() * 100 + 1),
+          height: 418,
+          width: 600,
+          z_index: 1,
+          color: "#fff",
+          image: "",
+          setCurrentComponent: (a) => setCurrentComponent(a),
+        },
+      ],
+    },
   ]);
 
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
         const temp = [...prev];
-        const index = temp[page].findIndex((c) => c.id === currentComponent.id);
-        temp[page][index].width = width || currentComponent.width;
-        temp[page][index].height = height || currentComponent.height;
+        const index = temp[page].product_page_details.findIndex(
+          (c) => c.id === currentComponent.id
+        );
+        temp[page].product_page_details[index].width =
+          width || currentComponent.width;
+        temp[page].product_page_details[index].height =
+          height || currentComponent.height;
         if (currentComponent.name == "text") {
-          temp[page][index].text = text || currentComponent.text;
+          temp[page].product_page_details[index].text =
+            text || currentComponent.text;
         }
         if (currentComponent.name == "main_frame" && image) {
-          temp[page][index].image = image || currentComponent.image;
+          temp[page].product_page_details[index].image =
+            image || currentComponent.image;
         }
         if (currentComponent.name != "main_frame") {
-          temp[page][index].left = left || currentComponent.left;
-          temp[page][index].top = top || currentComponent.top;
+          temp[page].product_page_details[index].left =
+            left || currentComponent.left;
+          temp[page].product_page_details[index].top =
+            top || currentComponent.top;
         }
-        temp[page][index].rotate = rotate || currentComponent.rotate;
-        temp[page][index].color = color || currentComponent.color;
+        temp[page].product_page_details[index].rotate =
+          rotate || currentComponent.rotate;
+        temp[page].product_page_details[index].color =
+          color || currentComponent.color;
 
         return temp;
       });
@@ -69,32 +122,40 @@ const DesignPage = () => {
     }
   }, [color, image, left, top, width, height, text, rotate]);
 
-  const createShape = useCallback((name, type) => {
-    const style = {
-      id: components[page].length + 1 + page * 10,
-      name: name,
-      type,
-      left: 10,
-      top: 10,
-      opacity: 1,
-      width: 200,
-      height: 150,
-      rotate,
-      z_index: 2,
-      color: "#3c3c3d",
-      setCurrentComponent: (a) => setCurrentComponent(a),
-      // removeBackground: () => setImage(""),
-      moveElement,
-      resizeElement,
-      rotateElement,
-      removeComponent,
-    };
-    setComponents((prev) => {
-      const temp = [...prev];
-      temp[page].push(style);
-      return temp;
-    });
-  }, []);
+  const createShape = useCallback(
+    (name, type) => {
+      setComponents((prev) => {
+        const temp = [...prev];
+        const style = {
+          id: Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000,
+          name: name,
+          type,
+          left: 10,
+          top: 10,
+          opacity: 1,
+          width: 200,
+          height: 150,
+          rotate,
+          z_index: 2,
+          color: "#3c3c3d",
+          productPageId: temp[page].id,
+          setCurrentComponent: (a) => setCurrentComponent(a),
+          // removeBackground: () => setImage(""),
+          moveElement,
+          resizeElement,
+          rotateElement,
+          removeComponent,
+        };
+        temp[page].product_page_details.push(style);
+        return temp;
+      });
+    },
+    [page]
+  );
+
+  console.log(components);
+
+  // console.log(components);
 
   const moveElement = useCallback((id, currentInfo) => {
     setCurrentComponent(currentInfo);
@@ -209,8 +270,9 @@ const DesignPage = () => {
     window.addEventListener("mouseup", mouseUp);
   };
 
-  const handleNextPage = () => {
-    if (components.length - 1 <= page) {
+  const handleNextPage = useCallback(() => {
+    if (page >= components.length - 1) {
+      const id = Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
       const newFrame = {
         name: "main_frame",
         type: "rect",
@@ -220,16 +282,23 @@ const DesignPage = () => {
         z_index: 1,
         color: "#fff",
         image: "",
+        productPageId: id,
         setCurrentComponent: (a) => setCurrentComponent(a),
       };
-      let temp = components;
-      temp.push([newFrame]);
-      setComponents(temp);
+      setComponents((prev) => [
+        ...prev,
+        {
+          id: id,
+          productId: productId,
+          product_page_details: [newFrame],
+        },
+      ]);
     }
-    setPage((prev) => prev + 1);
-  };
 
-  console.log(components);
+    setPage((prev) => prev + 1);
+  }, [page]);
+
+  // console.log(components);
   const changeText = useCallback((e) => {
     setText(e.target.value);
   }, []);
@@ -266,7 +335,7 @@ const DesignPage = () => {
     setShow(true);
   }, []);
   return (
-    <div className="col-span-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
+    <div className="w-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
       <DesignNavbar state={state} setElement={setElement} />
       <div className="h-full w-full bg-[#f2f2f2]">
         <DesignTable
@@ -282,6 +351,7 @@ const DesignPage = () => {
             setColor={setColor}
             currentComponent={currentComponent}
             components={components}
+            user={user}
           />
 
           <div
@@ -311,7 +381,7 @@ const DesignPage = () => {
                 id="main_design"
                 className="w-auto relative h-auto overflow-hidden"
               >
-                {components[page].map((c, i) => (
+                {components[page].product_page_details.map((c, i) => (
                   <CreateComponent
                     key={i}
                     info={c}
@@ -342,6 +412,9 @@ const DesignPage = () => {
               </svg>
             </button>
           </div>
+          <p className="text-center text-[20px]">
+            {page + 1}/{components.length}
+          </p>
         </div>
       </div>
     </div>

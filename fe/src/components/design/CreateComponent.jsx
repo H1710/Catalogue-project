@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import Element from "./Element";
 
-const CreateComponent = ({
-  info,
-  currentComponent,
-  removeComponent,
-  setCurrentComponent,
-}) => {
+const CreateComponent = ({ info, currentComponent, removeComponent }) => {
   const randValue = Math.floor(Math.random() * 100);
   const [readOnly, setReadOnly] = useState(true);
   let html = "";
   if (info.name === "main_frame") {
     html = (
       <div
-        onClick={() => setCurrentComponent(info)}
+        onClick={() => info.setCurrentComponent(info)}
         className="hover:border-[2px] hover:border-indigo-500 shadow-md"
         style={{
           width: info.width + "px",
@@ -31,7 +26,7 @@ const CreateComponent = ({
     html = (
       <div
         id={info.id}
-        onClick={() => setCurrentComponent(info)}
+        onClick={() => info.setCurrentComponent(info)}
         className="absolute group hover:border-[2px] hover:border-indigo-500"
         style={{
           width: info.width + "px",
@@ -78,7 +73,7 @@ const CreateComponent = ({
     html = (
       <div
         id={randValue}
-        onClick={() => setCurrentComponent(info)}
+        onClick={() => info.setCurrentComponent(info)}
         style={{
           left: info.left + "px",
           top: info.top + "px",
@@ -92,7 +87,7 @@ const CreateComponent = ({
         <Element id={randValue} info={info} exId="" />
 
         <div
-          onClick={() => setCurrentComponent(info)}
+          onClick={() => info.setCurrentComponent(info)}
           style={{
             background: info.color,
             opacity: info.opacity,
@@ -129,7 +124,7 @@ const CreateComponent = ({
     html = (
       <div
         id={randValue}
-        onClick={() => setCurrentComponent(info)}
+        onClick={() => info.setCurrentComponent(info)}
         style={{
           left: info.left + "px",
           top: info.top + "px",
@@ -143,7 +138,7 @@ const CreateComponent = ({
         <Element id={randValue} info={info} exId="" />
 
         <div
-          onClick={() => setCurrentComponent(info)}
+          onClick={() => info.setCurrentComponent(info)}
           style={{
             background: info.color,
             opacity: info.opacity,
@@ -181,7 +176,7 @@ const CreateComponent = ({
     html = (
       <div
         id={info.id}
-        onClick={() => setCurrentComponent(info)}
+        onClick={() => info.setCurrentComponent(info)}
         // onMouseDown={() => info.moveElement(randValue, info)}
         style={{
           width: info.width + "px",

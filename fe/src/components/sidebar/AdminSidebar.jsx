@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 function AdminSidebar() {
   const navigate = useNavigate();
   return (
-    <aside className="h-[95vh] w-full pt-8 flex flex-col pl-2 bg-white">
+    <aside className="w-[250px] h-full flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
         <img
           src="assets/images/Tom_and_Jerry.jpg"
@@ -15,7 +15,7 @@ function AdminSidebar() {
           <p className="text-md">Free</p>
         </div>
       </div>
-      <div className="flex flex-col flex-1 w-full">
+      <div className="flex flex-col w-full">
         <div className="flex flex-col gap-2">
           <p>General</p>
           <div
@@ -42,7 +42,10 @@ function AdminSidebar() {
         {/* List */}
         <div className="flex flex-col gap-2">
           <p className="">List</p>
-          <div className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <div
+            onClick={() => navigate("blog/approve")}
+            className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -98,7 +101,7 @@ function AdminSidebar() {
               />
             </svg>
 
-            <p>Acount</p>
+            <p>Account</p>
           </div>
 
           <div
@@ -172,7 +175,7 @@ function AdminSidebar() {
         </div> */}
       </div>
 
-      <div className="">
+      {/* <div className="">
         <div className="w-full cursor-pointer p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +194,7 @@ function AdminSidebar() {
 
           <p>Logout</p>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }

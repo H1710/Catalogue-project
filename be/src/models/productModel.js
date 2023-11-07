@@ -4,6 +4,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    thumbnail: {
+      type: DataTypes.TEXT,
+    },
   });
 
   return Product;

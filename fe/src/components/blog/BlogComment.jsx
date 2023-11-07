@@ -6,7 +6,7 @@ import { getBlogCmtByIdRoute } from "../../utils/APIRoute";
 import { getAPI } from "../../utils/FetchData";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import LoginForm from "../LoginForm";
+import LoginForm from "../authForm/LoginForm";
 import { useSelector } from "react-redux";
 
 export default function BlogComment({ setOpenAuthForm }) {

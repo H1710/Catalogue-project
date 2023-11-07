@@ -19,7 +19,7 @@ const OrderListPage = () => {
   });
   console.log(orderList);
   return (
-    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
+    <div className="w-full flex flex-col min-h-[80vh] px-32 justify-between">
       <div class="p-8">
         {/* <div class="text-3xl font-bold text-Black text-center mb-6">
           All Users

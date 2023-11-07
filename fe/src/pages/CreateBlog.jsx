@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import CreateForm from "../components/blog/CreateBlogForm";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import QuillEditor from "../components/textEditor/QuillEditor";
-import axios from "axios";
 import { createBlogRoute } from "../utils/APIRoute";
 import { useMutation } from "react-query";
 import { postAPI } from "../utils/FetchData";
 import { useLocation, useNavigate } from "react-router-dom";
+import CustomButton from "../components/common/Button";
 
 const CreateBlog = () => {
   const { state } = useLocation();
@@ -18,7 +18,6 @@ const CreateBlog = () => {
   }, [state, navigate]);
 
   const { user } = state;
-  console.log(user);
   const initState = {
     userId: user.id,
     title: "",
@@ -34,7 +33,7 @@ const CreateBlog = () => {
 
   const divRef = useRef(null);
 
-  const { mutate, isLoading: loadingLogin } = useMutation({
+  const { mutate, isLoading: loadingCreate } = useMutation({
     mutationFn: (info) => {
       return postAPI(createBlogRoute, info);
     },
@@ -63,7 +62,7 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="col-span-full px-4 h-full mb-4">
+    <div className="w-full px-4 h-full mt-3">
       <div className="grid grid-cols-5 lg:grid-cols-5 gap-4 w-full mb-4">
         <div className="col-start-1 col-span-5 xl:col-span-2 flex flex-col">
           <p className="text-xl mb-2 font-semibold">Create</p>
@@ -93,9 +92,13 @@ const CreateBlog = () => {
         className="w-full flex justify-center mt-4"
         onClick={() => handleCreateBlog()}
       >
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
-          Create Blog
-        </button>
+        <CustomButton
+          text={"Create Blog"}
+          classContent={
+            "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+          }
+          isLoading={loadingCreate}
+        />
       </div>
     </div>
   );

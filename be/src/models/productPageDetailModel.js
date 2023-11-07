@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      top: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      left: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       z_index: {
         type: DataTypes.INTEGER,
         allowNull: true,
