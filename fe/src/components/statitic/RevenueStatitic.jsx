@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -9,20 +10,34 @@ import {
 } from "recharts";
 
 export default function RevenueStatitic({ year }) {
-  const data = [
-    { name: "Jan", customer: 400, designer: 100 },
-    { name: "Feb", customer: 200, designer: 20 },
-    { name: "Mar", customer: 600, designer: 10 },
-    { name: "Apr", customer: 400, designer: 40 },
-    { name: "May", customer: 500, designer: 100 },
-    { name: "Jun", customer: 400, designer: 180 },
-    { name: "Jul", customer: 100, designer: 90 },
-    { name: "Aug", customer: 0, designer: 70 },
-    { name: "Sep", customer: 200, designer: 20 },
-    { name: "Oct", customer: 700, designer: 40 },
-    { name: "Nov", customer: 400, designer: 0 },
-    { name: "Dec", customer: 900, designer: 120 },
-  ];
+  const [data, setData] = useState([])
+   
+  
+ 
+  
+  // const data = [
+  //   { name: "Jan", customer: 400, designer: 100 },
+  //   { name: "Feb", customer: 200, designer: 20 },
+  //   { name: "Mar", customer: 600, designer: 10 },
+  //   { name: "Apr", customer: 400, designer: 40 },
+  //   { name: "May", customer: 500, designer: 100 },
+  //   { name: "Jun", customer: 400, designer: 180 },
+  //   { name: "Jul", customer: 100, designer: 90 },
+  //   { name: "Aug", customer: 0, designer: 70 },
+  //   { name: "Sep", customer: 200, designer: 20 },
+  //   { name: "Oct", customer: 700, designer: 40 },
+  //   { name: "Nov", customer: 400, designer: 0 },
+  //   { name: "Dec", customer: 900, designer: 120 },
+  // ];
+  useEffect(() => {
+      const handleAPI = async () => {
+        const res = await axios.get(`http://localhost:5000/api/v1/order/get-order-by-year?year=${year}`);
+        setData(res.data);
+      };
+      handleAPI();
+    }, [year]);
+  
+ data&& console.log(data)
   return (
     <div className="col-span-full flex gap-4 px-10  py-4">
       <AreaChart
@@ -66,7 +81,7 @@ export default function RevenueStatitic({ year }) {
       </AreaChart>
       <div className="ring-1 w-[316px]  items-center justify-center flex flex-col">
         <div className="font-bold  ">TOTAL REVENUE</div>
-        <h1 className="text-[50px]">10000$</h1>
+        <h1 className="text-[50px]">{data[0].yearly_revenue}$</h1>
         <span className="text-[30px]">In {year} : 5000$</span>
       </div>
     </div>

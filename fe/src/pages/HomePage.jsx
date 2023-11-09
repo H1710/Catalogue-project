@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Rating from "@mui/material/Rating";
+import ServicePackage from "../components/ServicePackage"
 
 const HomePage = () => {
   // const showSidebar = useContext(ShowSidebarContext)
@@ -20,6 +21,7 @@ const HomePage = () => {
   // const [templateNumber, setTemplateNumber] = useState(0);
   const [template, setTemplate] = useState("");
   const [loginForm, setLoginForm] = useState(false);
+  const [showServiePackages, setShowServiePackages] = useState(true);
   // useEffect(() => {
   //   const handleAPI = async () => {
   //     const res = await axios.get(`${getTemplateRoute}/1`);
@@ -57,6 +59,8 @@ const HomePage = () => {
           </div>
         </div>
       ))}
+
+      {showServiePackages && <ServicePackage showServiePackages={showServiePackages} setShowServiePackages={setShowServiePackages} />}
     </>
   );
 };
