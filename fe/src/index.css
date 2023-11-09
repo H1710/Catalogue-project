@@ -11,6 +11,10 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-image: -moz-none;
+  background-image: -webkit-none;
+  background-image: -webkit-none;
+  background-image: -o-none;
 }
 
 code {
@@ -19,6 +23,14 @@ code {
 }
 input {
   --tw-ring-shadow: 0 0 #000 !important;
+}
+
+button:hover,
+button:active {
+  background-image: -moz-none;
+  background-image: -webkit-none;
+  background-image: -webkit-none;
+  background-image: -o-none;
 }
 
 body {

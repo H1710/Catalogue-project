@@ -7,39 +7,65 @@ const TemplatePageDetail = db.templatePageDetail;
 class TemplateController {
   static async createTemplate(req, res) {
     try {
-      const data = req.body;
-      const template = await Template.create({
-        name: "UnKnow",
-        rating: 5.0,
-        styleGeneric: data.info.styleGeneric,
+      const { data } = req.body;
+      const { userId } = data;
+      console.log(userId);
+      const newTemplate = await Template.create({
+        name: "product-test",
+        thumbnail:
+          "https://variety.com/wp-content/uploads/2023/07/Tom-and-Jerry-Singapore-series-poster.jpg",
+        rating: 5,
+        authorId: userId,
+        userId: userId,
       });
 
-      for (let i = 0; i < data.info.pages.length; i++) {
+      const { template } = data;
+      console.log(template);
+      for (let i = 0; i < template.length; i++) {
         const templatePage = await TemplatePage.create({
-          templateId: template.dataValues.id,
+          templateId: newTemplate.id,
         });
-
-        for (let j = 0; j < data.info.pages[i].length; j++) {
-          // console.log(data.info.pages[i][j]);
+        for (let j = 0; j < template[i].product_page_details.length; j++) {
           await TemplatePageDetail.create({
-            textInput: data.info.pages[i][j].textInput,
-            imageInput: data.info.pages[i][j].imageInput,
-            containerStyle: data.info.pages[i][j].containerStyle,
-            inputStyle: data.info.pages[i][j].inputStyle,
-            imageStyle: data.info.pages[i][j].imageStyle,
-            defaultContent: data.info.pages[i][j].defaultContent,
-            maxLength: data.info.pages[i][j].maxLength,
-            isOneLine: data.info.pages[i][j].isOneLine,
-            templatePageId: templatePage.dataValues.id,
+            name: template[i].product_page_details[j].name,
+            type: template[i].product_page_details[j].type,
+            height: template[i].product_page_details[j].height,
+            width: template[i].product_page_details[j].width,
+            top: template[i].product_page_details[j]?.top,
+            left: template[i].product_page_details[j]?.left,
+            z_index: template[i].product_page_details[j].z_index,
+            color: template[i].product_page_details[j].color,
+            image: template[i].product_page_details[j]?.image,
+            templatePageId: templatePage.id,
           });
         }
       }
 
-      res.status(200).send({ template: template });
+      return res
+        .status(200)
+        .send({ template: { components: template, id: newTemplate.id } });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async getAllTemplate(req, res) {
+    try {
+      const template = await Template.findAll({
+        include: [
+          {
+            model: TemplatePage,
+            include: [TemplatePageDetail],
+          },
+        ],
+      });
+      res.status(200).send({ data: template });
     } catch (error) {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
   static async getTemplate(req, res) {
     try {
       const id = req.params.id;

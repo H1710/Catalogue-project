@@ -1,10 +1,12 @@
 const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
+const Sequelize = require("sequelize");
 
+const Role = db.role;
 const User = db.user;
 const Order = db.order;
-const Role = db.role;
+
 const ServicePackage = db.servicePackage;
 class UserController {
   static async createUser(req, res) {
@@ -129,12 +131,7 @@ class UserController {
       const offset = (page - 1) * perPage; // Calculate the offset based on the page
 
       const users = await User.findAll({
-        attributes: [
-          "avatar",
-          "name",
-          "email",
-          "country",
-        ],
+        attributes: ["avatar", "name", "email", "country"],
         include: [
           {
             model: Role,
@@ -153,7 +150,7 @@ class UserController {
       });
 
       res.json({
-        users: users
+        users: users,
       });
     } catch (error) {
       console.error(error);
@@ -161,25 +158,72 @@ class UserController {
     }
   }
 
+  static async getUserByYear(req, res) {
+    try {
+      const { year } = req.body;
+      if (year == null) {
+        res.status(404).send({ message: "Year not found" });
+      }
+      const userRegistrations = await User.findAll({
+        attributes: [
+          [Sequelize.fn("MONTH", Sequelize.col("createdAt")), "month"],
+          [
+            Sequelize.fn(
+              "SUM",
+              Sequelize.literal("CASE WHEN `roleId` = 2 THEN 1 ELSE 0 END")
+            ),
+            "customer_count",
+          ],
+          [
+            Sequelize.fn(
+              "SUM",
+              Sequelize.literal("CASE WHEN `roleId` = 4 THEN 1 ELSE 0 END")
+            ),
+            "designer_count",
+          ],
+        ],
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+        group: [Sequelize.fn("MONTH", Sequelize.col("createdAt"))],
+        raw: true,
+        order: [[Sequelize.fn("MONTH", Sequelize.col("createdAt")), "ASC"]],
+      });
+
+      res.status(200).json({
+        Count: userRegistrations,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
   static async selectPackage(req, res) {
     try {
       const { serviceId, userId } = req.body;
       if (serviceId == null && userId == null) {
-        res.status(400).json({ message: "The user has not selected a package" });
+        res
+          .status(400)
+          .json({ message: "The user has not selected a package" });
       } else {
         let info = {
           userId: userId,
-          servicePackageId: serviceId
+          servicePackageId: serviceId,
         };
         const order = await Order.create(info);
-        res.status(201).json({ message: "The user selected a package successfully", order: order });
+        res.status(201).json({
+          message: "The user selected a package successfully",
+          order: order,
+        });
       }
     } catch (error) {
       res.status(400).send({ message: "Something went wrong." });
     }
   }
-
-
 }
 
 exports.UserController = UserController;

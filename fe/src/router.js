@@ -5,13 +5,14 @@ import DesignerPage from "./pages/DesignerPage";
 import BlogPage from "./pages/BlogPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateBlog from "./pages/CreateBlog";
-import MainLayout from "./pages/MainLayout";
+import MainLayout from "./components/layout/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
 import BlogPageDetail from "./pages/BlogPageDetail";
 import UserListPage from "./pages/UserListPage";
 import DesignPage from "./pages/DesignPage";
 import OrderListPage from "./pages/OrderListPage";
+import ApproveBlogPage from "./pages/ApproveBlogPage";
 
 const router = createBrowserRouter([
   {
@@ -39,11 +40,15 @@ const router = createBrowserRouter([
         element: <BlogPageDetail />,
       },
       {
-        path: "/create-blog",
+        path: "/blog/create",
         element: <CreateBlog />,
       },
       {
-        path: "/design",
+        path: "/blog/approve",
+        element: <ApproveBlogPage />,
+      },
+      {
+        path: "/design/:productId",
         element: <DesignPage />,
       },
       {

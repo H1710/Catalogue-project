@@ -8,7 +8,7 @@ const MinidenticonImg = ({ username, saturation, lightness, ...props }) => {
       encodeURIComponent(minidenticon(username, saturation, lightness)),
     [username, saturation, lightness]
   );
-  return <img src={svgURI} alt={username} {...props} className="w-10 h-10" />;
+  return <img src={svgURI} alt={username} {...props} />;
 };
 
 export default MinidenticonImg;

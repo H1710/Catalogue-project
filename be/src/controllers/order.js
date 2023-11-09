@@ -134,6 +134,7 @@ class OrderController {
           + 'on subquery.servicePackageId = sp.id '
           + 'group by servicePackageId, numOfPurchase'
           + ') as subquery2';
+       
         const result = await seq.query(query);
         yearlyData.push({ yearName: yearName[index], result: result[0] });
       }

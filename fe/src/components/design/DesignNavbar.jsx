@@ -2,7 +2,7 @@ import React from "react";
 
 const DesignNavbar = ({ state, setElement }) => {
   return (
-    <div className="w-[80px] bg-white h-full shadow-lg text-gray-800 flex flex-col items-center  z-10">
+    <div className="w-[80px] bg-white shadow-lg text-gray-800 flex flex-col items-center  z-10">
       <div
         onClick={() => setElement("shape")}
         className={`${

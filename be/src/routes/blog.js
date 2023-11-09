@@ -13,11 +13,12 @@ router.patch("/edit/:id", upload.single("thumbnail"), BlogController.editBlog);
 router.patch("/hide", BlogController.hideBlog);
 router.get("/rating", BlogController.ratingBlog);
 router.get("/search-ByStatus", BlogController.searchBlogByStatus);
-router.patch("/accept-blog", BlogController.acceptBlog);
+router.patch("/approve-accept", BlogController.acceptBlog);
 router.patch("/cancel-blog", BlogController.cancelBlog);
 router.get("/filter", BlogController.filterBlog);
+router.get("/processing", BlogController.getProcessingBlog);
+router.get("/accepted", BlogController.getAcceptedBlog);
 
 router.post("/auto-create-blog", BlogController.autoCreateBlog);
-
 
 module.exports = router;

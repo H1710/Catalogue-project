@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      styleGeneric: {
+      thumbnail: {
         type: DataTypes.TEXT,
-        allowNull: false,
       },
     },
     {

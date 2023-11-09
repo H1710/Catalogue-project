@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { minidenticon } from "minidenticons";
-import MinidenticonImg from "../components/MinidenticonImg";
+import MinidenticonImg from "../components/common/MinidenticonImg";
 import { useQuery } from "react-query";
 import { getAllUserRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
@@ -20,7 +20,7 @@ const UserListPage = () => {
     // enabled: logged,
   });
   return (
-    <div className="col-span-full shadow-lg flex flex-col min-h-[80vh] px-32 justify-between">
+    <div className="w-full flex flex-col min-h-[80vh] justify-center">
       <div class="p-8">
         {/* <div class="text-3xl font-bold text-Black text-center mb-6">
           All Users
@@ -54,7 +54,10 @@ const UserListPage = () => {
                       {user?.avatar ? (
                         <img src={user.avatar} />
                       ) : (
-                        <MinidenticonImg username={user.name} />
+                        <MinidenticonImg
+                          username={user.name}
+                          className="w-12"
+                        />
                       )}
                     </div>
                   </td>

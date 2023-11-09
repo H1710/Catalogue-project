@@ -3,14 +3,14 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { Dialog, Transition } from "@headlessui/react";
 
-const AuthenticationForm = ({ openForm, setOpenForm }) => {
+const AuthenticationForm = ({ openAuthForm, setOpenAuthForm }) => {
   const [state, setState] = useState("login");
   return (
-    <Transition appear show={openForm} as={Fragment}>
+    <Transition appear show={openAuthForm} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
-        onClose={() => setOpenForm(false)}
+        onClose={() => setOpenAuthForm(false)}
       >
         <div className="fixed top-6 inset-0 overflow-y-auto ">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
@@ -25,9 +25,15 @@ const AuthenticationForm = ({ openForm, setOpenForm }) => {
             >
               <Dialog.Panel className="w-full max-w-md transform border border-gray-100 overflow-hidden rounded-xl bg-white text-left align-middle shadow-xl transition-all">
                 {state === "login" ? (
-                  <LoginForm setState={setState} setOpenForm={setOpenForm} />
+                  <LoginForm
+                    setState={setState}
+                    setOpenAuthForm={setOpenAuthForm}
+                  />
                 ) : (
-                  <RegisterForm setState={setState} setOpenForm={setOpenForm} />
+                  <RegisterForm
+                    setState={setState}
+                    setOpenAuthForm={setOpenAuthForm}
+                  />
                 )}
               </Dialog.Panel>
             </Transition.Child>

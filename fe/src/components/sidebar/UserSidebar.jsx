@@ -1,17 +1,24 @@
 import { useState } from "react";
+import MinidenticonImg from "../common/MinidenticonImg";
 
-function AdminSidebar() {
+function AdminSidebar({ user }) {
   const [showCategoryList, setShowCategoryList] = useState(true);
   const categoryList = ["Education", "Social media", "Bussiness"];
 
   return (
-    <aside className="h-[95vh] w-full pt-8 flex flex-col px-2 bg-white">
-      <div className="rounded-[4px] mb-10 flex items-center gap-4">
-        <img
-          src="assets/images/Tom_and_Jerry.jpg"
-          alt=""
-          className="w-12 h-12 rounded-lg"
-        />
+    <aside className="w-[250px] h-full flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
+      <div className="rounded-[4px] mb-4 flex items-center gap-4">
+        {user?.avatar ? (
+          <img
+            src={user.avatar}
+            className="w-12 h-12 rounded-[5px] object-cover cursor-pointer"
+          />
+        ) : (
+          <MinidenticonImg
+            username={user.name}
+            className="w-14 rounded-full object-cover cursor-pointer border border-[#ccc]"
+          />
+        )}
         <div className="flex flex-col gap-1">
           <p className="font-semibold text-lg">Person</p>
           <p className="text-md">Free</p>
@@ -76,6 +83,24 @@ function AdminSidebar() {
           })}
         <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
+            />
+          </svg>
+
+          <p>My Blog</p>
+        </div>
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <svg
             className="w-6 h-6"
             viewBox="0 0 32 32"
             fill="none"
@@ -89,11 +114,11 @@ function AdminSidebar() {
             ></path>
           </svg>
 
-          <p>Product</p>
+          <p>My Product</p>
         </div>
       </div>
 
-      <div className="">
+      {/* <div className="">
         <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +137,7 @@ function AdminSidebar() {
 
           <p>Logout</p>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }

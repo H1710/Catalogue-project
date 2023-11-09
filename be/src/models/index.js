@@ -141,10 +141,10 @@ db.product.belongsTo(db.user, {
   foreignKey: "userId",
 });
 
-db.template.hasMany(db.product);
-db.product.belongsTo(db.template, {
-  foreignKey: "templateId",
-});
+// db.template.hasMany(db.product);
+// db.product.belongsTo(db.template, {
+//   foreignKey: "templateId",
+// });
 
 const template_page = sequelize.define(
   "template_page",

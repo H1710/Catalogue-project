@@ -25,14 +25,15 @@ const CreateForm = ({ blog, setBlog }) => {
 
   return (
     <form className=" flex flex-col flex-1 gap-2">
-      <div className="relative flex h-[40px] border-gray-100 rounded">
+      <div className="relative flex h-[40px] border border-[--border-input] rounded">
         <input
           type="text"
-          className="w-full rounded placeholder:italic"
+          className="w-full rounded py-1 px-2 outline-none text-sm"
           value={blog.title}
-          placeholder="Title..."
+          placeholder="Title"
           name="title"
           onChange={handleChangeInput}
+          required
         />
 
         <small
@@ -43,35 +44,38 @@ const CreateForm = ({ blog, setBlog }) => {
         </small>
       </div>
 
-      <div className="relative overflow-hidden items-center flex w-full h-[40px] border border-gray-500 rounded gap-2 pl-1">
+      <div className="relative overflow-hidden items-center flex w-full h-[40px] border border-[--border-input] rounded gap-2">
         <input
           type="text"
-          className="border-none outline-none flex-1"
+          className="border-none outline-none flex-1 py-1 px-2 text-sm"
           placeholder="Tag"
           // value={blog.tag[blog.tag.length - 1]}
           name="tag"
           onChange={handleChangeTag}
+          required
         />
       </div>
 
       <div className="">
         <input
           type="file"
-          className="w-full border border-gray-500 rounded p-[4px]"
+          className="w-full border border-[--border-input] rounded py-1 px-2 outline-none text-sm"
           accept="image/*"
           onChange={handleChangeThumbnail}
+          required
         />
       </div>
 
-      <div className="relative flex flex-1 border-gray-100 rounded">
+      <div className="relative flex flex-1 border border-[--border-input] rounded">
         <textarea
-          className="w-full rounded"
+          className="w-full rounded py-1 px-2 outline-none text-sm"
           rows={4}
           value={blog.description}
-          placeholder="Description..."
+          placeholder="Description"
           style={{ resize: "none" }}
           name="description"
           onChange={handleChangeInput}
+          required
         />
 
         <small
