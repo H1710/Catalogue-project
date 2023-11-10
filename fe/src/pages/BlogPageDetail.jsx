@@ -23,7 +23,7 @@ const BlogPageDetail = () => {
     // enabled: logged,
   });
   return (
-    <div className="flex flex-col px-32 h-full">
+    <div className="flex flex-col px-32 h-full w-full">
       {detailsData && (
         <DisplayBlog
           blog={detailsData.data.blog}

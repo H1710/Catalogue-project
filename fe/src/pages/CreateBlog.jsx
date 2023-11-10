@@ -7,10 +7,13 @@ import { useMutation } from "react-query";
 import { postAPI } from "../utils/FetchData";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../components/common/Button";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const CreateBlog = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [formValid, setFormValid] = useState(false);
   useEffect(() => {
     if (!state?.user) {
       navigate("/");
@@ -38,15 +41,11 @@ const CreateBlog = () => {
       return postAPI(createBlogRoute, info);
     },
     onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
+      toast.success("Create unsuccessfully!");
     },
     onSuccess: (data) => {
       console.log(data);
-      // dispatch(seft({ ...data.data.user }));
-      // setOpenForm(false);
-      // toast.success(data.data.message, toastOptions);
-      // localStorage.setItem("signed", "chat-app");
-      // navigate("/");
+      toast.success("Create successfully!");
     },
   });
 
@@ -76,21 +75,17 @@ const CreateBlog = () => {
           </div>
         </div>
       </div>
-      <QuillEditor setBody={setBody} />
+      <QuillEditor setBody={setBody} setFormValid={setFormValid} />
 
-      <div
-        ref={divRef}
-        dangerouslySetInnerHTML={{
-          __html: body,
-        }}
-        style={{ display: "none" }}
-      />
-
-      {/* <small>{text.length}</small> */}
+      {!formValid && (
+        <div className="text-red-500 mt-2">
+          Content is required.
+        </div>
+      )}
 
       <div
         className="w-full flex justify-center mt-4"
-        onClick={() => handleCreateBlog()}
+        onClick={() => formValid && handleCreateBlog()} 
       >
         <CustomButton
           text={"Create Blog"}
@@ -100,6 +95,7 @@ const CreateBlog = () => {
           isLoading={loadingCreate}
         />
       </div>
+      <ToastContainer />
     </div>
   );
 };
