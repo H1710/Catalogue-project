@@ -1,7 +1,10 @@
 import { useState } from "react";
 import MinidenticonImg from "../common/MinidenticonImg";
+import ServicePackage from "../ServicePackage";
 
 function AdminSidebar({ user }) {
+  const [showServiePackages, setShowServiePackages] = useState(false);
+
   const [showCategoryList, setShowCategoryList] = useState(true);
   const categoryList = ["Education", "Social media", "Bussiness"];
 
@@ -25,6 +28,25 @@ function AdminSidebar({ user }) {
         </div>
       </div>
       <div className="flex flex-col flex-1 w-[230px]">
+      <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+      
+      onClick={()=> setShowServiePackages(true)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+            />
+          </svg>
+          <p>Try to Premium</p>
+        </div>
         <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -138,6 +160,7 @@ function AdminSidebar({ user }) {
           <p>Logout</p>
         </div>
       </div> */}
+       <ServicePackage showServiePackages={showServiePackages} setShowServiePackages={setShowServiePackages} user={user}/>
     </aside>
   );
 }

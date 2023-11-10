@@ -19,12 +19,12 @@ import Rating from "@mui/material/Rating";
 import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery } from "react-query";
 import CustomButton from "../components/common/Button";
+import ServicePackage from "../components/ServicePackage";
 
 const HomePage = () => {
-  // const showSidebar = useContext(ShowSidebarContext)
+  
   const [input, setInput] = useState("");
-  // const [templateList, setTemplateList] = useState("");
-  // const [templateNumber, setTemplateNumber] = useState(0);
+  // const [showServiePackages, setShowServiePackages] = useState(true)
   const [user, setOpenAuthForm] = useOutletContext();
   // useEffect(() => {
   //   const handleAPI = async () => {
@@ -178,6 +178,7 @@ const HomePage = () => {
             </div>
           ))}
       </div>
+      {/* <ServicePackage showServiePackages={showServiePackages} setShowServiePackages={setShowServiePackages}/> */}
     </div>
   );
 };
