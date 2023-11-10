@@ -1,9 +1,16 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import {
   getProductByUser,
   getAllTemplateRoute,
   cloneTemplateRoute,
+  saveProductNameRoute,
 } from "../utils/APIRoute";
 import axios from "axios";
 
@@ -21,6 +28,7 @@ import { useMutation, useQuery } from "react-query";
 import CustomButton from "../components/common/Button";
 import TemplateList from "../components/home/TemplateList";
 import ProductList from "../components/home/ProductList";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
   // const showSidebar = useContext(ShowSidebarContext)
@@ -28,16 +36,11 @@ const HomePage = () => {
   // const [templateList, setTemplateList] = useState("");
   // const [templateNumber, setTemplateNumber] = useState(0);
   const [user, setOpenAuthForm] = useOutletContext();
-  // useEffect(() => {
-  //   const handleAPI = async () => {
-  //     const res = await axios.get(`${getTemplateRoute}/1`);
-  //     setTemplateList(res.data.data);
-  //   };
-  //   handleAPI();
-  // }, []);
-  const { data: productData, isLoading } = useQuery({
-    queryKey: ["products"],
+
+  const { data: productData, isLoading: isLoadingProductData } = useQuery({
+    queryKey: ["products", user?.id],
     queryFn: () => {
+      console.log(user.id);
       return getAPI(`${getProductByUser}/${user.id}`);
     },
     onSuccess: (data) => {
@@ -49,7 +52,7 @@ const HomePage = () => {
     // enabled: logged,
   });
 
-  const { data: templateData } = useQuery({
+  const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
       return getAPI(`${getAllTemplateRoute}`);
@@ -106,6 +109,24 @@ const HomePage = () => {
     cloneTemplate({ template, userId: user.id });
   };
 
+  const { mutate: saveNameProduct, isLoading: loadingSaveName } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(saveProductNameRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      // toast.success(data.data.message, toastOptions);
+      // localStorage.setItem("signed", "chat-app");
+      // navigate("/");
+    },
+  });
+
+  const handleSaveName = (productId, newName) => {
+    saveNameProduct({ productId, newName });
+  };
+
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
@@ -118,18 +139,22 @@ const HomePage = () => {
         <Search />
       </div>
 
+      <br />
       <TemplateList
         templateList={templateData?.data.data}
-        handleCloneTemplate={handleCloneTemplate}
+        isLoadingTemplateData={isLoadingTemplateData}
       />
       {/* <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
       </div> */}
 
+      <br />
       <ProductList
         productData={productData?.data.products}
         handleNewTemplate={handleNewTemplate}
         loadingCloneTemplate={loadingCloneTemplate}
+        handleSaveName={handleSaveName}
+        isLoadingProductData={isLoadingProductData}
       />
     </div>
   );

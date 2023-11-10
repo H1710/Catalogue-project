@@ -31,6 +31,7 @@ class TemplateController {
             type: template[i].product_page_details[j].type,
             height: template[i].product_page_details[j].height,
             width: template[i].product_page_details[j].width,
+            rotate: template[i].product_page_details[j]?.rotate,
             top: template[i].product_page_details[j]?.top,
             left: template[i].product_page_details[j]?.left,
             z_index: template[i].product_page_details[j].z_index,

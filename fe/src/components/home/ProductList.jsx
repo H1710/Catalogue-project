@@ -1,17 +1,22 @@
 import React from "react";
 import CustomButton from "../common/Button";
 import { useNavigate } from "react-router-dom";
+import DesignCard from "./DesignCard";
 
 const ProductList = ({
   productData,
   handleNewTemplate,
   loadingCloneTemplate,
+  handleSaveName,
+  isLoadingProductData,
 }) => {
-  const navigate = useNavigate();
+  console.log(productData);
   return (
     <>
       <div className="content col-span-full select-none text-xl flex justify-between items-center pb-2 font-semibold">
-        <p>Current Design</p>
+        <div className="content col-span-full select-none text-[18px] flex justify-start font-bold">
+          Recent Design
+        </div>
         <CustomButton
           text={"Create Design"}
           classContent={
@@ -22,28 +27,17 @@ const ProductList = ({
         />
       </div>
 
-      <div className="w-full grid grid-cols-4 gap-6">
-        {productData &&
-          productData.map((product, index) => (
-            <div>
-              <div
-                className="w-full flex justify-center items-center bg-[#eeeeef] rounded-md p-[16px]"
-                key={index}
-                onClick={() => {
-                  navigate(`/design/${product.id}`);
-                }}
-              >
-                <div className="h-full w-full flex items-center justify-center group cursor-pointer rounded-md ">
-                  <img
-                    src={product.thumbnail}
-                    alt=""
-                    className="w-full h-full object-contain rounded-md"
-                  />
-                </div>
-              </div>
-              <p className="font-semibold text-[14px] mt-2">{product.name}</p>
-            </div>
-          ))}
+      <div className="w-full grid grid-cols-4 gap-8">
+        {isLoadingProductData ? (
+          <div>loading</div>
+        ) : (
+          <>
+            {productData &&
+              productData.map((product, index) => (
+                <DesignCard info={product} handleSaveName={handleSaveName} />
+              ))}
+          </>
+        )}
       </div>
     </>
   );

@@ -12,6 +12,7 @@ export const createProductRoute = `${host}/product/create`;
 export const getProductByUser = `${host}/product/get`;
 export const getProductById = `${host}/product/get/product`;
 export const saveProductRoute = `${host}/product/save`;
+export const saveProductNameRoute = `${host}/product/save-name`;
 export const cloneTemplateRoute = `${host}/product/clone`;
 
 export const createBlogRoute = `${host}/blog/create`;
