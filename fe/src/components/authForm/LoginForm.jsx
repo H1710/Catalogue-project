@@ -1,33 +1,30 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
-import { postAPI } from '../../utils/FetchData';
-import { loginRoute } from '../../utils/APIRoute';
-import { seft } from '../../redux/reducers/authReducer';
-import GoogleLogin from 'react-google-login';
+import React, { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { postAPI } from "../../utils/FetchData";
+import { loginRoute } from "../../utils/APIRoute";
+import { seft } from "../../redux/reducers/authReducer";
+// import GoogleLogin from "react-google-login";
 
-const clientId = '157579947849-fpas1tonu8jj9dbevcpbqavhi2h1m5u5.apps.googleusercontent.com'
+// const clientId =
+//   "157579947849-fpas1tonu8jj9dbevcpbqavhi2h1m5u5.apps.googleusercontent.com";
 
-  const onSuccess = (res) => {
-    console.log("Success", res.profileObj);
-    
-    
-  }
+const onSuccess = (res) => {
+  console.log("Success", res.profileObj);
+};
 
-  const onFailure = (res) => {
-    console.log("Failed", res);
-  }
+const onFailure = (res) => {
+  console.log("Failed", res);
+};
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email('Invalid email format')
-    .required('Required'),
+  email: Yup.string().email("Invalid email format").required("Required"),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Required'),
+    .min(6, "Password must be at least 6 characters")
+    .required("Required"),
 });
 
 const LoginForm = ({ setOpenAuthForm }) => {
@@ -54,17 +51,17 @@ const LoginForm = ({ setOpenAuthForm }) => {
     },
     onSuccess: (data) => {
       dispatch(seft({ ...data.data.user }));
-      localStorage.setItem('signed', 'catalogue-app');
+      localStorage.setItem("signed", "catalogue-app");
       setOpenAuthForm(false);
       // Replace with your success handling logic
-      navigate('/'); // Or wherever you want to redirect the user after login
+      navigate("/"); // Or wherever you want to redirect the user after login
     },
   });
 
   return (
     <div className="px-12 py-6 rounded-xl">
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           mutate(values);
@@ -84,7 +81,11 @@ const LoginForm = ({ setOpenAuthForm }) => {
               className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
               placeholder="Email"
             />
-            <ErrorMessage name="email" component="div" className="text-red-500 text-xs" />
+            <ErrorMessage
+              name="email"
+              component="div"
+              className="text-red-500 text-xs"
+            />
           </div>
           <div className="my-4 text-sm">
             <label htmlFor="password" className="block text-black">
@@ -97,7 +98,11 @@ const LoginForm = ({ setOpenAuthForm }) => {
               className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
               placeholder="Password"
             />
-            <ErrorMessage name="password" component="div" className="text-red-500 text-xs" />
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="text-red-500 text-xs"
+            />
           </div>
           <div class="flex justify-end mt-2 text-xs text-gray-600">
             <a href="#">Forget Password?</a>
@@ -124,22 +129,19 @@ const LoginForm = ({ setOpenAuthForm }) => {
               <p class="flex justify-center text-xs text-gray-600 mt-[3px]">
                 Do you have no account?
               </p>
-              <a
-
-                class="flex justify-center text-[#3386ff] text-sm font-medium ml-1"
-              >
+              <a class="flex justify-center text-[#3386ff] text-sm font-medium ml-1">
                 Register
               </a>
             </div>
           </div>
-          <GoogleLogin
+          {/* <GoogleLogin
         clientId={clientId}
         onSuccess={onSuccess}
         onFailure={onFailure}
         buttonText='Sign in with Google'
         cookiePolicy={'single_host_origin'}
         isSignedIn={false}
-        />
+        /> */}
         </Form>
       </Formik>
     </div>

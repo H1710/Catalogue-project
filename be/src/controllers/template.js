@@ -10,7 +10,6 @@ class TemplateController {
     try {
       const { data } = req.body;
       const { userId } = data;
-      console.log(userId);
       const newTemplate = await Template.create({
         name: "product-test",
         thumbnail:
@@ -32,6 +31,7 @@ class TemplateController {
             height: template[i].product_page_details[j].height,
             width: template[i].product_page_details[j].width,
             rotate: template[i].product_page_details[j]?.rotate,
+            text: template[i].product_page_details[j]?.text,
             top: template[i].product_page_details[j]?.top,
             left: template[i].product_page_details[j]?.left,
             z_index: template[i].product_page_details[j].z_index,

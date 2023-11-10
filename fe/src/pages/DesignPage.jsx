@@ -74,7 +74,6 @@ const DesignPage = () => {
     },
   ]);
 
-  console.log(text);
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -87,8 +86,6 @@ const DesignPage = () => {
         temp[page].product_page_details[index].height =
           height || currentComponent.height;
         if (currentComponent.name == "text") {
-          console.log(temp[page].product_page_details[index]);
-          console.log(text);
           temp[page].product_page_details[index].text =
             text || currentComponent.text;
         }
@@ -155,9 +152,6 @@ const DesignPage = () => {
     [page]
   );
 
-  // console.log(components);
-
-  console.log(currentComponent);
   const moveElement = useCallback((id, currentInfo) => {
     setCurrentComponent(currentInfo);
     let isMoving = true;
@@ -304,11 +298,9 @@ const DesignPage = () => {
     setPage((prev) => prev + 1);
   }, [page]);
 
-  // console.log(components);
-  const changeText = useCallback((e) => {
-    console.log(e.target.value);
-    setText(e.target.value);
-  }, []);
+  const changeText = (e) => {
+    setText((prev) => e.target.value);
+  };
   const createText = useCallback((name) => {
     setComponents((prev) => {
       const temp = [...prev];

@@ -116,7 +116,8 @@ class ProductController {
               top: detail?.top,
               left: detail?.left,
               z_index: detail.z_index,
-              rotate: detail.rotate,
+              rotate: detail?.rotate,
+              text: detail?.text,
               color: detail.color,
               image: detail?.image,
               productPageId: pageId,
@@ -126,7 +127,8 @@ class ProductController {
             product_page_detail.type = detail.type;
             product_page_detail.height = detail.height;
             product_page_detail.width = detail.width;
-            product_page_detail.rotate = detail.rotate;
+            product_page_detail.rotate = detail?.rotate;
+            product_page_detail.text = detail?.text;
             product_page_detail.top = detail?.top;
             product_page_detail.left = detail?.left;
             product_page_detail.z_index = detail.z_index;
@@ -190,6 +192,7 @@ class ProductController {
             height: template.template_pages[i].template_page_details[j].height,
             width: template.template_pages[i].template_page_details[j].width,
             rotate: template.template_pages[i].template_page_details[j]?.rotate,
+            text: template.template_pages[i].template_page_details[j]?.text,
             top: template.template_pages[i].template_page_details[j]?.top,
             left: template.template_pages[i].template_page_details[j]?.left,
             z_index:
