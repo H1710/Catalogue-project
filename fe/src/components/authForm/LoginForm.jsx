@@ -20,7 +20,6 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
     e.preventDefault();
     mutate(values);
   };
-  const navigate = useNavigate();
 
   const { mutate, isLoading: loadingLogin } = useMutation({
     mutationFn: (info) => {

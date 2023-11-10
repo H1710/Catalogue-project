@@ -95,12 +95,9 @@ class ProductController {
           const newPage = await ProductPage.create({
             productId: productId,
           });
-          console.log("2  " + newPage);
           pageId = newPage.id;
         } else {
-          console.log(product_page);
           pageId = product_page.id;
-          console.log("1  " + product_page.id);
         }
         // console.log(pageId);
         for (let detail of page.product_page_details) {

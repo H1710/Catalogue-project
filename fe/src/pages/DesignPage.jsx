@@ -28,7 +28,6 @@ const DesignPage = () => {
   useEffect(() => {
     const intiComponents = async () => {
       const data = await getAPI(`${getProductById}/${productId}`);
-
       const { product_pages } = data.data.product;
       let newComponents = [];
 
@@ -152,8 +151,6 @@ const DesignPage = () => {
     },
     [page]
   );
-
-  console.log(components);
 
   // console.log(components);
 

@@ -19,6 +19,8 @@ import Rating from "@mui/material/Rating";
 import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery } from "react-query";
 import CustomButton from "../components/common/Button";
+import TemplateList from "../components/home/TemplateList";
+import ProductList from "../components/home/ProductList";
 
 const HomePage = () => {
   // const showSidebar = useContext(ShowSidebarContext)
@@ -115,69 +117,20 @@ const HomePage = () => {
       >
         <Search />
       </div>
-      <div className="content col-span-full select-none text-xl flex justify-start pb-2 font-semibold">
-        Template
-      </div>
 
-      <div className="w-full grid grid-cols-4 gap-6">
-        {templateData &&
-          templateData.data.data.map((template, index) => (
-            <div>
-              <div
-                className="w-full flex justify-center items-center bg-[#ccc] rounded-[5px] py-[30px] "
-                key={index}
-                onClick={() => handleCloneTemplate(template)}
-              >
-                <div className="h-full w-full flex items-center justify-center">
-                  <img
-                    src={template.thumbnail}
-                    alt=""
-                    className="w-[250px] h-[150px] object-contain"
-                  />
-                </div>
-              </div>
-              <p className="font-semibold text-[14px] mt-2">{template.name}</p>
-            </div>
-          ))}
-      </div>
+      <TemplateList
+        templateList={templateData?.data.data}
+        handleCloneTemplate={handleCloneTemplate}
+      />
       {/* <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
       </div> */}
-      <div className="content col-span-full select-none text-xl flex justify-between items-center pb-2 font-semibold">
-        <p>Current Design</p>
-        <CustomButton
-          text={"Create Design"}
-          classContent={
-            "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
-          }
-          handleClick={() => handleNewTemplate()}
-          isLoading={loadingCloneTemplate}
-        />
-      </div>
 
-      <div className="w-full grid grid-cols-4 gap-6">
-        {productData &&
-          productData.data.products.map((product, index) => (
-            <div>
-              <div
-                className="w-full flex justify-center items-center bg-[#eeeeef] rounded-md p-[16px]"
-                key={index}
-                onClick={() => {
-                  navigate(`/design/${product.id}`);
-                }}
-              >
-                <div className="h-full w-full flex items-center justify-center group cursor-pointer rounded-md ">
-                  <img
-                    src={product.thumbnail}
-                    alt=""
-                    className="w-full h-full object-contain rounded-md"
-                  />
-                </div>
-              </div>
-              <p className="font-semibold text-[14px] mt-2">{product.name}</p>
-            </div>
-          ))}
-      </div>
+      <ProductList
+        productData={productData?.data.products}
+        handleNewTemplate={handleNewTemplate}
+        loadingCloneTemplate={loadingCloneTemplate}
+      />
     </div>
   );
 };

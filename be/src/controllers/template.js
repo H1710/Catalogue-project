@@ -3,6 +3,7 @@ const db = require("../models/index");
 const Template = db.template;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
+const User = db.user;
 
 class TemplateController {
   static async createTemplate(req, res) {
@@ -20,7 +21,6 @@ class TemplateController {
       });
 
       const { template } = data;
-      console.log(template);
       for (let i = 0; i < template.length; i++) {
         const templatePage = await TemplatePage.create({
           templateId: newTemplate.id,
@@ -68,12 +68,16 @@ class TemplateController {
 
   static async getTemplate(req, res) {
     try {
-      const id = req.params.id;
-      const template = await Template.findAll({
+      const templateId = req.params.templateId;
+      const template = await Template.findByPk(templateId, {
         include: [
           {
             model: TemplatePage,
-            include: [TemplatePageDetail],
+            include: TemplatePageDetail,
+          },
+          {
+            model: User,
+            attributes: ["name"],
           },
         ],
       });
