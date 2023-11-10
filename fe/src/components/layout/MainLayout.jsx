@@ -17,7 +17,7 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
-  console.log(user);
+  // console.log(user);
   const { isLoading } = useQuery({
     queryKey: ["refresh_token"],
     queryFn: () => {
@@ -28,7 +28,7 @@ const MainLayout = () => {
         seft({ ...data.data.user, access_token: data.data.access_token })
       );
     },
-    onError: (error) => {},
+    onError: (error) => { },
     enabled: localStorage.getItem("signed") === "catalogue-app",
   });
   return (
@@ -47,9 +47,8 @@ const MainLayout = () => {
             <UserSidebar user={user} />
           ))}
         <div
-          className={`flex justify-center items-center w-full ${
-            showSidebar && "ml-[250px]"
-          }`}
+          className={`flex justify-center items-center w-full ${showSidebar && "ml-[250px]"
+            }`}
         >
           <Outlet context={[user, setOpenAuthForm]} />
         </div>

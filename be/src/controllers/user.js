@@ -41,6 +41,7 @@ class UserController {
     }
   }
 
+
   static async updateUser(req, res) {
     try {
       const userId = req.params.id;
@@ -69,7 +70,7 @@ class UserController {
     try {
       const userId = req.params.id;
       const user = await db.user.findByPk(userId);
-      if (user) {
+      if (user && user.role != 1) {
         await user.destroy();
         res.status(204).send();
       } else {
@@ -135,7 +136,7 @@ class UserController {
         include: [
           {
             model: Role,
-            attributes: ["name"],
+            attributes: ["id", "name"],
           },
           {
             model: Order,
