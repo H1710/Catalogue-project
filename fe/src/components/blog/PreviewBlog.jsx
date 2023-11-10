@@ -6,6 +6,7 @@ const PreviewBlog = ({
   blog,
   handleAcceptBlog,
   handleNavigateBlogDetail,
+  author,
   loadingAcceptBlog,
 }) => {
   return (
@@ -20,7 +21,7 @@ const PreviewBlog = ({
       <div>
         <small className="font-medium text-[--primary-text]">
           Posted on {new Date(blog.createdAt).toLocaleString()} by{" "}
-          <span className="text-blue-600 italic">{blog.user.name}</span>
+          <span className="text-blue-600 italic">{author}</span>
         </small>
       </div>
       {blog?.tags &&
@@ -55,7 +56,7 @@ const PreviewBlog = ({
           {blog.description}
         </p>
       </div>
-      {blog.status === "Processing" && (
+      {blog?.status === "Processing" && (
         <div className="w-full flex justify-end gap-2">
           <CustomButton
             text={"Accept"}

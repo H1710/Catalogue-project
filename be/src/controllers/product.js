@@ -95,12 +95,9 @@ class ProductController {
           const newPage = await ProductPage.create({
             productId: productId,
           });
-          console.log("2  " + newPage);
           pageId = newPage.id;
         } else {
-          console.log(product_page);
           pageId = product_page.id;
-          console.log("1  " + product_page.id);
         }
         // console.log(pageId);
         for (let detail of page.product_page_details) {
@@ -111,8 +108,6 @@ class ProductController {
             },
           });
           if (!product_page_detail) {
-            console.log(detail);
-
             await ProductPageDetail.create({
               name: detail.name,
               type: detail.type,
@@ -121,6 +116,7 @@ class ProductController {
               top: detail?.top,
               left: detail?.left,
               z_index: detail.z_index,
+              rotate: detail.rotate,
               color: detail.color,
               image: detail?.image,
               productPageId: pageId,
@@ -130,6 +126,7 @@ class ProductController {
             product_page_detail.type = detail.type;
             product_page_detail.height = detail.height;
             product_page_detail.width = detail.width;
+            product_page_detail.rotate = detail.rotate;
             product_page_detail.top = detail?.top;
             product_page_detail.left = detail?.left;
             product_page_detail.z_index = detail.z_index;
@@ -145,6 +142,25 @@ class ProductController {
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async saveProductName(req, res) {
+    try {
+      const { productId, newName } = req.body;
+
+      const product = await Product.findByPk(productId);
+
+      if (!product) {
+        return res.status(404).send({ message: "Product not found" });
+      }
+
+      product.name = newName;
+      await product.save();
+
+      return res.status(200).send({ message: "Save name success" });
+    } catch (err) {
+      return res.status(500).send({ message: "Something went wrong" });
     }
   }
 
@@ -173,6 +189,7 @@ class ProductController {
             type: template.template_pages[i].template_page_details[j].type,
             height: template.template_pages[i].template_page_details[j].height,
             width: template.template_pages[i].template_page_details[j].width,
+            rotate: template.template_pages[i].template_page_details[j]?.rotate,
             top: template.template_pages[i].template_page_details[j]?.top,
             left: template.template_pages[i].template_page_details[j]?.left,
             z_index:

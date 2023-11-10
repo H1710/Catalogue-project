@@ -32,7 +32,20 @@ const validationSchema = Yup.object({
 
 const LoginForm = ({ setOpenAuthForm }) => {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    mutate(values);
+  };
+
   const { mutate, isLoading: loadingLogin } = useMutation({
     mutationFn: (info) => postAPI(loginRoute, info),
     onError: (error) => {

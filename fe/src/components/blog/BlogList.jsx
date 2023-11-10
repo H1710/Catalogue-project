@@ -15,6 +15,7 @@ const BlogList = ({
           <PreviewBlog
             key={index}
             blog={blog}
+            author={blog.user.name}
             handleNavigateBlogDetail={handleNavigateBlogDetail}
             handleAcceptBlog={handleAcceptBlog}
             loadingAcceptBlog={loadingAcceptBlog}
