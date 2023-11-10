@@ -3,7 +3,7 @@ import { Rating } from "@mui/material"
 import CustomButton from "../common/Button"
 const CommentPreview = () => {
   return <div className="w-full bg-gray-100 p-2 rounded-md shadow-sm flex flex-col items-center justify-center">
-    <div className="ml-[470px]"><Rating /></div>
+    <div className="ml-[470px]"><Rating precision={0.1} /></div>
     <textarea
       className="w-[600px] border p-1 border-gray-300 rounded-md resize-none focus:outline-none"
       rows="3"
