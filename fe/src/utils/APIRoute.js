@@ -6,11 +6,13 @@ export const logoutRoute = `${host}/auth/logout`;
 
 export const createTemplateRoute = `${host}/template/create`;
 export const getAllTemplateRoute = `${host}/template/get-all`;
+export const getTemplateByIdRoute = `${host}/template/get`;
 
 export const createProductRoute = `${host}/product/create`;
 export const getProductByUser = `${host}/product/get`;
 export const getProductById = `${host}/product/get/product`;
 export const saveProductRoute = `${host}/product/save`;
+export const saveProductNameRoute = `${host}/product/save-name`;
 export const cloneTemplateRoute = `${host}/product/clone`;
 
 export const createBlogRoute = `${host}/blog/create`;

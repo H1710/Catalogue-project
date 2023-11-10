@@ -17,9 +17,9 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
-  // console.log(user);
+
   const { isLoading } = useQuery({
-    queryKey: ["refresh_token"],
+    queryKey: ["refresh_token", dispatch],
     queryFn: () => {
       return getAPI(refreshTokenRoute);
     },
@@ -40,7 +40,8 @@ const MainLayout = () => {
         setOpenAuthForm={setOpenAuthForm}
       />
       <div className="w-full h-full flex">
-        {showSidebar &&
+        {user?.access_token &&
+          showSidebar &&
           (user.role.name === "Admin" ? (
             <AdminSidebar />
           ) : (

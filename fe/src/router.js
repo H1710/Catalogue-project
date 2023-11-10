@@ -13,6 +13,7 @@ import UserListPage from "./pages/UserListPage";
 import DesignPage from "./pages/DesignPage";
 import OrderListPage from "./pages/OrderListPage";
 import ApproveBlogPage from "./pages/ApproveBlogPage";
+import PreviewDesignPage from "./pages/PreviewDesignPage";
 
 const router = createBrowserRouter([
   {
@@ -27,10 +28,7 @@ const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
-      {
-        path: "/designer",
-        element: <DesignerPage />,
-      },
+
       {
         path: "/blog",
         element: <BlogPage />,
@@ -50,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/design/:productId",
         element: <DesignPage />,
+      },
+      {
+        path: "/design/preview/:templateId",
+        element: <PreviewDesignPage />,
       },
       {
         path: "/templatedetails/:id",

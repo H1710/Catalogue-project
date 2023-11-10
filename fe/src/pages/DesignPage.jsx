@@ -28,7 +28,6 @@ const DesignPage = () => {
   useEffect(() => {
     const intiComponents = async () => {
       const data = await getAPI(`${getProductById}/${productId}`);
-
       const { product_pages } = data.data.product;
       let newComponents = [];
 
@@ -75,6 +74,7 @@ const DesignPage = () => {
     },
   ]);
 
+  console.log(text);
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -87,6 +87,8 @@ const DesignPage = () => {
         temp[page].product_page_details[index].height =
           height || currentComponent.height;
         if (currentComponent.name == "text") {
+          console.log(temp[page].product_page_details[index]);
+          console.log(text);
           temp[page].product_page_details[index].text =
             text || currentComponent.text;
         }
@@ -153,10 +155,9 @@ const DesignPage = () => {
     [page]
   );
 
-  console.log(components);
-
   // console.log(components);
 
+  console.log(currentComponent);
   const moveElement = useCallback((id, currentInfo) => {
     setCurrentComponent(currentInfo);
     let isMoving = true;
@@ -271,61 +272,67 @@ const DesignPage = () => {
   };
 
   const handleNextPage = useCallback(() => {
-    if (page >= components.length - 1) {
-      const id = Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
-      const newFrame = {
-        name: "main_frame",
-        type: "rect",
-        id: Math.floor(Math.random() * 100 + 1),
-        height: 418,
-        width: 600,
-        z_index: 1,
-        color: "#fff",
-        image: "",
-        productPageId: id,
-        setCurrentComponent: (a) => setCurrentComponent(a),
-      };
-      setComponents((prev) => [
-        ...prev,
-        {
-          id: id,
-          productId: productId,
-          product_page_details: [newFrame],
-        },
-      ]);
-    }
+    setComponents((prev) => {
+      if (page >= prev.length - 1) {
+        const id =
+          Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
+        const newFrame = {
+          name: "main_frame",
+          type: "rect",
+          id: Math.floor(Math.random() * 100 + 1),
+          height: 418,
+          width: 600,
+          z_index: 1,
+          color: "#fff",
+          image: "",
+          productPageId: id,
+          setCurrentComponent: (a) => setCurrentComponent(a),
+        };
+        return [
+          ...prev,
+          {
+            id: id,
+            productId: productId,
+            product_page_details: [newFrame],
+          },
+        ];
+      } else {
+        return [...prev];
+      }
+    });
 
     setPage((prev) => prev + 1);
   }, [page]);
 
   // console.log(components);
   const changeText = useCallback((e) => {
+    console.log(e.target.value);
     setText(e.target.value);
   }, []);
   const createText = useCallback((name) => {
-    const style = {
-      id: components[page].length + 1 + page * 10,
-      name: name,
-      left: 10,
-      top: 10,
-      opacity: 1,
-      width: 200,
-      height: 50,
-      text: "Add a text",
-      rotate,
-      z_index: 3,
-      color: "#3c3c3d",
-      setCurrentComponent: (a) => setCurrentComponent(a),
-      moveElement,
-      resizeElement,
-      rotateElement,
-      removeComponent,
-      changeText,
-    };
-
     setComponents((prev) => {
       const temp = [...prev];
-      temp[page].push(style);
+      const id = Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
+      const style = {
+        id: id,
+        name: name,
+        left: 10,
+        top: 10,
+        opacity: 1,
+        width: 200,
+        height: 50,
+        text: "Add a text",
+        rotate,
+        z_index: 3,
+        color: "#3c3c3d",
+        setCurrentComponent: (a) => setCurrentComponent(a),
+        moveElement,
+        resizeElement,
+        rotateElement,
+        removeComponent,
+        changeText,
+      };
+      temp[page].product_page_details.push(style);
       return temp;
     });
   }, []);
