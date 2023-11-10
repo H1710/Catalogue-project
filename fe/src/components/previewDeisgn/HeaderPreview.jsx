@@ -8,7 +8,7 @@ function generateStarIcons(rating) {
 }
 
 const HeaderPreview = ({ templateData }) => {
-  console.log(typeof templateData?.rating)
+  console.log(templateData?.rating)
   return (
     <div className="w-full bg-gray-100 p-2 rounded-md shadow-sm">
       <div className="flex flex-col space-y-2">
