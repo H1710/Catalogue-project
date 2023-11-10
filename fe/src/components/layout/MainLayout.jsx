@@ -28,7 +28,7 @@ const MainLayout = () => {
         seft({ ...data.data.user, access_token: data.data.access_token })
       );
     },
-    onError: (error) => {},
+    onError: (error) => { },
     enabled: localStorage.getItem("signed") === "catalogue-app",
   });
   return (
@@ -48,9 +48,8 @@ const MainLayout = () => {
             <UserSidebar user={user} />
           ))}
         <div
-          className={`flex justify-center items-center w-full ${
-            showSidebar && "ml-[250px]"
-          }`}
+          className={`flex justify-center items-center w-full ${showSidebar && "ml-[250px]"
+            }`}
         >
           <Outlet context={[user, setOpenAuthForm]} />
         </div>
