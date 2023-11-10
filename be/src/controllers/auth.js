@@ -43,7 +43,7 @@ class AuthController {
       });
       return res.status(200).send({ message: "Logged out." });
     } catch (error) {
-      return res.status(500).send({ message: "Logout erro.r" });
+      return res.status(500).send({ message: "Logout error" });
     }
   }
 
