@@ -30,7 +30,11 @@ const DisplayBlog = ({ blog, setOpenAuthForm }) => {
               (tag, index) => tag && <Tag key={index} content={tag.name} />
             )}
           </div>
+          
         )}
+        <div>
+        <img className="w-[50%] object-cover" src={blog.thumbnail} />
+        </div>
 
         <div
           dangerouslySetInnerHTML={{
