@@ -1,24 +1,21 @@
 import React, { Fragment, useCallback, useState } from "react";
-import { minidenticon } from "minidenticons";
 import MinidenticonImg from "../components/common/MinidenticonImg";
 import { useQuery } from "react-query";
 import { getAllUserRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
-import MyModal from "../components/common/Dialog";
 import { Pagination } from "@mui/material";
-
-
+import UpdateUserForm from "../components/admin/UpdateUserForm";
 
 const UserListPage = () => {
   const [page, setPage] = useState(1);
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState(null);
   // const [isShow, setIsShow] = useState(false)
   const { data: userList, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: () => {
       return getAPI(getAllUserRoute);
     },
-    onSuccess: (data) => { },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
@@ -28,25 +25,24 @@ const UserListPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = useCallback(() => {
-    setIsOpen(false)
-  })
+    setIsOpen(false);
+  });
 
   const openModal = useCallback(() => {
-    setIsOpen(true)
-  })
+    setIsOpen(true);
+  });
   const handleUpdate = (user) => () => {
     openModal();
     setUserInfo(user);
-  }
+  };
   // console.log(userInfo)
   return (
     <div className="w-full flex flex-col min-h-[80vh] justify-center">
       <div className="p-8">
-
         <table className="w-full border rounded text-center">
           <thead>
             <tr className="border-y">
-              <th className="p-2 bg-gray-800 text-white"></th>
+              {/* <th className="p-2 bg-gray-800 text-white"></th> */}
               <th className="p-2 bg-gray-800 text-white">Avatar</th>
               <th className="p-2 bg-gray-800 text-white">Name and Email</th>
               <th className="p-2 bg-gray-800 text-white">Country</th>
@@ -60,13 +56,13 @@ const UserListPage = () => {
             {userList?.data?.users &&
               userList?.data?.users.map((user, index) => (
                 <tr className="border-y hover:bg-gray-100 h-[72px]" key={index}>
-                  <td className="pl-2 text-white">
+                  {/* <td className="pl-2 text-white">
                     <input
                       id="link-checkbox"
                       type="checkbox"
                       className="w-5 h-5 rounded text-blue-600 bg-gray-100 border-yellow-300"
                     />
-                  </td>
+                  </td> */}
                   <td className="">
                     <div className="flex justify-center">
                       {user?.avatar ? (
@@ -92,7 +88,8 @@ const UserListPage = () => {
                     {user.orders[0].service_package.name}
                   </td>
                   <td className=" text-center">
-                    <button className="text-green-500 font-bold py-2 px-4 hover:opacity-50 rounded flex items-center"
+                    <button
+                      className="text-green-500 font-bold py-2 px-4 hover:opacity-50 rounded flex items-center"
                       onClick={handleUpdate(user)}
                     >
                       <svg
@@ -109,10 +106,7 @@ const UserListPage = () => {
                           d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                         />
                       </svg>
-
-
                     </button>
-
                   </td>
                   <td className="text-end pr-2 ">
                     <button className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center">
@@ -136,7 +130,13 @@ const UserListPage = () => {
               ))}
           </tbody>
         </table>
-        {isOpen && userInfo && <MyModal isOpen={isOpen} setIsOpen={setIsOpen} userInfo={userInfo} />}
+        {isOpen && userInfo && (
+          <UpdateUserForm
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            userInfo={userInfo}
+          />
+        )}
 
         <Pagination
           className="h-20 flex justify-end"
@@ -145,7 +145,6 @@ const UserListPage = () => {
           shape="rounded"
         />
       </div>
-
     </div>
   );
 };
