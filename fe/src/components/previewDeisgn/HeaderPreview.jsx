@@ -10,21 +10,30 @@ function generateStarIcons(rating) {
 const HeaderPreview = ({ templateData }) => {
   console.log(templateData?.rating)
   return (
-    <div className="w-full bg-gray-100 p-2 rounded-md shadow-sm">
+    <div className="w-full p-1 rounded-md mb-2"
+      style={{
+        background:
+          "radial-gradient(circle at 52.1% -29.6%, rgb(144, 17, 105) 0%, rgb(51, 0, 131) 100.2%)",
+      }}>
       <div className="flex flex-col space-y-2">
         <div className="flex items-center">
-          <label htmlFor="name" className="mr-2 font-semibold">Name:</label>
-          <p id="name" className="text-gray-800">{templateData?.name}</p>
+          <p id="name" className="text-white font-normal text-[30px]">{templateData?.name}</p>
         </div>
+
+        <div className="flex">
+          <div className="flex items-center">
+            <p id="name" className="text-white font-normal text-[15px]">A5 - horizontal</p>
+          </div>
+
+          <div className="flex items-center ml-[15px]">
+            <p id="author" className="text-white font-normal">{templateData?.user.name}</p>
+          </div>
+        </div>
+
         <div className="flex items-center">
-          <label htmlFor="rating" className="mr-2 font-semibold">Rating:</label>
           <p id="rating" className="text-yellow-500">
             <Rating name="half-rating-read" value={templateData?.rating} precision={0.5} readOnly />
           </p>
-        </div>
-        <div className="flex items-center">
-          <label htmlFor="author" className="mr-2 font-semibold">Author:</label>
-          <p id="author" className="text-blue-500">{templateData?.user.name}</p>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ const PreviewDesignPage = () => {
     // enabled: logged,
   });
   return (
-    <div className="w-2/3 p-4">
+    <div className="w-full px-32">
       <HeaderPreview templateData={templateData?.data.data} />
 
       <ContentPreview templateData={templateData?.data.data.template_pages} />
