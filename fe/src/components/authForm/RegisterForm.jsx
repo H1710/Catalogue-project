@@ -1,60 +1,121 @@
 import React, { useCallback, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
+import { CircularProgress, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 import CustomButton from '../common/Button';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';import {
+  confirmOTPRoute,
+  firstStepRegisterationRoute,
+  setInfoRoute,
+} from '../../utils/APIRoute';
+import { useMutation } from 'react-query';
+import { postAPI } from '../../utils/FetchData';
+import { validRegister } from '../../utils/Validate';
+import { ToastContainer, toast } from 'react-toastify';
 
-const steps = ['Step 1', 'Step 2', 'Step 3'];
+const steps = ['Account', 'Confirm', 'Information'];
 const RegisterForm = ({ setState, setOpenAuthForm }) => {
-  const [activeStep, setActiveStep] = useState(0);
-  // const [infoUser, setInfoUser] = useState( );
+  const [currentStep, setCurrentStep] = useState(0);
+  const [OTPCode, setOTPCode] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    if (activeStep === 0) {
-      console.log('submit nef');
+  const [values, setValues] = useState({
+    email: "",
+    password: ""
+  });
+  console.log(values);
+  
 
-      formik.handleSubmit();
-    }
-    setActiveStep((prev) => prev + 1);
+  const toastOptions = {
+    // position: 'top-right',
+    // autoClose: 3000,
+    // pauseOnHover: true,
+    // draggable: true,
+    // theme: 'light',
+    // type: 'error',
+    
   };
-  console.log(activeStep);
-
-  const handleBack = () => {
-    if (activeStep !== 0) {
-      setActiveStep((pre) => pre - 1);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      email: '',
-      address: '',
-      password: '',
-      confirmPassword: '',
-      otpCode: '',
-      role: 2,
-      typeOfRegister: 'Normal',
+  const { mutate: firstStep, isLoading: loadingFirstStep } = useMutation({
+    mutationFn: info => {
+      return postAPI(firstStepRegisterationRoute, info);
     },
-    onSubmit: (values) => {
-      
-      console.log('login', values);
+    onError: error => {
+      toast.error(error.response.data.message, toastOptions);
     },
-    validationSchema: Yup.object({
-      email: Yup.string().required('Required').email('Must be a valid email'),
-      password: Yup.string().required('Required'),
-      confirmPassword: Yup.string().required('Required'),
-      otpCode: Yup.string().required('Required'),
-    }),
+    onSuccess: data => {
+      toast.success(data.data.message, toastOptions);
+      setCurrentStep(1);
+    },
   });
 
+  const { mutate: submitOTP, isLoading: loadingSubmitOTP } = useMutation({
+    mutationFn: info => {
+      return postAPI(confirmOTPRoute, {
+        email: values.email,
+        OTPCode: OTPCode,
+      });
+    },
+    onError: error => {
+      toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: data => {
+      toast.success(data.data.message, toastOptions);
+      setCurrentStep(2);
+    },
+  });
+
+  const { mutate: submitInfo, isLoading: loadingSubmitInfo } = useMutation({
+    mutationFn: info => {
+      return postAPI(setInfoRoute, {
+        email: values.email,
+        firstname: values.firstname,
+        lastname: values.lastname,
+      });
+    },
+    onError: error => {
+      toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: data => {
+      toast.success(data.data.message, toastOptions);
+      navigate('/login');
+    },
+  });
+
+  const submitFirstStep = async( e) => {
+    e.preventDefault();
+    const check = await validRegister(values);
+    
+    if (check.errLength > 0) {
+      toast.error(check.errMsg[0], toastOptions);
+    } else {
+      firstStep(values);
+    }
+  };
+
+  const submitOTPCode = async e => {
+    e.preventDefault();
+    submitOTP(OTPCode);
+  };
+
+  const submitUserInfo = async e => {
+    e.preventDefault();
+    submitInfo();
+  };
+  const handleChange = e => {
+    let value = e.target.files ? e.target.files : e.target.value;
+    setValues({
+      ...values,
+      [e.target.name]: value,
+    });
+  }; 
   // console.log(infoUser);
 
   return (
-    <>
+    <div className=' relative items-center justify-center w-full h-full'>
       <div className="px-12 py-6 rounded-xl">
         <h1 className="font-medium text-2xl text-center mb-2">Register</h1>
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={currentStep}>
           {steps.map((label, index) => {
             return (
               <Step key={index}>
@@ -64,8 +125,8 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
           })}
         </Stepper>
 
-        <form className="mt-6" onSubmit={formik.handleSubmit}>
-          {activeStep === 0 && (
+        <form className="mt-6" onSubmit={submitFirstStep}  >
+          {currentStep === 0 && (
             <>
               <div className="my-4 text-sm">
                 <TextField
@@ -75,14 +136,9 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                   className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                   placeholder="Email"
                   name="email"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
+                  onChange={handleChange}
                 />
-                {formik.errors.email && (
-                  <Typography variant="caption" color="red">
-                    {formik.errors.email}
-                  </Typography>
-                )}
+               
               </div>
               <div className="my-4 text-sm">
                 <TextField
@@ -92,14 +148,9 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                   className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                   placeholder="Password"
                   name="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
+                  onChange={handleChange}
                 />
-                {formik.errors.password && (
-                  <Typography variant="caption" color="red">
-                    {formik.errors.password}
-                  </Typography>
-                )}
+                
               </div>
               <div className="my-4 text-sm">
                 <TextField
@@ -109,19 +160,34 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                   className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                   placeholder="Confirm Password"
                   name="confirmPassword"
-                  onChange={formik.handleChange}
-                  value={formik.values.confirmPassword}
+                  onChange={handleChange}
                 />
-                {formik.errors.confirmPassword && (
-                  <Typography variant="caption" color="red">
-                    {formik.errors.confirmPassword}
-                  </Typography>
-                )}
+                 
+              </div><div className="flex gap-20">
+                <div className="flex-1 text-center text-black p-3 duration-300 rounded-sm w-full border border-green">
+                  Previous
+                </div>
+                <button
+                  type="submit"
+                  disabled={loadingFirstStep}
+                  className={`flex-1 text-center text-white bg-gray-800 p-3 duration-300 rounded-sm hover:bg-black flex justify-center items-center gap-2`}
+                >
+                  {loadingFirstStep ? (
+                    <>
+                      Loading...
+                      <CircularProgress size={20} />
+                    </>
+                  ) : (
+                    <p>Next</p>
+                  )}
+                </button>
+                 
               </div>
+               
             </>
           )}
-          {activeStep === 1 && <div>hi</div>}
-          {activeStep === 2 && <div>he</div>}
+          {currentStep === 1 && <div>hi</div>}
+          {currentStep === 2 && <div>he</div>}
 
           {/* <div className="mt-4 text-center flex items-center justify-center">
             <div className="flex items-center">
@@ -137,7 +203,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
             </div>
           </div> */}
         </form>
-        {activeStep === steps.length - 1 ? (
+        {currentStep === steps.length - 1 ? (
           <>
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
@@ -145,9 +211,9 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
           </>
         ) : (
           <div className="flex gap-2 mt-7">
-            <CustomButton
+            {/* <CustomButton
               text={'Back'}
-              disabled={activeStep === 0}
+              disabled={currentStep === 0}
               classContent={
                 'cursor-pointer rounded-md flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green'
               }
@@ -159,12 +225,13 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                 'flex-1 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400'
               }
               handleClick={handleNext}
-            />
+            /> */}
           </div>
         )}
       </div>
-    </>
+      <ToastContainer className={'absolute'}/> 
+    </div>
   );
-};
+}
 
 export default RegisterForm;
