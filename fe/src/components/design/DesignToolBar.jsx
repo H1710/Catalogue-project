@@ -4,6 +4,7 @@ import { BlobProvider } from "@react-pdf/renderer";
 import { createTemplateRoute, saveProductRoute } from "../../utils/APIRoute";
 import { postAPI } from "../../utils/FetchData";
 import { useMutation } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DesignToolBar = ({
   currentComponent,
@@ -26,6 +27,7 @@ const DesignToolBar = ({
 
   const handlePublicTemplate = () => {
     publicTemplate(components);
+    navigate(`/public-form/${user.id}`);
   };
   return (
     <div className="h-[50px] w-full flex items-center  text-gray-300 bg-white border-b border-gray-100 shadow px-8">

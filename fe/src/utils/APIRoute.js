@@ -32,3 +32,4 @@ export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const getAllUserRoute = `${host}/user/get-all`;
 
 export const uploadImageRoute = `${host}/upload`;
+export const publicTemplate = `${host}/public-form`;
