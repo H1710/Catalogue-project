@@ -20,7 +20,6 @@ export const getAllBlogRoute = `${host}/blog/get-all`;
 export const getBlogByIdRoute = `${host}/blog/get`;
 
 export const getBlogByUserId = `${host}/blog/get-by-user`;
-// export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 
 export const getProcessingBlogRoute = `${host}/blog/processing`;
 export const getAcceptedBlogRoute = `${host}/blog/accepted`;
@@ -33,3 +32,4 @@ export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const getAllUserRoute = `${host}/user/get-all`;
 
 export const uploadImageRoute = `${host}/upload`;
+export const publicTemplate = `${host}/public-form`;

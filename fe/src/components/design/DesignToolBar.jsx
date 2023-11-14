@@ -4,18 +4,15 @@ import { BlobProvider } from "@react-pdf/renderer";
 import { createTemplateRoute, saveProductRoute } from "../../utils/APIRoute";
 import { postAPI } from "../../utils/FetchData";
 import { useMutation } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 
-const DesignToolBar = ({ currentComponent, setColor, components, user }) => {
-  const { mutate, isLoading: loadingSave } = useMutation({
-    mutationFn: (info) => {
-      return postAPI(saveProductRoute, { product_page: info });
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
-    onSuccess: (data) => {},
-  });
-
+const DesignToolBar = ({
+  currentComponent,
+  setColor,
+  components,
+  user,
+  handleSaveTemplate,
+}) => {
   const { mutate: publicTemplate, isLoading } = useMutation({
     mutationFn: (info) => {
       return postAPI(createTemplateRoute, {
@@ -28,12 +25,9 @@ const DesignToolBar = ({ currentComponent, setColor, components, user }) => {
     onSuccess: (data) => {},
   });
 
-  const handleSave = () => {
-    mutate(components);
-  };
-
   const handlePublicTemplate = () => {
     publicTemplate(components);
+    navigate(`/public-form/${user.id}`);
   };
   return (
     <div className="h-[50px] w-full flex items-center  text-gray-300 bg-white border-b border-gray-100 shadow px-8">
@@ -70,7 +64,7 @@ const DesignToolBar = ({ currentComponent, setColor, components, user }) => {
                 )} */}
               <div className="flex h-full">
                 <button
-                  onClick={handleSave}
+                  onClick={handleSaveTemplate}
                   className="px-3 py-[6px] outline-none text-[--primary-text]"
                 >
                   Save
