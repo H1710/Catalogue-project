@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      rotate: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      text: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       image: {
         type: DataTypes.STRING,
         allowNull: true,

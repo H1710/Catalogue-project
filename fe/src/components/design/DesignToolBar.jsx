@@ -6,7 +6,7 @@ import { postAPI } from "../../utils/FetchData";
 import { useMutation } from "react-query";
 
 const DesignToolBar = ({ currentComponent, setColor, components, user }) => {
-  const { mutate, isLoading: loadingLogin } = useMutation({
+  const { mutate, isLoading: loadingSave } = useMutation({
     mutationFn: (info) => {
       return postAPI(saveProductRoute, { product_page: info });
     },

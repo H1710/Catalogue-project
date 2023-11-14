@@ -52,12 +52,10 @@ const CreateBlog = () => {
 
   const handleCreateBlog = async () => {
     const newData = { ...blog, content: body };
-    console.log(newData);
     let formData = new FormData();
     for (let key in newData) {
       formData.append(key, newData[key]);
     }
-    console.log(formData);
     mutate(formData);
   };
 
