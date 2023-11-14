@@ -46,6 +46,18 @@ function BlogPage({}) {
   return (
     <div className=" w-full flex flex-col justify-between gap-2 p-4">
       <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-center gap-2">
+        <label className="relative">
+          <input
+            onChange={handleChange}
+            className="w-[400px] rounded-lg pl-10"
+            placeholder="Search..."
+          />
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <SearchIcon />
+          </span>
+        </label>
+      </div>
         <div className="w-full flex justify-end">
           <CustomButton
             text={"Create Blog"}
