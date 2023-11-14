@@ -3,10 +3,11 @@ import DesignNavbar from "../components/design/DesignNavbar";
 import DesignTable from "../components/design/DesignTable";
 import CreateComponent from "../components/design/CreateComponent";
 import DesignToolBar from "../components/design/DesignToolBar";
-import { getProductById } from "../utils/APIRoute";
+import { getProductById, saveProductRoute } from "../utils/APIRoute";
 import { useOutletContext, useParams } from "react-router-dom";
 import { getAPI, postAPI } from "../utils/FetchData";
-import { useQuery } from "react-query";
+import html2canvas from "html2canvas";
+import { useMutation } from "react-query";
 
 const DesignPage = () => {
   const [state, setState] = useState("");
@@ -333,17 +334,65 @@ const DesignPage = () => {
     setState(type);
     setShow(true);
   }, []);
+
+  const { mutate: saveTemplate, isLoading: loadingSave } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(saveProductRoute, {
+        product_page: info.components,
+        thumbnail: info.thumbnail,
+      });
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {},
+  });
+
+  const captureContent = useCallback(() => {
+    const element = document.getElementById("main-content");
+
+    return html2canvas(element)
+      .then((canvas) => {
+        return canvas.toDataURL("image/png");
+      })
+      .catch((error) => {
+        // Handle the error, e.g., log it or show an error message
+        console.error("Error capturing content:", error);
+        throw error; // Propagate the error to the caller
+      });
+  }, [components]);
+
+  const handleSaveTemplate = async () => {
+    try {
+      let capturedCanvas = null;
+      console.log(page);
+      if (page == 0) {
+        capturedCanvas = await captureContent();
+      }
+      saveTemplate({ components: components, thumbnail: capturedCanvas });
+    } catch (error) {
+      console.error("Error saving template:", error);
+    }
+  };
+
+  const createImage = (e) => {
+    console.log(e.target.files);
+  };
+
   return (
     <div className="w-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
       <DesignNavbar state={state} setElement={setElement} />
-      <div className="h-full w-full bg-[#f2f2f2]">
-        <DesignTable
-          setShow={setShow}
-          state={state}
-          show={show}
-          createShape={createShape}
-          createText={createText}
-        />
+      <div className="h-full w-full bg-[#f2f2f2] flex relative">
+        {show && (
+          <DesignTable
+            setShow={setShow}
+            state={state}
+            show={show}
+            createShape={createShape}
+            createText={createText}
+            createImage={createImage}
+          />
+        )}
 
         <div className="w-full h-full flex flex-col">
           <DesignToolBar
@@ -351,6 +400,8 @@ const DesignPage = () => {
             currentComponent={currentComponent}
             components={components}
             user={user}
+            captureContent={captureContent}
+            handleSaveTemplate={handleSaveTemplate}
           />
 
           <div
@@ -375,7 +426,10 @@ const DesignPage = () => {
                 />
               </svg>
             </button>
-            <div className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden">
+            <div
+              id="main-content"
+              className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden"
+            >
               <div
                 id="main_design"
                 className="w-auto relative h-auto overflow-hidden"

@@ -1,11 +1,18 @@
 import React from "react";
 
-const DesignTable = ({ state, show, setShow, createShape, createText }) => {
+const DesignTable = ({
+  state,
+  setShow,
+  createShape,
+  createText,
+  createImage,
+}) => {
   return (
     <div
-      className={`${
-        show ? "px-8 left-[75px] py-5" : "p-0 -left-[350px]"
-      } bg-white h-full fixed transition-all w-[350px] duration-700 z-[5]`}
+      // className={`${
+      //   show ? "px-8 left-[75px] py-5" : "p-0 -left-[350px]"
+      // } bg-white h-full fixed transition-all w-[350px] duration-700 z-[5]`}
+      className="bg-white h-full w-[350px] p-8 fixed z-[90]"
     >
       <div
         onClick={() => setShow(false)}
@@ -46,7 +53,7 @@ const DesignTable = ({ state, show, setShow, createShape, createText }) => {
         )}
         {state === "text" && (
           <div>
-            <div className="grid grid-cols-1 gap-2">
+            <div>
               <div
                 onClick={() => createText("text")}
                 className="cursor-pointer bg-[#3c3c3d] cursor--pointer font-bold p-3 text-white text-xl rounded-sm"
@@ -58,9 +65,16 @@ const DesignTable = ({ state, show, setShow, createShape, createText }) => {
         )}
 
         {state === "upload" && (
-          <div className="h-[88vh] overflow-x-auto flex justify-start items-start scrollbar-hide">
+          <div className="grid grid-cols-1 gap-2">
+            <input
+              // onClick={() => createText("text")}
+              type="file"
+              onChange={() => createImage()}
+              className=""
+              placeholder="Add Im"
+            />
             <div className="grid grid-cols-2 gap-2">
-              {[1, 2, 3, 4, 5].map((img, i) => (
+              {[1].map((img, i) => (
                 <div
                   // onClick={() =>
                   //   setImage(

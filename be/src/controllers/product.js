@@ -83,6 +83,7 @@ class ProductController {
     try {
       const data = req.body;
       const productId = data.product_page[0].productId;
+
       for (let page of data.product_page) {
         const product_page = await ProductPage.findOne({
           where: {
@@ -138,6 +139,12 @@ class ProductController {
           }
         }
       }
+      if (data.thumbnail) {
+        const product = await Product.findByPk(productId);
+        product.thumbnail = data.thumbnail;
+        await product.save();
+      }
+
       res.status(200).send({ message: "Success" });
 
       // console.log(data);
