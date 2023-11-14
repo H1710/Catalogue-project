@@ -67,13 +67,14 @@ const router = createBrowserRouter([
         path: "/order-list",
         element: <OrderListPage />,
       },
+      {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+ 
 ]);
 
 export default router;

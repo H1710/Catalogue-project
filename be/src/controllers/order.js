@@ -62,7 +62,7 @@ class OrderController {
   static async getMonthlyRevenue(req, res) {
     try {
       const monthlyData = [];
-      const{ year} = req.query;
+      const year = req.body.year;
       const monthName = [
         "January",
         "February",
@@ -134,7 +134,6 @@ class OrderController {
           + 'on subquery.servicePackageId = sp.id '
           + 'group by servicePackageId, numOfPurchase'
           + ') as subquery2';
-       
         const result = await seq.query(query);
         yearlyData.push({ yearName: yearName[index], result: result[0] });
       }
@@ -145,11 +144,12 @@ class OrderController {
     }
   }
 
+
   static async getOrderByYear(req, res) {
     try {
       const { year } = req.query;
-console.log(year);
 
+      // Truy vấn cơ sở dữ liệu
       const orders = await Order.findAll({
         attributes: [
           [Sequelize.literal('YEAR(createdAt)'), 'year'],
@@ -177,12 +177,27 @@ console.log(year);
         raw: true,
       });
 
-      res.status(200).json(orders);
+      // Tạo mảng kết quả với tất cả các tháng và gán giá trị 0 cho những tháng không có dữ liệu
+      const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+      const result = allMonths.map(month => {
+        const key = `${year}-${String(month).padStart(2, '0')}`;
+        const data = orders.find(order => order.year === year && order.month === month);
+
+        if (data) {
+          return data;
+        } else {
+          return { year, month, order_count: 0, monthly_revenue: 0, yearly_revenue: 0 };
+        }
+      });
+
+      res.status(200).json(result);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+
 
   static async getAllOrder(req, res) {
     try {

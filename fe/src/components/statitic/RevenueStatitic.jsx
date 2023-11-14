@@ -13,25 +13,11 @@ export default function RevenueStatitic({ year }) {
   const [data, setData] = useState([])
    
   
- 
   
-  // const data = [
-  //   { name: "Jan", customer: 400, designer: 100 },
-  //   { name: "Feb", customer: 200, designer: 20 },
-  //   { name: "Mar", customer: 600, designer: 10 },
-  //   { name: "Apr", customer: 400, designer: 40 },
-  //   { name: "May", customer: 500, designer: 100 },
-  //   { name: "Jun", customer: 400, designer: 180 },
-  //   { name: "Jul", customer: 100, designer: 90 },
-  //   { name: "Aug", customer: 0, designer: 70 },
-  //   { name: "Sep", customer: 200, designer: 20 },
-  //   { name: "Oct", customer: 700, designer: 40 },
-  //   { name: "Nov", customer: 400, designer: 0 },
-  //   { name: "Dec", customer: 900, designer: 120 },
-  // ];
+   
   useEffect(() => {
       const handleAPI = async () => {
-        const res = await axios.get(`http://localhost:5000/api/v1/order/get-order-by-year?year=${year}`);
+        const res = await axios.get(`http://localhost:5000/api/v1/order/get-order-by-year`, {year: year});
         setData(res.data);
       };
       handleAPI();
@@ -70,7 +56,7 @@ export default function RevenueStatitic({ year }) {
           stroke="#8884d8"
           fillOpacity={1}
           fill="url(#coloruv)"
-        />{" "}
+        />{""}
         <Area
           type="monotone"
           dataKey="designer"
@@ -79,9 +65,9 @@ export default function RevenueStatitic({ year }) {
           fill="url(#colorpv)"
         />
       </AreaChart>
-      <div className="ring-1 w-[316px]  items-center justify-center flex flex-col">
+      <div className=" border-2 w-[300px] rounded-xl border-teal-400 items-center justify-center flex flex-col">
         <div className="font-bold  ">TOTAL REVENUE</div>
-        <h1 className="text-[50px]">{data[0].yearly_revenue}$</h1>
+        <h1 className="text-[50px]">{data[0]?.yearly_revenue}$</h1>
         <span className="text-[30px]">In {year} : 5000$</span>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { postAPI } from "../../utils/FetchData";
 import { logoutRoute } from "../../utils/APIRoute";
 import { useDispatch } from "react-redux";
 import { seft } from "../../redux/reducers/authReducer";
+import { Link } from "react-router-dom";
 
 const Dropdown = ({ user }) => {
   const dispatch = useDispatch();
@@ -32,9 +33,11 @@ const Dropdown = ({ user }) => {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2 mt-3">
+          <Link to={`/profile/${user.id}`}> 
         <p className="text-[16px] hover:bg-gray-100 py-2 px-4 cursor-pointer">
           Account Setting
         </p>
+        </Link>
         <p
           onClick={handleLogout}
           className="text-[16px] hover:bg-gray-100 py-2 px-4 cursor-pointer"

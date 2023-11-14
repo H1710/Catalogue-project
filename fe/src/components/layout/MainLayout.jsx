@@ -17,7 +17,6 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
-  console.log(user);
   const { isLoading } = useQuery({
     queryKey: ["refresh_token"],
     queryFn: () => {
@@ -42,7 +41,7 @@ const MainLayout = () => {
       <div className="w-full h-full flex">
         {showSidebar &&
           (user.role.name === "Admin" ? (
-            <AdminSidebar />
+            <AdminSidebar user={user} />
           ) : (
             <UserSidebar user={user} />
           ))}
@@ -54,9 +53,7 @@ const MainLayout = () => {
           <Outlet context={[user, setOpenAuthForm]} />
         </div>
       </div>
-      {/* <div className="w-full h-10">
-        <Footer />
-      </div> */}
+       
 
       {openAuthForm && (
         <AuthenticationForm

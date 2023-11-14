@@ -160,7 +160,7 @@ class UserController {
 
   static async getUserByYear(req, res) {
     try {
-      const { year } = req.body;
+      const { year } = req.params;
       if (year == null) {
         res.status(404).send({ message: "Year not found" });
       }
