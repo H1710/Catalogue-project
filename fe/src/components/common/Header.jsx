@@ -132,62 +132,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
         </div>
 
         <div className="flex items-center gap-6 h-full">
-          {/* <div>
-            <Tippy
-              offset={[0, 10]}
-              placement="bottom"
-              interactive
-              visible={showNoti}
-              interactiveBorder={10}
-              render={({ ...attrs }) => (
-                <div
-                  tabIndex="-1"
-                  {...attrs}
-                  className="w-[300px] shadow-xl bg-white inline-block rounded-[3px] z-100 p-2 max-h-[500px] overflow-auto"
-                >
-                  <h2 className="font-semibold  border-b-2 border-slate-500 p-2 mb-2">
-                    Notifications
-                  </h2>
-                  {NotifList.map((noti, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col justify-start rounded-[5px]  cursor-pointer hover:bg-green-50  "
-                    >
-                      <div className="px-2 text-[15px]"> {noti.value}</div>
-                      <div className="text-[10px] flex justify-end px-2 text-teal-600">
-                        {noti.time}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              onClickOutside={() => setShowNoti(false)}
-            >
-              <div
-                className="relative px-2 "
-                onClick={() => setShowNoti(!showNoti)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                  />
-                </svg>
-
-                <div className="absolute text-rose-400 text-[14px] font-semibold bottom-3 ml-3">
-                  +{newNotification}
-                </div>
-              </div>
-            </Tippy>
-          </div> */}
+         
 
           <div>
             {user ? (
@@ -208,13 +153,17 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
                 {dropDown && <Dropdown user={user} />}
               </div>
             ) : (
-              <button
-                onClick={() => {
-                  setOpenAuthForm(true);
-                }}
-              >
-                Login
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    setOpenAuthForm(true);
+                    
+                  }}
+                >
+                  Login
+                </button>
+              </>
+
             )}
           </div>
         </div>

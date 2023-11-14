@@ -64,7 +64,7 @@ export default function ServicePackage({
 
     setInfoInvoice({ ...infoInvoice, [e.target.name]: e.target.value });
   };
-  console.log(infoInvoice);
+  // console.log(infoInvoice);
   // const handleCreateInvoice = () => {
   //   closeModal();
   //   setIsShowInvoice(true);
@@ -78,12 +78,12 @@ export default function ServicePackage({
     setStateOfPopup((pre) => pre - 1);
   };
   const formik = useFormik({
-    initialValues: initInfo,
+    initialValues: infoInvoice,
     onSubmit: (values) => {
+      values.packageId = infoInvoice.packageId
       closeModal();
-      setIsShowInvoice(true);
-      // setStateOfPopup((pre) => pre + 1);
       setInfoInvoice(values);
+      setIsShowInvoice(true);
     },
 
     validationSchema: Yup.object({
@@ -185,7 +185,7 @@ export default function ServicePackage({
 
                       <div className="mt-4">
                         <CustomButton
-                          classContent="inline-flex justify-center w-full rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          classContent="inline-flex justify-center w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
                           handleClick={handleNext}
                           text={'Start right now!'}
                         />
@@ -199,7 +199,7 @@ export default function ServicePackage({
                           PACKAGE SERVICE
                         </div>
                         {lsPack.map((pack, i) => (
-                          <div className="grid ">
+                          <div className="grid " key={i}>
                             <label className="flex flex-row justify-start items-start">
                               <input
                                 type="radio"
@@ -242,7 +242,7 @@ export default function ServicePackage({
                             name="cardNumber"
                             size="small"
                             required
-                            value={formik.values?.cardNumber}
+                            value={formik.values.cardNumber}
                             onChange={formik.handleChange}
                           />
                           {formik.errors.cardNumber && (
@@ -289,7 +289,6 @@ export default function ServicePackage({
                         text={'Next'}
                         type={'submit'}
                         classContent={'bg-[#8b3dff] text-white w-full mt-4 '}
-                        // handleClick={handleCreateInvoice}
                       ></CustomButton>
                     </form>
                   )}

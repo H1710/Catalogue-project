@@ -91,11 +91,11 @@ class AuthController {
           include: [
             {
               model: Order,
-              attributes: ["id", "servicePackageId"],
+              attributes: ["id", "servicePackageId", "createdAt"],
               include: [
                 {
                   model: Package,
-                  attributes: ["name"],
+                  attributes: ["name", "remain_day"],
                 },
               ],
             },
