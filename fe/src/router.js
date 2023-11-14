@@ -14,6 +14,7 @@ import DesignPage from "./pages/DesignPage";
 import OrderListPage from "./pages/OrderListPage";
 import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
+import MyBlog from "./pages/MyBlogPage";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "/order-list",
         element: <OrderListPage />,
+      },
+      {
+        path: "/myblog",
+        element: <MyBlog />,
       },
     ],
   },

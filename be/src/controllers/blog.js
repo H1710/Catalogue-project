@@ -640,6 +640,57 @@ class BlogController {
       return res.status(500).json({ message: "Something went wrong" });
     }
   }
+
+  static async getBlogByUserId(req, res) {
+    try {
+      const userId = req.params.userId;
+      console.log(userId);
+      const blog = await Blog.findAll({
+        where: {
+          userId: userId
+        },
+        include: [
+          {
+            model: blogRating,
+            attributes: [],
+          },
+          {
+            model: Tag,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        attributes: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+          [seq.fn("AVG", seq.col("blog_ratings.rating")), "avgRating"],
+        ],
+        group: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+          "blog.id",
+          "tags.id",
+        ],
+      });
+      if (!blog) {
+        return res.status(400).send({ message: "Blog not found." });
+      }
+      return res.status(200).json({ blog: blog });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+  }
 }
 
 exports.BlogController = BlogController;
