@@ -8,7 +8,7 @@ const ContentPreview = ({ templateData }) => {
     <div className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden">
       <button
         onClick={() => page - 1 >= 0 && setPage(page - 1)}
-        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 transition-colors duration-300 cursor-pointer"
+        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 transition-colors duration-300 cursor-pointer mr-3"
         disabled={page === 0}
       >
         <svg
@@ -34,7 +34,7 @@ const ContentPreview = ({ templateData }) => {
       </div>
       <button
         onClick={() => page <= templateData.length - 1 && setPage(page + 1)}
-        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 transition-colors duration-300 cursor-pointer"
+        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 ml-3 transition-colors duration-300 cursor-pointer"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

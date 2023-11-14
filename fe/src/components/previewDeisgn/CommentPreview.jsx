@@ -9,7 +9,9 @@ const CommentPreview = () => {
       rows="3"
       placeholder="Write a comment..."
     ></textarea>
-    <CustomButton text={"Comment"} classContent={"text-white ml-[900px] mt-2 bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 hover:from-purple-900 hover:via-purple-700 hover:to-purple-600"}></CustomButton>
+    <div className="flex justify-end w-full">
+      <CustomButton text={"Comment"} classContent={"text-white  mt-2 bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 hover:from-purple-900 hover:via-purple-700 hover:to-purple-600"}></CustomButton>
+    </div>
   </div>
 
 
