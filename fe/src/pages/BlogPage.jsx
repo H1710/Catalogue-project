@@ -26,6 +26,7 @@ function BlogPage({}) {
     },
     // enabled: logged,
   });
+  console.log(blogsData);
   const handleCreateBlog = useCallback(() => {
     if (!user?.access_token) {
       setOpenAuthForm(true);
