@@ -15,6 +15,7 @@ import OrderListPage from "./pages/OrderListPage";
 import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
 import MyBlog from "./pages/MyBlogPage";
+import PublicTemplate from "./pages/PublicTemplatePage";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "/myblog",
         element: <MyBlog />,
+      },
+      {
+        path: "/public-form/:id",
+        element: <PublicTemplate />,
       },
     ],
   },
