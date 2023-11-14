@@ -147,8 +147,9 @@ class OrderController {
 
   static async getOrderByYear(req, res) {
     try {
-      const { year } = req.body;
-
+      const year = parseInt(req.params.year, 10);
+      console.log(year)
+      // const year = req.body.year;
       // Truy vấn cơ sở dữ liệu
       const orders = await Order.findAll({
         attributes: [

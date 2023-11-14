@@ -126,27 +126,22 @@ class UserController {
 
   static async getUserByYear(req, res) {
     try {
-      const { year } = req.body;
-      if (year == null) {
-        res.status(404).send({ message: "Year not found" });
+      const year = parseInt(req.params.year, 10);
+      console.log(year);
+
+      if (isNaN(year)) {
+        res.status(400).send({ message: "Invalid year" });
         return;
       }
 
       // Tạo một mảng với tất cả các tháng trong năm
       const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 
-      // Truy vấn cơ sở dữ liệu
+      // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng
       const userRegistrations = await User.findAll({
         attributes: [
           [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
-          [
-            Sequelize.fn('SUM', Sequelize.literal("CASE WHEN `roleId` = 2 THEN 1 ELSE 0 END")),
-            'customer_count',
-          ],
-          [
-            Sequelize.fn('SUM', Sequelize.literal("CASE WHEN `roleId` = 4 THEN 1 ELSE 0 END")),
-            'designer_count',
-          ],
+          [Sequelize.fn('COUNT', Sequelize.col('id')), 'registration_count'],
         ],
         where: {
           createdAt: {
@@ -159,24 +154,33 @@ class UserController {
         order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
       });
 
+      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm
+      const totalRegistrations = await User.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+      });
+
       // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
       const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
 
-      // Tạo kết quả cuối cùng với đủ 12 tháng
+      // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm
       const result = allMonths.map(month => {
         const data = userMap.get(month);
-        if (data) {
-          return data;
-        } else {
-          return {
-            month,
-            customer_count: 0,
-            designer_count: 0,
-          };
-        }
+        return {
+          year: year,
+          month,
+          registration_count: data ? data.registration_count : 0,
+        };
       });
 
-      res.status(200).json(result);
+      res.status(200).json({
+        registrations: result,
+        total_registrations: totalRegistrations,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
