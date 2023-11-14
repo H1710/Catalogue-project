@@ -40,8 +40,6 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
     },
   });
 
-  console.log(comments);
-
   const renderCommentTree = (commentList) => {
     return commentList
       .filter((comment) => comment.replyCommentId === null)
