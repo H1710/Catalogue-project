@@ -39,3 +39,5 @@ export const getUploadImageRoute = `${host}/user/get-images-upload`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
+
+export const acceptTemplateRoute = `${host}/template/get-template/Processing`;

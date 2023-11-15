@@ -16,6 +16,7 @@ import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
 import MyBlog from "./pages/MyBlogPage";
 import PublicTemplate from "./pages/PublicTemplatePage";
+import ApproveTemplate from "./pages/ApproveTemplate";
 
 const router = createBrowserRouter([
   {
@@ -85,7 +86,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/template/approve",
-        element: <PublicTemplate />,
+        element: <ApproveTemplate />,
       },
     ],
   },

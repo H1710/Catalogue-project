@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { getProcessingBlogRoute, acceptBlogRoute } from "../utils/APIRoute";
+import { getProcessingBlogRoute, acceptBlogRoute, acceptTemplateRoute } from "../utils/APIRoute";
 import { getAPI, patchAPI } from "../utils/FetchData";
 import { Pagination } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import BlogList from "../components/blog/BlogList";
 import TemplateList from "../components/home/TemplateList";
+import ProcessTemp from "./ProcessTempList";
 
 const ApproveTemplate = () => {
   const [page, setPage] = useState(1);
@@ -13,10 +14,10 @@ const ApproveTemplate = () => {
   const { data: templateList, isLoading: loadingTempData } = useQuery({
     queryKey: ["templates", page],
     queryFn: () => {
-      return getAPI(`${getProcessingBlogRoute}?page=${page}&sort=desc`);
+      return getAPI(`${acceptTemplateRoute}`);
     },
     onSuccess: (data) => {
-      console.log(data);
+      console.log("dataaaaaaaa:",data);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
@@ -26,7 +27,7 @@ const ApproveTemplate = () => {
 
   const { mutate: acceptTemplate, isLoading: loadingAcceptTemp } = useMutation({
     mutationFn: (info) => {
-      return patchAPI(acceptBlogRoute, info);
+      return patchAPI(acceptTemplateRoute, info);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -46,8 +47,8 @@ const ApproveTemplate = () => {
   }, []);
   return (
     <div className=" w-full h-screen flex flex-col justify-between">
-      {template && (
-        <TemplateList
+      {templateList && (
+        <ProcessTemp
         templateList={templateList}
           isLoadingTemplateData={loadingTempData}
           handleAcceptTemp={handleAcceptTemp}
