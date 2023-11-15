@@ -31,6 +31,7 @@ const LoginForm = ({ setOpenAuthForm }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -46,8 +47,20 @@ const LoginForm = ({ setOpenAuthForm }) => {
   const { mutate, isLoading: loadingLogin } = useMutation({
     mutationFn: (info) => postAPI(loginRoute, info),
     onError: (error) => {
-      // Replace with your error handling logic
-      alert(error.response.data.message);
+      let errorMessage = "Incorrect email or password";
+
+      if (error.response && error.response.data && error.response.data.errors) {
+        const emailError = error.response.data.errors.email;
+        const passwordError = error.response.data.errors.password;
+
+        if (emailError) {
+          errorMessage = emailError;
+        } else if (passwordError) {
+          errorMessage = passwordError;
+        }
+      }
+
+      setErrorMessage(errorMessage);
     },
     onSuccess: (data) => {
       dispatch(seft({ ...data.data.user }));
@@ -64,6 +77,7 @@ const LoginForm = ({ setOpenAuthForm }) => {
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          setErrorMessage(null);
           mutate(values);
         }}
       >
@@ -104,6 +118,9 @@ const LoginForm = ({ setOpenAuthForm }) => {
               className="text-red-500 text-xs"
             />
           </div>
+          {errorMessage && (
+            <div className="text-red-500 text-xs mt-2">{errorMessage}</div>
+          )}
           <div class="flex justify-end mt-2 text-xs text-gray-600">
             <a href="#">Forget Password?</a>
           </div>
