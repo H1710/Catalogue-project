@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      rotate: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      text: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       top: {
         type: DataTypes.INTEGER,
         allowNull: true,

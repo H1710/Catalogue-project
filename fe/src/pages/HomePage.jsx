@@ -1,9 +1,16 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import {
   getProductByUser,
   getAllTemplateRoute,
   cloneTemplateRoute,
+  saveProductNameRoute,
 } from "../utils/APIRoute";
 import axios from "axios";
 
@@ -20,21 +27,19 @@ import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery } from "react-query";
 import CustomButton from "../components/common/Button";
 import ServicePackage from "../components/ServicePackage";
+import TemplateList from "../components/home/TemplateList";
+import ProductList from "../components/home/ProductList";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
   
   const [input, setInput] = useState("");
   const [user, setOpenAuthForm] = useOutletContext();
-  // useEffect(() => {
-  //   const handleAPI = async () => {
-  //     const res = await axios.get(`${getTemplateRoute}/1`);
-  //     setTemplateList(res.data.data);
-  //   };
-  //   handleAPI();
-  // }, []);
-  const { data: productData, isLoading } = useQuery({
-    queryKey: ["products"],
+
+  const { data: productData, isLoading: isLoadingProductData } = useQuery({
+    queryKey: ["products", user?.id],
     queryFn: () => {
+      console.log(user.id);
       return getAPI(`${getProductByUser}/${user.id}`);
     },
     onSuccess: (data) => {
@@ -46,7 +51,7 @@ const HomePage = () => {
     // enabled: logged,
   });
 
-  const { data: templateData } = useQuery({
+  const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
       return getAPI(`${getAllTemplateRoute}`);
@@ -103,6 +108,24 @@ const HomePage = () => {
     cloneTemplate({ template, userId: user.id });
   };
 
+  const { mutate: saveNameProduct, isLoading: loadingSaveName } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(saveProductNameRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      // toast.success(data.data.message, toastOptions);
+      // localStorage.setItem("signed", "chat-app");
+      // navigate("/");
+    },
+  });
+
+  const handleSaveName = (productId, newName) => {
+    saveNameProduct({ productId, newName });
+  };
+
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
@@ -114,70 +137,24 @@ const HomePage = () => {
       >
         <Search />
       </div>
-      <div className="content col-span-full select-none text-xl flex justify-start pb-2 font-semibold">
-        Template
-      </div>
 
-      <div className="w-full grid grid-cols-4 gap-6">
-        {templateData &&
-          templateData.data.data.map((template, index) => (
-            <div>
-              <div
-                className="w-full flex justify-center items-center bg-[#ccc] rounded-[5px] py-[30px] "
-                key={index}
-                onClick={() => handleCloneTemplate(template)}
-              >
-                <div className="h-full w-full flex items-center justify-center">
-                  <img
-                    src={template.thumbnail}
-                    alt=""
-                    className="w-[250px] h-[150px] object-contain"
-                  />
-                </div>
-              </div>
-              <p className="font-semibold text-[14px] mt-2">{template.name}</p>
-            </div>
-          ))}
-      </div>
+      <br />
+      <TemplateList
+        templateList={templateData?.data.data}
+        isLoadingTemplateData={isLoadingTemplateData}
+      />
       {/* <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
         <Slider templateList={templateList} />
       </div> */}
-      <div className="content col-span-full select-none text-xl flex justify-between items-center pb-2 font-semibold">
-        <p>Current Design</p>
-        <CustomButton
-          text={"Create Design"}
-          classContent={
-            "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
-          }
-          handleClick={() => handleNewTemplate()}
-          isLoading={loadingCloneTemplate}
-        />
-      </div>
 
-      <div className="w-full grid grid-cols-4 gap-6">
-        {productData &&
-          productData.data.products.map((product, index) => (
-            <div>
-              <div
-                className="w-full flex justify-center items-center bg-[#eeeeef] rounded-md p-[16px]"
-                key={index}
-                onClick={() => {
-                  navigate(`/design/${product.id}`);
-                }}
-              >
-                <div className="h-full w-full flex items-center justify-center group cursor-pointer rounded-md ">
-                  <img
-                    src={product.thumbnail}
-                    alt=""
-                    className="w-full h-full object-contain rounded-md"
-                  />
-                </div>
-              </div>
-              <p className="font-semibold text-[14px] mt-2">{product.name}</p>
-            </div>
-          ))}
-      </div>
-      {/* <ServicePackage showServiePackages={showServiePackages} setShowServiePackages={setShowServiePackages}/> */}
+      <br />
+      <ProductList
+        productData={productData?.data.products}
+        handleNewTemplate={handleNewTemplate}
+        loadingCloneTemplate={loadingCloneTemplate}
+        handleSaveName={handleSaveName}
+        isLoadingProductData={isLoadingProductData}
+      />
     </div>
   );
 };
