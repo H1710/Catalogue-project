@@ -2,20 +2,22 @@ const db = require("../models/index");
 const ServicePackage = db.servicePackage;
 const User = db.user;
 const Comment = db.blogComment;
-  
+
 class CommentController {
   static async createComment(req, res) {
     try {
-      const { date, content, userId, blogId } = req.body;
-      const newComment = await BlogComment.create({
-        date,
+      const { content, userId, blogId } = req.body;
+      const newComment = await Comment.create({
         content,
         userId,
         blogId,
       });
 
       if (newComment) {
-        res.status(200).json({ message: "Comment created successfully", comment: newComment });
+        res.status(200).json({
+          message: "Comment created successfully",
+          comment: newComment,
+        });
       } else {
         res.status(500).json({ message: "Failed to create comment" });
       }
@@ -24,14 +26,21 @@ class CommentController {
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
- static async getComments(req, res) {
+  static async getComments(req, res) {
     try {
       const blogId = req.params.blogId;
       // const blogId = req.body.blogId;
       console.log(blogId);
       const comment = await Comment.findAll({
         where: { blogId },
-        attributes: ["id", "content", "total_votes", "createdAt", "userId", "replyCommentId"],
+        attributes: [
+          "id",
+          "content",
+          "total_votes",
+          "createdAt",
+          "userId",
+          "replyCommentId",
+        ],
         include: [
           {
             model: User, // Thay User bằng mô hình tương ứng cho bảng User
@@ -39,9 +48,9 @@ class CommentController {
           },
         ],
       });
-      res.status(200).json({ comment })
+      res.status(200).json({ comment });
     } catch (error) {
-      res.status(500).json({ message: "somehitng went wrong"});
+      res.status(500).json({ message: "somehitng went wrong" });
     }
   }
   static async replyComment(req, res) {
@@ -63,27 +72,6 @@ class CommentController {
       }
     } catch (error) {
       console.error("Error creating reply:", error);
-      res.status(500).json({ message: "Something went wrong!" });
-    }
-  }
-  static async commentblog(req, res) {
-    try {
-      const { date, content, userId, blogId } = req.body;
-
-      const newComment = await Commentblog.create({
-        date,
-        content,
-        userId,
-        blogId,
-      });
-
-      if (newComment) {
-        res.status(200).json({ message: "Commentblog successfully" });
-      } else {
-        res.status(500).json({ message: "Failed to create comment" });
-      }
-    } catch (error) {
-      console.error("Error creating comment:", error);
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
@@ -110,7 +98,7 @@ class CommentController {
   static async sortByDate(req, res) {
     try {
       const comments = await Commentblog.findAll({
-        order: [['date', 'DESC']],
+        order: [["date", "DESC"]],
       });
 
       if (comments.length > 0) {

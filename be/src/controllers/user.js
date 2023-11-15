@@ -2,10 +2,13 @@ const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
+const uploadImage = require("../utils/uploadImage");
 
 const Role = db.role;
 const User = db.user;
 const Order = db.order;
+const ImageUpload = db.imageUpload;
+
 const ServicePackage = db.servicePackage;
 class UserController {
   static async createUser(req, res) {
@@ -68,7 +71,7 @@ class UserController {
     try {
       const userId = req.params.id;
       const user = await db.user.findByPk(userId);
-      if (user) {
+      if (user && user.role != 1) {
         await user.destroy();
         res.status(204).send();
       } else {
@@ -102,7 +105,7 @@ class UserController {
           email: faker.internet.email(),
           password: faker.internet.password(),
           endDate: faker.date.future(),
-          roleId: faker.number.int({ min: 1, max: 4 }),
+          roleId: faker.number.int({ min: 1, max: 3 }),
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };
@@ -123,6 +126,39 @@ class UserController {
     }
   }
 
+  static async getAllUser(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
+      const perPage = 7; // Number of users to show per page
+      const offset = (page - 1) * perPage; // Calculate the offset based on the page
+
+      const users = await User.findAll({
+        attributes: ["avatar", "name", "email", "country"],
+        include: [
+          {
+            model: Role,
+            attributes: ["id", "name"],
+          },
+          {
+            model: Order,
+            include: {
+              model: ServicePackage,
+              attributes: ["name"],
+            },
+          },
+        ],
+        limit: perPage, // Limit the number of results per page
+        offset: offset, // Offset for pagination
+      });
+
+      res.json({
+        users: users,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
 
   static async getUserByYear(req, res) {
     try {
@@ -198,7 +234,78 @@ class UserController {
     }
   }
 
+  static async selectPackage(req, res) {
+    try {
+      const { serviceId, userId } = req.body;
+      if (serviceId == null && userId == null) {
+        res
+          .status(400)
+          .json({ message: "The user has not selected a package" });
+      } else {
+        let info = {
+          userId: userId,
+          servicePackageId: serviceId,
+        };
+        const order = await Order.create(info);
+        res.status(201).json({
+          message: "The user selected a package successfully",
+          order: order,
+        });
+      }
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
 
+  static async uploadImageByUser(req, res) {
+    try {
+      const { userId } = req.body;
+      const designImage = req.file;
+
+      if (!designImage) {
+        return res.status(400).json({ message: "Image not found" });
+      }
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const data = await uploadImage(
+        designImage.filename,
+        designImage.mimetype
+      );
+
+      await ImageUpload.create({
+        userId: userId,
+        content: data.data.webContentLink,
+      });
+
+      return res.status(200).send({ message: "Upload success" });
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async getImageUpload(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const images = await ImageUpload.findAll({
+        where: { userId: userId },
+        attributes: ["id", "content"],
+      });
+
+      return res
+        .status(200)
+        .send({ message: "Get images success", images: images });
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
 }
 
 exports.UserController = UserController;

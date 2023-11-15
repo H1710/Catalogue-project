@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from '../common/Header';
-import UserSidebar from '../sidebar/UserSidebar';
-import AdminSidebar from '../sidebar/AdminSidebar';
-import ThemeSwitcher from '../common/ThemeSwitcher';
-import { useDispatch, useSelector } from 'react-redux';
-import AuthenticationForm from '../authForm/AuthenticationForm';
-import { refreshTokenRoute } from '../../utils/APIRoute';
-import { getAPI } from '../../utils/FetchData';
-import { useQuery } from 'react-query';
-import { seft } from '../../redux/reducers/authReducer';
+import React, { useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "../common/Header";
+import UserSidebar from "../sidebar/UserSidebar";
+import AdminSidebar from "../sidebar/AdminSidebar";
+import ThemeSwitcher from "../common/ThemeSwitcher";
+import { useDispatch, useSelector } from "react-redux";
+import AuthenticationForm from "../authForm/AuthenticationForm";
+import { refreshTokenRoute } from "../../utils/APIRoute";
+import { getAPI } from "../../utils/FetchData";
+import { useQuery } from "react-query";
+import { seft } from "../../redux/reducers/authReducer";
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -18,8 +18,9 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
+
   const { isLoading } = useQuery({
-    queryKey: ['refresh_token'],
+    queryKey: ["refresh_token", dispatch],
     queryFn: () => {
       
       return getAPI(refreshTokenRoute);
@@ -43,9 +44,11 @@ const MainLayout = () => {
         isDisableMenu={isDisableMenu}
       />
       <div className="w-full h-full flex">
-        {showSidebar &&
-          (user.role.name === 'Admin' ? (
-            <AdminSidebar user={user} />
+
+        {user?.access_token &&
+          showSidebar &&
+          (user.role.name === "Admin" ? (
+            <AdminSidebar />
           ) : (
             <UserSidebar user={user} />
           ))}

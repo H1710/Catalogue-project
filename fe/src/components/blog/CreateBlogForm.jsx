@@ -1,11 +1,36 @@
 import React, { useState } from "react";
 import Tag from "../Tag";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Button, TextField } from "@mui/material";
 
 const CreateForm = ({ blog, setBlog }) => {
   //   const { categories } = useSelector((state) => state);
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Title is required").max(50, "Title is too long"),
+    tag: Yup.string().required("Tag is required"),
+    thumbnail: Yup.mixed().required("Thumbnail is required"),
+    description: Yup.string().required("Description is required").max(300, "Description is too long"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      tag: "",
+      thumbnail: null,
+      description: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   const handleChangeInput = (e) => {
     const { value, name } = e.target;
     setBlog({ ...blog, [name]: value });
+    formik.handleChange(e);
   };
 
   const handleChangeThumbnail = (e) => {
@@ -21,41 +46,47 @@ const CreateForm = ({ blog, setBlog }) => {
     const string = e.target.value;
     const tags = string.split(" ");
     setBlog({ ...blog, tags: tags });
+    formik.handleChange(e);
   };
 
   return (
-    <form className=" flex flex-col flex-1 gap-2">
-      <div className="relative flex h-[40px] border border-[--border-input] rounded">
-        <input
-          type="text"
-          className="w-full rounded py-1 px-2 outline-none text-sm"
-          value={blog.title}
-          placeholder="Title"
-          name="title"
-          onChange={handleChangeInput}
-          required
-        />
+    <form className="flex flex-col flex-1 gap-2" onSubmit={formik.handleSubmit}>
+      <TextField
+        label="Title"
+        variant="outlined"
+        fullWidth
+        value={formik.values.title}
+        name="title"
+        // onChange={formik.handleChange}
+        onChange={handleChangeInput}
+        onBlur={formik.handleBlur}
+        required
+        error={formik.touched.title && Boolean(formik.errors.title)}
+        helperText={formik.touched.title && formik.errors.title}
+      />
 
-        <small
-          className="absolute"
-          style={{ bottom: 0, right: "3px", opacity: "0.3" }}
-        >
-          {blog.title.length}/50
-        </small>
-      </div>
+      <TextField
+        label="Tag"
+        variant="outlined"
+        fullWidth
+        value={formik.values.tag}
+        name="tag"
+        onChange={handleChangeTag}
+        onBlur={formik.handleBlur}
+        required
+        error={formik.touched.tag && Boolean(formik.errors.tag)}
+        helperText={formik.touched.tag && formik.errors.tag}
+      />
 
-      <div className="relative overflow-hidden items-center flex w-full h-[40px] border border-[--border-input] rounded gap-2">
-        <input
-          type="text"
-          className="border-none outline-none flex-1 py-1 px-2 text-sm"
-          placeholder="Tag"
-          // value={blog.tag[blog.tag.length - 1]}
-          name="tag"
-          onChange={handleChangeTag}
-          required
-        />
-      </div>
-
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => formik.setFieldValue("thumbnail", e.currentTarget.files[0])}
+        onBlur={formik.handleBlur}
+        required
+        style={{ display: "none" }}
+        id="thumbnail-upload"
+      />
       <div className="">
         <input
           type="file"
@@ -65,26 +96,24 @@ const CreateForm = ({ blog, setBlog }) => {
           required
         />
       </div>
+      {formik.touched.thumbnail && formik.errors.thumbnail && (
+        <div className="text-red-500">{formik.errors.thumbnail}</div>
+      )}
 
-      <div className="relative flex flex-1 border border-[--border-input] rounded">
-        <textarea
-          className="w-full rounded py-1 px-2 outline-none text-sm"
-          rows={4}
-          value={blog.description}
-          placeholder="Description"
-          style={{ resize: "none" }}
-          name="description"
-          onChange={handleChangeInput}
-          required
-        />
-
-        <small
-          className="absolute"
-          style={{ bottom: 0, right: "3px", opacity: "0.3" }}
-        >
-          {blog.description.length}/300
-        </small>
-      </div>
+      <TextField
+        label="Description"
+        variant="outlined"
+        fullWidth
+        multiline
+        rows={4}
+        value={formik.values.description}
+        name="description"
+        onChange={handleChangeInput}
+        onBlur={formik.handleBlur}
+        required
+        error={formik.touched.description && Boolean(formik.errors.description)}
+        helperText={formik.touched.description && formik.errors.description}
+      />
     </form>
   );
 };

@@ -3,13 +3,30 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { checkImage, imageUpload } from "../../utils/ImageUpload";
 import ImageResize from "quill-image-resize-module-react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 // import { checkImage, imageUpload } from "../../utils/ImageUpload";
 // import { ALERT } from "../../redux/types/alertType";
 // import { useAppDispatch } from "../../redux/hooks";
 
-const QuillEditor = ({ setBody }) => {
-  // const dispatch = useAppDispatch();
+const QuillEditor = ({ setBody, setFormValid }) => {
+
+  const validationSchema = Yup.object({
+    body: Yup.string().required("Content is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      body: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values.body);
+    },
+  });
+
+
   const quillRef = useRef(null);
   window.Quill = Quill;
   Quill?.register("modules/imageResize", ImageResize);
@@ -21,7 +38,7 @@ const QuillEditor = ({ setBody }) => {
     },
   };
 
-  // Custom image
+  
   const handleChangeImage = useCallback(() => {
     const input = document.createElement("input");
     input.type = "file";
@@ -52,35 +69,47 @@ const QuillEditor = ({ setBody }) => {
 
     let toolbar = quill.getEditor().getModule("toolbar");
     toolbar.addHandler("image", handleChangeImage);
-  }, [handleChangeImage]);
-
+    quill.getEditor().on("text-change", () => {
+      const isValid = quill.getEditor().getText().trim().length > 0;
+      setFormValid(isValid);
+    });
+  }, [handleChangeImage, setFormValid]);
   return (
-    <div>
+    <form onSubmit={formik.handleSubmit}>
+      <div>
       <ReactQuill
         theme="snow"
         modules={modules}
         placeholder="Write somethings..."
-        onChange={(e) => setBody(e)}
+        onChange={(e) => {
+          setBody(e);
+          
+        }}
         ref={quillRef}
         className=""
       />
-    </div>
+        {formik.touched.body && formik.errors.body && (
+          <div className="text-red-500">{formik.errors.body}</div>
+        )}
+
+      </div>
+    </form>
   );
 };
 
 let container = [
   [{ font: [] }],
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+  [{ size: ["small", false, "large", "huge"] }], 
 
-  ["bold", "italic", "underline", "strike"], // toggled buttons
+  ["bold", "italic", "underline", "strike"], 
   ["blockquote", "code-block"],
-  [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-  [{ script: "sub" }, { script: "super" }], // superscript/subscript
+  [{ color: [] }, { background: [] }], 
+  [{ script: "sub" }, { script: "super" }], 
 
   [{ list: "ordered" }, { list: "bullet" }],
-  [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-  [{ direction: "rtl" }], // text direction
+  [{ indent: "-1" }, { indent: "+1" }], 
+  [{ direction: "rtl" }],
   [{ align: [] }],
 
   ["clean", "link", "image", "video"],

@@ -35,7 +35,26 @@ class AuthController {
   static async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ where: { email: email } });
+      const user = await User.findOne({
+        where: { email: email },
+        attributes: ["id", "name", "email", "password"],
+        include: [
+          {
+            model: Order,
+            attributes: ["id", "servicePackageId"],
+            include: [
+              {
+                model: Package,
+                attributes: ["name"],
+              },
+            ],
+          },
+          {
+            model: Role,
+            attributes: ["name"],
+          },
+        ],
+      });
       if (!user)
         return res
           .status(400)
@@ -83,7 +102,6 @@ class AuthController {
       }
 
       const decode = jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET);
-      console.log(decode);
       if (!decode) return res.status(400).json({ message: "Please login now" });
       if (decode.id) {
         const user = await User.findByPk(decode.id, {
@@ -123,9 +141,9 @@ class AuthController {
         httpOnly: true,
         sameSite: "none",
       });
-      return res.status(200).send({ message: "Logged out." });
+      return res.status(200).send({ message: "Logged out" });
     } catch (error) {
-      return res.status(500).send({ message: "Logout erro.r" });
+      return res.status(500).send({ message: "Logout error" });
     }
   }
 

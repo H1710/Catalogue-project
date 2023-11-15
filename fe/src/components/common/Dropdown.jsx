@@ -12,7 +12,7 @@ const Dropdown = ({ user }) => {
    
   const handleLogout = useCallback(async () => {
     await postAPI(logoutRoute);
-    // dispatch(seft(null));
+    dispatch(seft(null));
   }, []);
 
   return (

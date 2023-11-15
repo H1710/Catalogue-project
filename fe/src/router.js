@@ -13,6 +13,9 @@ import UserListPage from "./pages/UserListPage";
 import DesignPage from "./pages/DesignPage";
 import OrderListPage from "./pages/OrderListPage";
 import ApproveBlogPage from "./pages/ApproveBlogPage";
+import PreviewDesignPage from "./pages/PreviewDesignPage";
+import MyBlog from "./pages/MyBlogPage";
+import PublicTemplate from "./pages/PublicTemplatePage";
 
 const router = createBrowserRouter([
   {
@@ -27,10 +30,7 @@ const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
-      {
-        path: "/designer",
-        element: <DesignerPage />,
-      },
+
       {
         path: "/blog",
         element: <BlogPage />,
@@ -52,6 +52,10 @@ const router = createBrowserRouter([
         element: <DesignPage />,
       },
       {
+        path: "/design/preview/:templateId",
+        element: <PreviewDesignPage />,
+      },
+      {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
       },
@@ -70,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "/profile/:id",
         element: <ProfilePage />,
+      },
+      {
+        path: "/myblog",
+        element: <MyBlog />,
+      },
+      {
+        path: "/public-form/:id",
+        element: <PublicTemplate />,
       },
     ],
   },

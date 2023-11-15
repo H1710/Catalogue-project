@@ -5,6 +5,8 @@ import ServicePackage from '../ServicePackage';
 function AdminSidebar({ user }) {
   const [showServiePackages, setShowServiePackages] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
+  const navigate = useNavigate();
+
   const [showCategoryList, setShowCategoryList] = useState(true);
   const categoryList = ['Education', 'Social media', 'Bussiness'];
   console.log(isPremium);
@@ -74,6 +76,11 @@ function AdminSidebar({ user }) {
           </div>
         )}
         <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div 
+        onClick={() => {
+          navigate("/home");
+        }}
+        className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -132,7 +139,11 @@ function AdminSidebar({ user }) {
               </div>
             );
           })}
-        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div 
+        onClick={() => {
+          navigate("/myblog");
+        }}
+        className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -7,7 +7,7 @@ import { getBlogByIdRoute } from "../../utils/APIRoute";
 
 const DisplayBlog = ({ blog, setOpenAuthForm }) => {
   return (
-    <div className="">
+    <div className="w-full">
       <h2>{blog.avgRating}</h2>
 
       <div className="flex flex-col gap-2 flex-grow-2">
@@ -30,7 +30,11 @@ const DisplayBlog = ({ blog, setOpenAuthForm }) => {
               (tag, index) => tag && <Tag key={index} content={tag.name} />
             )}
           </div>
+          
         )}
+        <div>
+        <img className="w-[50%] object-cover" src={blog.thumbnail} />
+        </div>
 
         <div
           dangerouslySetInnerHTML={{
@@ -38,9 +42,6 @@ const DisplayBlog = ({ blog, setOpenAuthForm }) => {
           }}
         />
         {/* <img className="w-[300px]" src={blog.thumbnail} alt={blog.title} /> */}
-
-        <hr className="my-1" />
-        <BlogComment setOpenAuthForm={setOpenAuthForm} />
 
         {/* {auth.user ? (
         <Input callback={handleComment} />
