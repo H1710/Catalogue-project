@@ -106,7 +106,12 @@ const HomePage = () => {
         },
       ],
     };
-    cloneTemplate({ template, userId: user.id });
+    if(!user) {
+      setOpenAuthForm(true);
+    } else {
+
+      cloneTemplate({ template, userId: user.id });
+    }
   };
 
   const { mutate: saveNameProduct, isLoading: loadingSaveName } = useMutation({
