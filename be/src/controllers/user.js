@@ -328,16 +328,26 @@ class UserController {
 
       const orders = await Order.findAll({
         where: {
-          createdAt: {
+          createdAt: {  // Assuming Order has a field named orderDate for creation date
             [Sequelize.Op.gte]: new Date(`${year}-01-01`),
             [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
         },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+          {
+            model: ServicePackage,
+            attributes: ["name", "price"],
+          },
+        ],
       });
 
       res.status(200).json({
         users: users,
-        orders: orders
+        orders: orders,
       });
     } catch (error) {
       console.error(error);
