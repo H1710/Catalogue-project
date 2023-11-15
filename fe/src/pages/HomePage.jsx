@@ -11,6 +11,7 @@ import {
   getAllTemplateRoute,
   cloneTemplateRoute,
   saveProductNameRoute,
+  acceptTemplateRoute,
 } from "../utils/APIRoute";
 import axios from "axios";
 
@@ -54,7 +55,7 @@ const HomePage = () => {
   const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
-      return getAPI(`${getAllTemplateRoute}`);
+      return getAPI(`${acceptTemplateRoute}`);
     },
     onSuccess: (data) => {
       // console.log(data);
