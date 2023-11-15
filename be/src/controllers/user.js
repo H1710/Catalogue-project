@@ -2,10 +2,12 @@ const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
+const uploadImage = require("../utils/uploadImage");
 
 const Role = db.role;
 const User = db.user;
 const Order = db.order;
+const ImageUpload = db.imageUpload;
 
 const ServicePackage = db.servicePackage;
 class UserController {
@@ -40,7 +42,6 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-
 
   static async updateUser(req, res) {
     try {
@@ -104,7 +105,7 @@ class UserController {
           email: faker.internet.email(),
           password: faker.internet.password(),
           endDate: faker.date.future(),
-          roleId: faker.number.int({ min: 1, max: 4 }),
+          roleId: faker.number.int({ min: 1, max: 3 }),
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };
@@ -161,27 +162,22 @@ class UserController {
 
   static async getUserByYear(req, res) {
     try {
-      const { year } = req.body;
-      if (year == null) {
-        res.status(404).send({ message: "Year not found" });
+      const year = parseInt(req.params.year, 10);
+      console.log(year);
+
+      if (isNaN(year)) {
+        res.status(400).send({ message: "Invalid year" });
+        return;
       }
+
+      // Tạo một mảng với tất cả các tháng trong năm
+      const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+
+      // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng của năm hiện tại
       const userRegistrations = await User.findAll({
         attributes: [
-          [Sequelize.fn("MONTH", Sequelize.col("createdAt")), "month"],
-          [
-            Sequelize.fn(
-              "SUM",
-              Sequelize.literal("CASE WHEN `roleId` = 2 THEN 1 ELSE 0 END")
-            ),
-            "customer_count",
-          ],
-          [
-            Sequelize.fn(
-              "SUM",
-              Sequelize.literal("CASE WHEN `roleId` = 4 THEN 1 ELSE 0 END")
-            ),
-            "designer_count",
-          ],
+          [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
+          [Sequelize.fn('COUNT', Sequelize.col('id')), 'registration_count'],
         ],
         where: {
           createdAt: {
@@ -189,13 +185,48 @@ class UserController {
             [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
         },
-        group: [Sequelize.fn("MONTH", Sequelize.col("createdAt"))],
+        group: [Sequelize.fn('MONTH', Sequelize.col('createdAt'))],
         raw: true,
-        order: [[Sequelize.fn("MONTH", Sequelize.col("createdAt")), "ASC"]],
+        order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
+      });
+
+      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm hiện tại
+      const totalRegistrations = await User.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+      });
+
+      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm trước đó
+      const previousYearTotalRegistrations = await User.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year - 1}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year - 1}-12-31`),
+          },
+        },
+      });
+
+      // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
+      const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
+
+      // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm hiện tại
+      const result = allMonths.map(month => {
+        const data = userMap.get(month);
+        return {
+          year: year,
+          month,
+          registration: data ? data.registration_count : 0,
+        };
       });
 
       res.status(200).json({
-        Count: userRegistrations,
+        registrations: result,
+        total_registrations: totalRegistrations,
+        previous_year_total_registrations: previousYearTotalRegistrations,
       });
     } catch (error) {
       console.error(error);
@@ -221,6 +252,56 @@ class UserController {
           order: order,
         });
       }
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async uploadImageByUser(req, res) {
+    try {
+      const { userId } = req.body;
+      const designImage = req.file;
+
+      if (!designImage) {
+        return res.status(400).json({ message: "Image not found" });
+      }
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const data = await uploadImage(
+        designImage.filename,
+        designImage.mimetype
+      );
+
+      await ImageUpload.create({
+        userId: userId,
+        content: data.data.webContentLink,
+      });
+
+      return res.status(200).send({ message: "Upload success" });
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async getImageUpload(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const images = await ImageUpload.findAll({
+        where: { userId: userId },
+        attributes: ["id", "content"],
+      });
+
+      return res
+        .status(200)
+        .send({ message: "Get images success", images: images });
     } catch (error) {
       res.status(400).send({ message: "Something went wrong." });
     }

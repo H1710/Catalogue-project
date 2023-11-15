@@ -16,6 +16,7 @@ import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
 import MyBlog from "./pages/MyBlogPage";
 import PublicTemplate from "./pages/PublicTemplatePage";
+import ApproveTemplate from "./pages/ApproveTemplate";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
         element: <OrderListPage />,
       },
       {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
+      {
         path: "/myblog",
         element: <MyBlog />,
       },
@@ -79,13 +84,14 @@ const router = createBrowserRouter([
         path: "/public-form/:id",
         element: <PublicTemplate />,
       },
+      {
+        path: "/template/approve",
+        element: <ApproveTemplate />,
+      },
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+ 
 ]);
 
 export default router;

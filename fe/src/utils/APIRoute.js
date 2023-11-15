@@ -3,6 +3,10 @@ const host = "http://localhost:5000/api/v1";
 export const loginRoute = `${host}/auth/login`;
 export const refreshTokenRoute = `${host}/auth/refresh_token`;
 export const logoutRoute = `${host}/auth/logout`;
+export const registerRoute = `${host}/user/register`;
+export const firstStepRegisterationRoute = `${host}/auth/first-step-registeration`;
+export const confirmOTPRoute = `${host}/auth/submitOTP`;
+export const setInfoRoute = `${host}/auth/setInfo`;
 
 export const createTemplateRoute = `${host}/template/create`;
 export const getAllTemplateRoute = `${host}/template/get-all`;
@@ -30,6 +34,10 @@ export const commentBlogRoute = `${host}/comment/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const getAllUserRoute = `${host}/user/get-all`;
+export const uploadImageUserRoute = `${host}/user/upload-image`;
+export const getUploadImageRoute = `${host}/user/get-images-upload`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
+
+export const acceptTemplateRoute = `${host}/template/get-template/Processing`;

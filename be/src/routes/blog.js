@@ -19,6 +19,7 @@ router.patch("/cancel-blog", BlogController.cancelBlog);
 router.get("/filter", BlogController.filterBlog);
 router.get("/processing", BlogController.getProcessingBlog);
 router.get("/accepted", BlogController.getAcceptedBlog);
+router.get("/search-blog", BlogController.SearchBlogByTags)
 
 router.post("/auto-create-blog", BlogController.autoCreateBlog);
 

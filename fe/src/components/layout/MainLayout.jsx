@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../common/Header";
 import UserSidebar from "../sidebar/UserSidebar";
 import AdminSidebar from "../sidebar/AdminSidebar";
@@ -14,6 +14,7 @@ import { seft } from "../../redux/reducers/authReducer";
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [openAuthForm, setOpenAuthForm] = useState(false);
+  const [isDisableMenu, setIsDisableMenu] = useState(false);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
@@ -24,11 +25,12 @@ const MainLayout = () => {
       return getAPI(refreshTokenRoute);
     },
     onSuccess: (data) => {
+      setIsDisableMenu(true);
       dispatch(
         seft({ ...data.data.user, access_token: data.data.access_token })
       );
     },
-    onError: (error) => { },
+    onError: (error) => {},
     enabled: localStorage.getItem("signed") === "catalogue-app",
   });
   return (
@@ -38,25 +40,24 @@ const MainLayout = () => {
         setShowSidebar={setShowSidebar}
         user={user}
         setOpenAuthForm={setOpenAuthForm}
+        isDisableMenu={isDisableMenu}
       />
       <div className="w-full h-full flex">
         {user?.access_token &&
           showSidebar &&
           (user.role.name === "Admin" ? (
-            <AdminSidebar />
+            <AdminSidebar user={user} />
           ) : (
             <UserSidebar user={user} />
           ))}
         <div
-          className={`flex justify-center items-center w-full ${showSidebar && "ml-[250px]"
-            }`}
+          className={`flex justify-center items-center w-full ${
+            showSidebar && "ml-[250px]"
+          }`}
         >
           <Outlet context={[user, setOpenAuthForm]} />
         </div>
       </div>
-      {/* <div className="w-full h-10">
-        <Footer />
-      </div> */}
 
       {openAuthForm && (
         <AuthenticationForm
