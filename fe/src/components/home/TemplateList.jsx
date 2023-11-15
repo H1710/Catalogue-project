@@ -11,13 +11,7 @@ const TemplateList = ({ templateList, isLoadingTemplateData }) => {
       </div>
       <div className="w-full grid grid-cols-4 gap-8">
         {isLoadingTemplateData ? (
-          <div className="flex space-x-8">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="inline">
-              <Skeleton width={349} height={280} className="rounded-md" />
-            </div>
-          ))}
-        </div>
+          <Skeleton width={349} height={280} className="rounded-md" />
         ) : (
           <>
             {templateList &&
