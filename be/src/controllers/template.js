@@ -13,7 +13,6 @@ class TemplateController {
       const thumbnail = req.file;
 
       const templateData = await JSON.parse(template);
-      console.log(templateData);
       const data = await uploadImage(thumbnail.filename, thumbnail.mimetype);
       const newTemplate = await Template.create({
         name: name,
@@ -91,7 +90,6 @@ class TemplateController {
     }
   }
 
-
   static async searchTemplateByName(req, res) {
     try {
       const name = req.params.name;
@@ -109,7 +107,6 @@ class TemplateController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-
 
   static async getTemplate(req, res) {
     try {
@@ -145,7 +142,9 @@ class TemplateController {
         status: "Accepted",
       });
 
-      return res.status(200).json({ message: "Update template successfully", template });
+      return res
+        .status(200)
+        .json({ message: "Update template successfully", template });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -162,16 +161,17 @@ class TemplateController {
       }
 
       await template.update({
-        status: "Denied",
+        status: "Cancelled",
       });
 
-      return res.status(200).json({ message: "Update template successfully", template });
+      return res
+        .status(200)
+        .json({ message: "Update template successfully", template });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
     }
   }
-
 }
 
 exports.TemplateController = TemplateController;
