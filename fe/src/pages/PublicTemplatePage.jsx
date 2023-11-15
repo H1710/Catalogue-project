@@ -9,6 +9,9 @@ import {
 } from "react-router-dom";
 import * as Yup from "yup";
 import Tag from "../components/Tag";
+import { useMutation } from "react-query";
+import { createBlogRoute, createTemplateRoute } from "../utils/APIRoute";
+import { postAPI } from "../utils/FetchData";
 
 const PublicTemplate = () => {
   const { state } = useLocation();
@@ -16,11 +19,32 @@ const PublicTemplate = () => {
   const [tags, setTags] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [user] = useOutletContext();
-  console.log(user);
 
-  const handleSubmit = (e) => {
+  const { mutate: publicTemplate, isLoading } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(createTemplateRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {},
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, tags, thumbnail });
+    const newData = {
+      name: name,
+      tags: tags,
+      thumbnail: thumbnail,
+      userId: user.id,
+      template: state.components,
+    };
+    console.log(newData);
+    let formData = new FormData();
+    for (let key in newData) {
+      formData.append(key, newData[key]);
+    }
+    publicTemplate(formData);
   };
 
   return (
