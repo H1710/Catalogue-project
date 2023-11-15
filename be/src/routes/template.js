@@ -7,5 +7,6 @@ router.get("/get/:templateId", TemplateController.getTemplate);
 router.get("/get-all", TemplateController.getAllTemplate);
 router.get("/get-template/:status", TemplateController.getTemplateProcessing);
 router.get("/search-template/:name", TemplateController.searchTemplateByName);
-
+router.patch("/accept-template", TemplateController.acceptTemplate);
+router.patch("/denied-template", TemplateController.deniedTemplate);
 module.exports = router;

@@ -127,6 +127,47 @@ class TemplateController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+  static async acceptTemplate(req, res) {
+    try {
+      const { templateId } = req.body;
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      await template.update({
+        status: "Accepted",
+      });
+
+      return res.status(200).json({ message: "Update template successfully", template });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async deniedTemplate(req, res) {
+    try {
+      const { templateId } = req.body;
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      await template.update({
+        status: "Denied",
+      });
+
+      return res.status(200).json({ message: "Update template successfully", template });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
 }
 
 exports.TemplateController = TemplateController;
