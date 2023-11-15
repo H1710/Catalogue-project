@@ -48,7 +48,7 @@ const MainLayout = () => {
         {user?.access_token &&
           showSidebar &&
           (user.role.name === "Admin" ? (
-            <AdminSidebar />
+            <AdminSidebar  user={user}/>
           ) : (
             <UserSidebar user={user} />
           ))}

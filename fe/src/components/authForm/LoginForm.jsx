@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-const LoginForm = ({ setOpenAuthForm }) => {
+const LoginForm = ({setState, setOpenAuthForm }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ const LoginForm = ({ setOpenAuthForm }) => {
           <div class="flex justify-end mt-2 text-xs text-gray-600">
             <a href="#">Forget Password?</a>
           </div>
-        </div>
+         
         <div class="flex gap-2 mt-7">
           <div
             onClick={() => {
@@ -133,16 +133,12 @@ const LoginForm = ({ setOpenAuthForm }) => {
             </p>
             <a
               onClick={() => setState("register")}
-              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer"
+              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer">
+                Register
+              </a>
+              </div>
+              </div>
           
-          {/* <GoogleLogin
-        clientId={clientId}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        buttonText='Sign in with Google'
-        cookiePolicy={'single_host_origin'}
-        isSignedIn={false}
-        /> */}
         </Form>
       </Formik>
     </div>
