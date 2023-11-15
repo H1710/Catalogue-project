@@ -121,8 +121,6 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     submitInfo();
   };
   const handleChange = (e) => {
-    console.log(e.target.name);
-
     let value = e.target?.files ? e.target.files : e.target.value;
     setValues({
       ...values,
