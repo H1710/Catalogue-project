@@ -306,6 +306,55 @@ class UserController {
       res.status(400).send({ message: "Something went wrong." });
     }
   }
+
+  static async getListByYear(req, res) {
+    try {
+      const year = parseInt(req.params.year, 10);
+      console.log(year);
+
+      if (isNaN(year)) {
+        res.status(400).send({ message: "Invalid year" });
+        return;
+      }
+
+      const users = await User.findAll({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+      });
+
+      const orders = await Order.findAll({
+        where: {
+          createdAt: {  // Assuming Order has a field named orderDate for creation date
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+          {
+            model: ServicePackage,
+            attributes: ["name", "price"],
+          },
+        ],
+      });
+
+      res.status(200).json({
+        users: users,
+        orders: orders,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
 }
 
 exports.UserController = UserController;

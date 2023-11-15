@@ -10,7 +10,8 @@ router.get("/getUserById", UserController.getUserById);
 router.post("/updateUser", UserController.createUser);
 router.delete("/deleteUser", UserController.deleteUser);
 
-router.get("/get-user-by-year", UserController.getUserByYear);
+router.get("/get-list-by-year/:year", UserController.getListByYear)
+router.get("/get-user-by-year/:year", UserController.getUserByYear);
 router.get("/get-all", UserController.getAllUser);
 router.post("/select-package", UserController.selectPackage);
 router.post(

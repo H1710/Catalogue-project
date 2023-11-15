@@ -69,7 +69,7 @@ export default function UserStatitic({ year }) {
     }
   }
 
-  console.log(data);
+  
 
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
