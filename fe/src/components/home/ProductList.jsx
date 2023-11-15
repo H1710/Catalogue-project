@@ -2,6 +2,7 @@ import React from "react";
 import CustomButton from "../common/Button";
 import { useNavigate } from "react-router-dom";
 import DesignCard from "./DesignCard";
+import { Skeleton } from "@mui/material";
 
 const ProductList = ({
   productData,
@@ -29,7 +30,9 @@ const ProductList = ({
 
       <div className="w-full grid grid-cols-4 gap-8">
         {isLoadingProductData ? (
-          <div>loading</div>
+          <div>
+            <Skeleton variant="rectangular" width={1500} height={118} />
+          </div>
         ) : (
           <>
             {productData &&
