@@ -52,7 +52,7 @@ function BlogPage({}) {
     console.log(text);
   }
 
-  console.log(blogsData.data.blogs);
+
 
   const handleSearch = () => {
     setSearchText(text);
