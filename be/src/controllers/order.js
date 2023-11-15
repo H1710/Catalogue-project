@@ -148,19 +148,20 @@ class OrderController {
   static async getOrderByYear(req, res) {
     try {
       const year = parseInt(req.params.year, 10);
-      console.log(year)
-      // const year = req.body.year;
-      // Truy vấn cơ sở dữ liệu
-      const orders = await Order.findAll({
+      console.log(year);
+
+      if (isNaN(year)) {
+        res.status(400).send({ message: "Invalid year" });
+        return;
+      }
+
+      // Truy vấn cơ sở dữ liệu cho năm hiện tại
+      const ordersCurrentYear = await Order.findAll({
         attributes: [
           [Sequelize.literal('YEAR(createdAt)'), 'year'],
           [Sequelize.literal('MONTH(createdAt)'), 'month'],
           [Sequelize.literal('COUNT(*)'), 'order_count'],
           [Sequelize.literal('SUM(price)'), 'monthly_revenue'],
-          [
-            Sequelize.literal('SUM(SUM(price)) OVER (PARTITION BY YEAR(createdAt))'),
-            'yearly_revenue',
-          ],
         ],
         include: [
           {
@@ -178,25 +179,83 @@ class OrderController {
         raw: true,
       });
 
+      // Truy vấn cơ sở dữ liệu cho năm trước đó
+      const ordersPreviousYear = await Order.findAll({
+        attributes: [
+          [Sequelize.literal('YEAR(createdAt)'), 'year'],
+          [Sequelize.literal('MONTH(createdAt)'), 'month'],
+          [Sequelize.literal('COUNT(*)'), 'order_count'],
+          [Sequelize.literal('SUM(price)'), 'monthly_revenue'],
+        ],
+        include: [
+          {
+            model: ServicePackage,
+            attributes: [],
+          },
+        ],
+        where: {
+          createdAt: {
+            [Sequelize.Op.between]: [`${year - 1}-01-01`, `${year - 1}-12-31`],
+          },
+        },
+        group: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        order: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        raw: true,
+      });
+
+      // Tổng số đơn đặt hàng cho năm hiện tại
+      const totalOrdersCurrentYear = await Order.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.between]: [`${year}-01-01`, `${year}-12-31`],
+          },
+        },
+      });
+
+      // Tổng số đơn đặt hàng cho năm trước đó
+      const totalOrdersPreviousYear = await Order.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.between]: [`${year - 1}-01-01`, `${year - 1}-12-31`],
+          },
+        },
+      });
+
+      // Tổng doanh thu hàng năm
+      const yearlyRevenueCurrentYear = ordersCurrentYear.reduce((acc, order) => acc + parseFloat(order.monthly_revenue), 0);
+      const yearlyRevenuePreviousYear = ordersPreviousYear.reduce((acc, order) => acc + parseFloat(order.monthly_revenue), 0);
+
       // Tạo mảng kết quả với tất cả các tháng và gán giá trị 0 cho những tháng không có dữ liệu
       const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
       const result = allMonths.map(month => {
         const key = `${year}-${String(month).padStart(2, '0')}`;
-        const data = orders.find(order => order.year === year && order.month === month);
+        const dataCurrentYear = ordersCurrentYear.find(order => order.year === year && order.month === month);
+        const dataPreviousYear = ordersPreviousYear.find(order => order.year === year - 1 && order.month === month);
 
-        if (data) {
-          return data;
+        if (dataCurrentYear) {
+          return dataCurrentYear;
+        } else if (dataPreviousYear) {
+          return dataPreviousYear;
         } else {
-          return { year, month, order_count: 0, monthly_revenue: 0, yearly_revenue: 0 };
+          return { year, month, order_count: 0, monthly_revenue: 0 };
         }
       });
 
-      res.status(200).json(result);
+      res.status(200).json({
+        orders: result,
+        total_orders_current_year: totalOrdersCurrentYear,
+        total_orders_previous_year: totalOrdersPreviousYear,
+        yearly_revenue_current_year: yearlyRevenueCurrentYear,
+        yearly_revenue_previous_year: yearlyRevenuePreviousYear,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+
+
 
 
 
