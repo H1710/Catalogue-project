@@ -11,7 +11,7 @@ const TemplateList = ({ templateList, isLoadingTemplateData }) => {
       </div>
       <div className="w-full grid grid-cols-4 gap-8">
         {isLoadingTemplateData ? (
-          <Skeleton width={349} height={280} className="rounded-md" />
+          <Skeleton width={849} height={280} className="rounded-md" />
         ) : (
           <>
             {templateList &&
