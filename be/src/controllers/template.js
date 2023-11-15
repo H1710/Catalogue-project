@@ -1,7 +1,8 @@
 const db = require("../models/index");
 const uploadImage = require("../utils/uploadImage");
-
+const seq = require("../db/dbConnection");
 const Template = db.template;
+const RatingTemplate = db.templateRating;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
 const User = db.user;
@@ -173,25 +174,75 @@ class TemplateController {
     }
   }
 
-  static async ratingTemplate(req, res) {
+  static async getAcceptedTemplate(req, res) {
     try {
-      const { userId, rating, templateId } = req.body;
-      const template = await Template.findByPk(templateId);
-
-      if (!template) {
-        return res.status(404).json({ message: "Template not found" });
+      let page = req.query.page;
+      if (!page) {
+        page = 1;
       }
-
-      await template.update({
-        status: "Cancelled",
+      let sort = req.query.sort;
+      if (sort == "") {
+        sort = "asc";
+      }
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      const templates = await Template.findAll({
+        include: [
+          {
+            model: RatingTemplate,
+            attributes: [],
+          },
+        ],
+        attributes: [
+          "id",
+          "name",
+          "thumbnail",
+          "createdAt",
+          "status",
+          [seq.fn("AVG", seq.col("template_ratings.rating")), "avgRating"],
+        ],
+        where: {
+          status: "Accepted",
+        },
+        offset: (page - 1) * limit,
+        limit: limit,
+        subQuery: false,
       });
 
-      return res
-        .status(200)
-        .json({ message: "Update template successfully", template });
+      res.status(200).json({
+        templates: templates,
+      });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async ratingTemplate(req, res) {
+    try {
+      const { templateId, userId, rating } = req.body;
+
+      // Assuming you have a RatingTemplate model
+      const templateRate = await RatingTemplate.findOne({
+        where: { templateId, userId },
+      });
+
+      if (templateRate) {
+        // Update the existing rating
+        await templateRate.update({ rating });
+        return res.status(200).json({ message: "Rating updated successfully" });
+      } else {
+        // Create a new rating
+        await RatingTemplate.create({
+          userId: userId,
+          templateId: templateId,
+          rating: rating,
+        });
+        return res.status(201).json({ message: "Rating created successfully" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
     }
   }
 }
