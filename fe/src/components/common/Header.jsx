@@ -1,17 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
 
 import MinidenticonImg from "./MinidenticonImg";
 import Dropdown from "./Dropdown";
 
-
-function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableMenu }) {
-  
+function Header({
+  setShowSidebar,
+  showSidebar,
+  user,
+  setOpenAuthForm,
+  isDisableMenu,
+}) {
   const [showNoti, setShowNoti] = useState(false);
   const [dropDown, setDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -27,7 +28,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableM
   //     document.removeEventListener('click', handleOutsideClick);
   //   };
   // }, []);
-  
+
   // console.log(showNoti);
   const navList = [
     {
@@ -41,37 +42,11 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableM
       to: "/blog",
     },
   ];
-  
- 
- 
+
   return (
     <div className="p-2 h-[60px] shadow w-full sticky top-0 z-40 bg-white">
-      <div
-        className="header flex h-full items-center justify-between text-zinc-700 px-2"
-       
-      >
+      <div className="header flex h-full items-center justify-between text-zinc-700 px-2">
         <div className="flex text-xl h-full items-center gap-6 ">
-          <button
-            className="p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out delay-50 rounded-sm"
-            onClick={() => setShowSidebar(!showSidebar)}
-            aria-readonly
-           disabled={!isDisableMenu}
-           
-
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
           {user?.access_token && (
             <div
               className="p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out delay-50 rounded-sm"
@@ -121,8 +96,6 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableM
         </div>
 
         <div className="flex items-center gap-6 h-full">
-         
-
           <div>
             {user?.access_token ? (
               <div className="relative">
@@ -139,21 +112,19 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableM
                   />
                 )}
 
-                {dropDown && <Dropdown user={user}  ref={dropdownRef}/>}
+                {dropDown && <Dropdown user={user} ref={dropdownRef} />}
               </div>
             ) : (
               <>
                 <button
                   onClick={() => {
                     setOpenAuthForm(true);
-                    
                   }}
                   className="flex-1 ml-3 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[100px] font-semibold"
                 >
                   Login
                 </button>
               </>
-
             )}
           </div>
         </div>
