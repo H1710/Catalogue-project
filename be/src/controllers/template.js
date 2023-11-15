@@ -172,6 +172,28 @@ class TemplateController {
       res.status(400).send({ message: "Something went wrong." });
     }
   }
+
+  static async ratingTemplate(req, res) {
+    try {
+      const { userId, rating, templateId } = req.body;
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      await template.update({
+        status: "Cancelled",
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Update template successfully", template });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
 }
 
 exports.TemplateController = TemplateController;
