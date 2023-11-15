@@ -1,19 +1,22 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import * as Yup from "yup";
 import Tag from "../components/Tag";
 
 const PublicTemplate = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const { state } = useLocation();
   const [name, setName] = useState("");
   const [tags, setTags] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-
-  console.log(state);
+  const [user] = useOutletContext();
+  console.log(user);
 
   const handleSubmit = (e) => {
     e.preventDefault();

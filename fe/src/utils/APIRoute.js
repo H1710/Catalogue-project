@@ -3,6 +3,10 @@ const host = "http://localhost:5000/api/v1";
 export const loginRoute = `${host}/auth/login`;
 export const refreshTokenRoute = `${host}/auth/refresh_token`;
 export const logoutRoute = `${host}/auth/logout`;
+export const registerRoute = `${host}/user/register`;
+export const firstStepRegisterationRoute = `${host}/auth/first-step-registeration`;
+export const confirmOTPRoute = `${host}/auth/submitOTP`;
+export const setInfoRoute = `${host}/auth/setInfo`;
 
 export const createTemplateRoute = `${host}/template/create`;
 export const getAllTemplateRoute = `${host}/template/get-all`;

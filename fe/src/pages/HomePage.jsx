@@ -26,15 +26,14 @@ import Rating from "@mui/material/Rating";
 import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery } from "react-query";
 import CustomButton from "../components/common/Button";
+import ServicePackage from "../components/ServicePackage";
 import TemplateList from "../components/home/TemplateList";
 import ProductList from "../components/home/ProductList";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  // const showSidebar = useContext(ShowSidebarContext)
+  
   const [input, setInput] = useState("");
-  // const [templateList, setTemplateList] = useState("");
-  // const [templateNumber, setTemplateNumber] = useState(0);
   const [user, setOpenAuthForm] = useOutletContext();
 
   const { data: productData, isLoading: isLoadingProductData } = useQuery({

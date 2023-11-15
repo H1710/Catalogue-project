@@ -14,6 +14,7 @@ import { seft } from "../../redux/reducers/authReducer";
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [openAuthForm, setOpenAuthForm] = useState(false);
+  const [isDisableMenu, setIsDisableMenu] = useState(false);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
@@ -24,6 +25,7 @@ const MainLayout = () => {
       return getAPI(refreshTokenRoute);
     },
     onSuccess: (data) => {
+      setIsDisableMenu(true);
       dispatch(
         seft({ ...data.data.user, access_token: data.data.access_token })
       );
@@ -38,6 +40,7 @@ const MainLayout = () => {
         setShowSidebar={setShowSidebar}
         user={user}
         setOpenAuthForm={setOpenAuthForm}
+        isDisableMenu={isDisableMenu}
       />
       <div className="w-full h-full flex">
         {user?.access_token &&
@@ -55,9 +58,6 @@ const MainLayout = () => {
           <Outlet context={[user, setOpenAuthForm]} />
         </div>
       </div>
-      {/* <div className="w-full h-10">
-        <Footer />
-      </div> */}
 
       {openAuthForm && (
         <AuthenticationForm
