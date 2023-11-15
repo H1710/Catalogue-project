@@ -14,7 +14,6 @@ const PreviewBlog = ({
       <p
         onClick={() => handleNavigateBlogDetail(blog.id)}
         className="text-xl w-full font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
-        s
       >
         {blog.title}
       </p>

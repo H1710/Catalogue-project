@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       thumbnail: {
         type: DataTypes.TEXT,
       },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Processing",
+      },
     },
     {
       timeStamp: true,

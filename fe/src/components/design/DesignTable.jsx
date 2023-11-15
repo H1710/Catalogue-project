@@ -5,7 +5,10 @@ const DesignTable = ({
   setShow,
   createShape,
   createText,
+  uploadImage,
   createImage,
+  images,
+  setImage,
 }) => {
   return (
     <div
@@ -69,27 +72,25 @@ const DesignTable = ({
             <input
               // onClick={() => createText("text")}
               type="file"
-              onChange={() => createImage()}
+              onChange={uploadImage}
               className=""
-              placeholder="Add Im"
+              placeholder="Add Image"
             />
             <div className="grid grid-cols-2 gap-2">
-              {[1].map((img, i) => (
-                <div
-                  // onClick={() =>
-                  //   setImage(
-                  //     "https://unblast.com/wp-content/uploads/2020/02/Bifold-Furniture-Catalog-Template-1.jpg"
-                  //   )
-                  // }
-                  className="w-full h-[90px] overflow-hidden rounded-sm cursor-pointer"
-                >
-                  <img
-                    className="w-full h-full object-fill"
-                    src={`https://unblast.com/wp-content/uploads/2020/02/Bifold-Furniture-Catalog-Template-1.jpg`}
-                    alt=""
-                  />
-                </div>
-              ))}
+              {images &&
+                images.map((img, i) => (
+                  <div
+                    onClick={() => createImage(img.content)}
+                    className="w-full h-[90px] overflow-hidden rounded-sm cursor-pointer"
+                    key={i}
+                  >
+                    <img
+                      className="w-full h-full object-fill"
+                      src={`${img.content}`}
+                      alt=""
+                    />
+                  </div>
+                ))}
             </div>
           </div>
         )}

@@ -13,6 +13,7 @@ const DesignToolBar = ({
   user,
   handleSaveTemplate,
 }) => {
+  const navigate = useNavigate();
   const { mutate: publicTemplate, isLoading } = useMutation({
     mutationFn: (info) => {
       return postAPI(createTemplateRoute, {
@@ -27,7 +28,9 @@ const DesignToolBar = ({
 
   const handlePublicTemplate = () => {
     publicTemplate(components);
-    navigate(`/public-form/${user.id}`);
+    navigate(`/public-form/${user.id}`, {
+      state: { components: JSON.stringify(components) },
+    });
   };
   return (
     <div className="h-[50px] w-full flex items-center  text-gray-300 bg-white border-b border-gray-100 shadow px-8">

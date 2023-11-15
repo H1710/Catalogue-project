@@ -11,16 +11,16 @@ const DesignCard = ({ info, handleSaveName }) => {
   return (
     <div>
       <div
-        className="w-full flex justify-center items-center bg-[#eeeeef] rounded-md p-[16px]"
+        className="h-[200px] w-[300px] flex justify-center items-center bg-[#eeeeef] rounded-md p-[16px]"
         onClick={() => {
           navigate(`/design/${info.id}`);
         }}
       >
-        <div className="h-full w-full flex items-center justify-center group cursor-pointer rounded-md ">
+        <div className="w-full h-full flex items-center justify-center group cursor-pointer rounded-md ">
           <img
             src={info.thumbnail}
             alt=""
-            className="w-full h-full object-contain rounded-md"
+            className="w-full h-full object-contain rounded-md bg-cover"
           />
         </div>
       </div>

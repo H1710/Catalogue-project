@@ -3,11 +3,16 @@ import DesignNavbar from "../components/design/DesignNavbar";
 import DesignTable from "../components/design/DesignTable";
 import CreateComponent from "../components/design/CreateComponent";
 import DesignToolBar from "../components/design/DesignToolBar";
-import { getProductById, saveProductRoute } from "../utils/APIRoute";
+import {
+  getProductById,
+  saveProductRoute,
+  uploadImageUserRoute,
+  getUploadImageRoute,
+} from "../utils/APIRoute";
 import { useOutletContext, useParams } from "react-router-dom";
 import { getAPI, postAPI } from "../utils/FetchData";
-import html2canvas from "html2canvas";
-import { useMutation } from "react-query";
+import html2canvas from "@nidi/html2canvas";
+import { useMutation, useQuery } from "react-query";
 
 const DesignPage = () => {
   const [state, setState] = useState("");
@@ -46,6 +51,7 @@ const DesignPage = () => {
             resizeElement,
             rotateElement,
             removeComponent,
+            changeText,
           });
         }
         newComponents = [...newComponents, componentPage];
@@ -74,6 +80,8 @@ const DesignPage = () => {
       ],
     },
   ]);
+
+  console.log(components);
 
   useEffect(() => {
     if (currentComponent) {
@@ -351,8 +359,12 @@ const DesignPage = () => {
   const captureContent = useCallback(() => {
     const element = document.getElementById("main-content");
 
-    return html2canvas(element)
+    return html2canvas(element, {
+      allowTaint: true,
+      useCORS: true,
+    })
       .then((canvas) => {
+        console.log(canvas);
         return canvas.toDataURL("image/png");
       })
       .catch((error) => {
@@ -369,15 +381,75 @@ const DesignPage = () => {
       if (page == 0) {
         capturedCanvas = await captureContent();
       }
+      console.log(capturedCanvas);
+
       saveTemplate({ components: components, thumbnail: capturedCanvas });
     } catch (error) {
       console.error("Error saving template:", error);
     }
   };
 
-  const createImage = (e) => {
-    console.log(e.target.files);
+  const uploadImage = (e) => {
+    const newData = { userId: user.id, designImage: e.target.files[0] };
+    let formData = new FormData();
+    for (let key in newData) {
+      formData.append(key, newData[key]);
+    }
+    uploadTemplateImage(formData);
   };
+
+  const createImage = useCallback((img) => {
+    setComponents((prev) => {
+      const temp = [...prev];
+      const style = {
+        id: Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000,
+        name: "image",
+        type: "image",
+        left: 10,
+        top: 10,
+        opacity: 1,
+        width: 200,
+        height: 150,
+        rotate,
+        z_index: 2,
+        productPageId: temp[page].id,
+        image: img,
+        setCurrentComponent: (a) => setCurrentComponent(a),
+        // removeBackground: () => setImage(""),
+        moveElement,
+        resizeElement,
+        rotateElement,
+        removeComponent,
+      };
+      temp[page].product_page_details.push(style);
+      return temp;
+    });
+  }, []);
+
+  const { mutate: uploadTemplateImage, isLoading: isLoadingUpload } =
+    useMutation({
+      mutationFn: (info) => {
+        return postAPI(uploadImageUserRoute, info);
+      },
+      onError: (error) => {
+        // toast.error(error.response.data.message, toastOptions);
+      },
+      onSuccess: (data) => {},
+    });
+
+  const { data: uploadImagesData, isLoading: loadingUploadImage } = useQuery({
+    queryKey: ["upload-image"],
+    queryFn: () => {
+      return getAPI(`${getUploadImageRoute}/${user?.id}`);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    // enabled: logged,
+  });
 
   return (
     <div className="w-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
@@ -390,7 +462,10 @@ const DesignPage = () => {
             show={show}
             createShape={createShape}
             createText={createText}
+            uploadImage={uploadImage}
+            images={uploadImagesData?.data.images}
             createImage={createImage}
+            setImage
           />
         )}
 
