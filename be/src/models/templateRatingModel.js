@@ -1,21 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const TemplateComment = sequelize.define(
-    "template_comment",
-    {
-      content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      total_vote: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 0,
-      },
+  const TemplateRating = sequelize.define("template_rating", {
+    rating: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
     },
-    {
-      timeStamp: true,
-    }
-  );
+  });
 
-  return TemplateComment;
+  return TemplateRating;
 };

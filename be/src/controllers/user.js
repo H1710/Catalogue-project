@@ -163,7 +163,6 @@ class UserController {
   static async getUserByYear(req, res) {
     try {
       const year = parseInt(req.params.year, 10);
-      console.log(year);
 
       if (isNaN(year)) {
         res.status(400).send({ message: "Invalid year" });
@@ -176,8 +175,8 @@ class UserController {
       // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng của năm hiện tại
       const userRegistrations = await User.findAll({
         attributes: [
-          [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
-          [Sequelize.fn('COUNT', Sequelize.col('id')), 'registration_count'],
+          [Sequelize.fn("MONTH", Sequelize.col("createdAt")), "month"],
+          [Sequelize.fn("COUNT", Sequelize.col("id")), "registration_count"],
         ],
         where: {
           createdAt: {
@@ -185,9 +184,9 @@ class UserController {
             [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
         },
-        group: [Sequelize.fn('MONTH', Sequelize.col('createdAt'))],
+        group: [Sequelize.fn("MONTH", Sequelize.col("createdAt"))],
         raw: true,
-        order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
+        order: [[Sequelize.fn("MONTH", Sequelize.col("createdAt")), "ASC"]],
       });
 
       // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm hiện tại
@@ -211,10 +210,15 @@ class UserController {
       });
 
       // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
-      const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
+      const userMap = new Map(
+        userRegistrations.map((registration) => [
+          registration.month,
+          registration,
+        ])
+      );
 
       // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm hiện tại
-      const result = allMonths.map(month => {
+      const result = allMonths.map((month) => {
         const data = userMap.get(month);
         return {
           year: year,

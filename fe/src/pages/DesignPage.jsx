@@ -81,8 +81,6 @@ const DesignPage = () => {
     },
   ]);
 
-  console.log(components);
-
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -337,6 +335,7 @@ const DesignPage = () => {
       return temp;
     });
   }, []);
+  console.log(components);
 
   const setElement = useCallback((type) => {
     setState(type);
