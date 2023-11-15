@@ -79,6 +79,10 @@ const router = createBrowserRouter([
         path: "/public-form/:id",
         element: <PublicTemplate />,
       },
+      {
+        path: "/template/approve",
+        element: <PublicTemplate />,
+      },
     ],
   },
 
