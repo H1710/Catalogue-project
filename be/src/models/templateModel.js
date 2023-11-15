@@ -6,12 +6,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      rating: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
       thumbnail: {
         type: DataTypes.TEXT,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Processing",
       },
     },
     {

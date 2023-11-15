@@ -14,6 +14,8 @@ import DesignPage from "./pages/DesignPage";
 import OrderListPage from "./pages/OrderListPage";
 import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
+import MyBlog from "./pages/MyBlogPage";
+import PublicTemplate from "./pages/PublicTemplatePage";
 
 const router = createBrowserRouter([
   {
@@ -69,13 +71,22 @@ const router = createBrowserRouter([
         path: "/order-list",
         element: <OrderListPage />,
       },
+      {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/myblog",
+        element: <MyBlog />,
+      },
+      {
+        path: "/public-form/:id",
+        element: <PublicTemplate />,
+      },
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+ 
 ]);
 
 export default router;

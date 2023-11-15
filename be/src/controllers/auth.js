@@ -55,13 +55,13 @@ class AuthController {
           },
         ],
       });
+
       if (!user)
         return res
           .status(400)
           .send({ message: "This account does not exist." });
 
-      // const isMatch = await bcrypt.compare(password, user.password);
-      const isMatch = password === user.password;
+      const isMatch = await bcrypt.compare(password, user.dataValues.password);
       if (!isMatch) {
         return res.status(400).send({ message: "Password incorrect." });
       }
@@ -109,11 +109,11 @@ class AuthController {
           include: [
             {
               model: Order,
-              attributes: ["id", "servicePackageId"],
+              attributes: ["id", "servicePackageId", "createdAt"],
               include: [
                 {
                   model: Package,
-                  attributes: ["name"],
+                  attributes: ["name", "remain_day"],
                 },
               ],
             },
@@ -184,7 +184,8 @@ class AuthController {
   static async submitOTP(req, res) {
     try {
       const { email, OTPCode } = req.body;
-      const user = await User.findOne({ email });
+
+      const user = await User.findOne({ where: { email: email } });
 
       if (!user) {
         return res.status(400).json({ message: "User not found." });
@@ -207,14 +208,16 @@ class AuthController {
 
   static async setInfo(req, res, next) {
     try {
-      const { name, email } = req.body;
-      const user = await User.findOne({ email });
+      const { name, email, country } = req.body;
+      const user = await User.findOne({ where: { email: email } });
 
       if (!user) {
         return res.status(400).json({ message: "User not found." });
       }
 
       user.name = name;
+      user.country = country;
+      user.roleId = 2;
       user.save();
 
       return res.status(200).send({ message: "Update info success." });

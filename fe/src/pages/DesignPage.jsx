@@ -3,10 +3,16 @@ import DesignNavbar from "../components/design/DesignNavbar";
 import DesignTable from "../components/design/DesignTable";
 import CreateComponent from "../components/design/CreateComponent";
 import DesignToolBar from "../components/design/DesignToolBar";
-import { getProductById } from "../utils/APIRoute";
+import {
+  getProductById,
+  saveProductRoute,
+  uploadImageUserRoute,
+  getUploadImageRoute,
+} from "../utils/APIRoute";
 import { useOutletContext, useParams } from "react-router-dom";
 import { getAPI, postAPI } from "../utils/FetchData";
-import { useQuery } from "react-query";
+import html2canvas from "@nidi/html2canvas";
+import { useMutation, useQuery } from "react-query";
 
 const DesignPage = () => {
   const [state, setState] = useState("");
@@ -45,6 +51,7 @@ const DesignPage = () => {
             resizeElement,
             rotateElement,
             removeComponent,
+            changeText,
           });
         }
         newComponents = [...newComponents, componentPage];
@@ -328,22 +335,138 @@ const DesignPage = () => {
       return temp;
     });
   }, []);
+  console.log(components);
 
   const setElement = useCallback((type) => {
     setState(type);
     setShow(true);
   }, []);
+
+  const { mutate: saveTemplate, isLoading: loadingSave } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(saveProductRoute, {
+        product_page: info.components,
+        thumbnail: info.thumbnail,
+      });
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {},
+  });
+
+  const captureContent = useCallback(() => {
+    const element = document.getElementById("main-content");
+
+    return html2canvas(element, {
+      allowTaint: true,
+      useCORS: true,
+    })
+      .then((canvas) => {
+        console.log(canvas);
+        return canvas.toDataURL("image/png");
+      })
+      .catch((error) => {
+        // Handle the error, e.g., log it or show an error message
+        console.error("Error capturing content:", error);
+        throw error; // Propagate the error to the caller
+      });
+  }, [components]);
+
+  const handleSaveTemplate = async () => {
+    try {
+      let capturedCanvas = null;
+      console.log(page);
+      if (page == 0) {
+        capturedCanvas = await captureContent();
+      }
+      console.log(capturedCanvas);
+
+      saveTemplate({ components: components, thumbnail: capturedCanvas });
+    } catch (error) {
+      console.error("Error saving template:", error);
+    }
+  };
+
+  const uploadImage = (e) => {
+    const newData = { userId: user.id, designImage: e.target.files[0] };
+    let formData = new FormData();
+    for (let key in newData) {
+      formData.append(key, newData[key]);
+    }
+    uploadTemplateImage(formData);
+  };
+
+  const createImage = useCallback((img) => {
+    setComponents((prev) => {
+      const temp = [...prev];
+      const style = {
+        id: Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000,
+        name: "image",
+        type: "image",
+        left: 10,
+        top: 10,
+        opacity: 1,
+        width: 200,
+        height: 150,
+        rotate,
+        z_index: 2,
+        productPageId: temp[page].id,
+        image: img,
+        setCurrentComponent: (a) => setCurrentComponent(a),
+        // removeBackground: () => setImage(""),
+        moveElement,
+        resizeElement,
+        rotateElement,
+        removeComponent,
+      };
+      temp[page].product_page_details.push(style);
+      return temp;
+    });
+  }, []);
+
+  const { mutate: uploadTemplateImage, isLoading: isLoadingUpload } =
+    useMutation({
+      mutationFn: (info) => {
+        return postAPI(uploadImageUserRoute, info);
+      },
+      onError: (error) => {
+        // toast.error(error.response.data.message, toastOptions);
+      },
+      onSuccess: (data) => {},
+    });
+
+  const { data: uploadImagesData, isLoading: loadingUploadImage } = useQuery({
+    queryKey: ["upload-image"],
+    queryFn: () => {
+      return getAPI(`${getUploadImageRoute}/${user?.id}`);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    // enabled: logged,
+  });
+
   return (
     <div className="w-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
       <DesignNavbar state={state} setElement={setElement} />
-      <div className="h-full w-full bg-[#f2f2f2]">
-        <DesignTable
-          setShow={setShow}
-          state={state}
-          show={show}
-          createShape={createShape}
-          createText={createText}
-        />
+      <div className="h-full w-full bg-[#f2f2f2] flex relative">
+        {show && (
+          <DesignTable
+            setShow={setShow}
+            state={state}
+            show={show}
+            createShape={createShape}
+            createText={createText}
+            uploadImage={uploadImage}
+            images={uploadImagesData?.data.images}
+            createImage={createImage}
+            setImage
+          />
+        )}
 
         <div className="w-full h-full flex flex-col">
           <DesignToolBar
@@ -351,6 +474,8 @@ const DesignPage = () => {
             currentComponent={currentComponent}
             components={components}
             user={user}
+            captureContent={captureContent}
+            handleSaveTemplate={handleSaveTemplate}
           />
 
           <div
@@ -375,7 +500,10 @@ const DesignPage = () => {
                 />
               </svg>
             </button>
-            <div className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden">
+            <div
+              id="main-content"
+              className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden"
+            >
               <div
                 id="main_design"
                 className="w-auto relative h-auto overflow-hidden"

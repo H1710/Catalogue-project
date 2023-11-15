@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-const LoginForm = ({ setOpenAuthForm }) => {
+const LoginForm = ({ setOpenAuthForm, setState }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -107,19 +107,20 @@ const LoginForm = ({ setOpenAuthForm }) => {
           <div class="flex justify-end mt-2 text-xs text-gray-600">
             <a href="#">Forget Password?</a>
           </div>
-          <div className="flex gap-2 mt-7">
+          <div class="flex gap-2 mt-7">
             <div
               onClick={() => {
                 setOpenAuthForm(false);
               }}
-              className="cursor-pointer flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 border border-green"
+              className="cursor-pointer  flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
             >
               Cancel
             </div>
             <button
-              type="submit"
-              disabled={loadingLogin}
-              className="flex-1 text-center text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
+              onClick={() => {
+                // Add your login logic here.
+              }}
+              className="flex-1 text-center  text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
             >
               Login
             </button>
@@ -129,11 +130,15 @@ const LoginForm = ({ setOpenAuthForm }) => {
               <p class="flex justify-center text-xs text-gray-600 mt-[3px]">
                 Do you have no account?
               </p>
-              <a class="flex justify-center text-[#3386ff] text-sm font-medium ml-1">
+              <a
+                onClick={() => setState("register")}
+                class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer"
+              >
                 Register
               </a>
             </div>
           </div>
+
           {/* <GoogleLogin
         clientId={clientId}
         onSuccess={onSuccess}

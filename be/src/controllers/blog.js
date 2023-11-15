@@ -313,10 +313,10 @@ class BlogController {
       if (title != "" && name == "") {
         const blogsByTitle = await seq.query(
           "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
-            "on br.blogId = b.id " +
-            "where b.title like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
+          "on br.blogId = b.id " +
+          "where b.title like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -327,12 +327,12 @@ class BlogController {
       if (title == "" && name != "") {
         const blogsByName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "from catalogue_project.blogs b " +
-            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-            "join catalogue_project.templates t on pb.templateId = t.id " +
-            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-            "where t.name like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "from catalogue_project.blogs b " +
+          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+          "join catalogue_project.templates t on pb.templateId = t.id " +
+          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+          "where t.name like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -343,12 +343,12 @@ class BlogController {
       if (title != "" && name != "") {
         const blogsByTitleAndName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-            "from catalogue_project.blogs b " +
-            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-            "join catalogue_project.templates t on pb.templateId = t.id " +
-            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-            "where t.name like ? and b.title like ? " +
-            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+          "from catalogue_project.blogs b " +
+          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+          "join catalogue_project.templates t on pb.templateId = t.id " +
+          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+          "where t.name like ? and b.title like ? " +
+          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", "%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -396,9 +396,9 @@ class BlogController {
       }
       const totalVote = await seq.query(
         "select blogCommentId, sum(vote) as total_vote " +
-          "from catalogue_project.vote_blog_comments " +
-          "where blogCommentId = ? " +
-          "group by blogCommentId",
+        "from catalogue_project.vote_blog_comments " +
+        "where blogCommentId = ? " +
+        "group by blogCommentId",
         { replacements: [commentId], type: seq.QueryTypes.SELECT }
       );
       res.status(200).json({ totalVote });
@@ -583,17 +583,17 @@ class BlogController {
     try {
       const ratingBlogs = await seq.query(
         "SELECT " +
-          "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
-          "FROM catalogue_project.blogs AS b " +
-          "JOIN catalogue_project.blog_ratings AS br " +
-          "ON b.id = br.blogId " +
-          "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
-          "Having AVG(br.rating) >= ?" +
-          "ORDER BY b.createdAt" +
-          " " +
-          (sortDate === "descDate" ? "DESC" : "ASC") +
-          " " +
-          "LIMIT ? OFFSET ?",
+        "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
+        "FROM catalogue_project.blogs AS b " +
+        "JOIN catalogue_project.blog_ratings AS br " +
+        "ON b.id = br.blogId " +
+        "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
+        "Having AVG(br.rating) >= ?" +
+        "ORDER BY b.createdAt" +
+        " " +
+        (sortDate === "descDate" ? "DESC" : "ASC") +
+        " " +
+        "LIMIT ? OFFSET ?",
         {
           replacements: [rating, limit, offset],
           type: seq.QueryTypes.SELECT,
@@ -639,6 +639,110 @@ class BlogController {
       console.error(error);
       return res.status(500).json({ message: "Something went wrong" });
     }
+  }
+
+  static async getBlogByUserId(req, res) {
+    try {
+      const userId = req.params.userId;
+      console.log(userId);
+      const blog = await Blog.findAll({
+        where: {
+          userId: userId
+        },
+        include: [
+          {
+            model: blogRating,
+            attributes: [],
+          },
+          {
+            model: Tag,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        attributes: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+          [seq.fn("AVG", seq.col("blog_ratings.rating")), "avgRating"],
+        ],
+        group: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+          "blog.id",
+          "tags.id",
+        ],
+      });
+      if (!blog) {
+        return res.status(400).send({ message: "Blog not found." });
+      }
+      return res.status(200).json({ blog: blog });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+
+  static async SearchBlogByTags(req, res) {
+    const { tags } = req.body;
+    if (tags == null) {
+      res.status(400).json("Tags can not be null");
+    }
+
+    tags.split(",").forEach(async (element) => {
+      const [tag] = await Tag.findOrCreate({
+        where: {
+          name: element,
+        },
+      });
+
+      const blog = await Blog.findAll({
+        include: [{
+          model: TagBlog,
+          attributes: ["blogId", "tagId"],
+        }],
+        include: [{
+          model: Tag,
+          attributes: ["id", "name"],
+          where: {
+            name: tag.dataValues.name
+          }
+        }],
+        attributes: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+        ],
+        group: [
+          "id",
+          "title",
+          "thumbnail",
+          "description",
+          "content",
+          "createdAt",
+          "blog.id",
+          "tags.id",
+        ],
+      });
+
+      res.status(200).json({
+        blog: blog
+      })
+      // await newBlog.addTag(tag);
+    });
+
   }
 }
 
