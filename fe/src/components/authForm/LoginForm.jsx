@@ -96,7 +96,7 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
             </p>
             <a
               onClick={() => setState("register")}
-              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1"
+              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer"
             >
               Register
             </a>

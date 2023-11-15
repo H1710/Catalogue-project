@@ -57,7 +57,7 @@ const StatiticsPage = () => {
           </div>
         </Listbox>
       </div>
-      <div className="justify-center items-center grid gap-y-6">
+      <div className="justify-center flex   items-center grid gap-y-6 w-full">
         <div className="flex flex-col gap-y-4">
           <span className="flex-1 ml-3 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[200px] font-semibold">
             User Oveview

@@ -34,11 +34,10 @@ export default function InfoDetail({ info, setInfo, label, name }) {
             onChange={handleChange}
             name={name}
             value={inputValue} 
-            className="w-[60%] rounded" />
+            className="w-[60%] rounded ring-1 px-4" />
             <div className="grid gap-x-2 grid-cols-2">
               <button
                 type="button"
-                
                 onClick={()=> setIsFix(!isFix) }
                 className="border-2 border-slate-100 p-3 rounded bg-slate-50 hover:bg-slate-100 "
               >

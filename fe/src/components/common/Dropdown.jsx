@@ -1,13 +1,15 @@
-import React, { useCallback } from "react";
+import React, { Fragment, useCallback, useRef } from "react";
 import MinidenticonImg from "./MinidenticonImg";
 import { postAPI } from "../../utils/FetchData";
 import { logoutRoute } from "../../utils/APIRoute";
 import { useDispatch } from "react-redux";
 import { seft } from "../../redux/reducers/authReducer";
 import { Link } from "react-router-dom";
+import { Menu, Transition } from '@headlessui/react'
 
 const Dropdown = ({ user }) => {
   const dispatch = useDispatch();
+   
   const handleLogout = useCallback(async () => {
     await postAPI(logoutRoute);
     // dispatch(seft(null));
@@ -46,6 +48,7 @@ const Dropdown = ({ user }) => {
         </p>
       </div>
     </div>
+     
   );
 };
 

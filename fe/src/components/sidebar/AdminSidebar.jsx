@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
+import MinidenticonImg from "../common/MinidenticonImg";
 
 function AdminSidebar({user}) {
   const navigate = useNavigate();
   return (
     <aside className="w-[250px] h-full flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
-        <img
-          src={user.avatar}
-          alt=""
-          className="w-12 h-12 rounded-lg"
-        />
+      {user?.avatar ? (
+          <img
+            src={user.avatar}
+            className="w-12 h-12 rounded-[5px] object-cover cursor-pointer"
+          />
+        ) : (
+          <MinidenticonImg
+            username={user.name}
+            className="w-14 rounded-full object-cover cursor-pointer border border-[#ccc]"
+          />
+        )}
         <div className="flex flex-col gap-1">
           <p className="font-semibold text-lg">Admin</p>
           <p className="text-md">Free</p>
@@ -114,13 +121,13 @@ function AdminSidebar({user}) {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
               />
             </svg>

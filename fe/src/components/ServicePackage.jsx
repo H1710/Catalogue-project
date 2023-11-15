@@ -33,6 +33,7 @@ export default function ServicePackage({
   showServiePackages,
   setShowServiePackages,
   user,
+  setIsPremium
 }) {
   const [selectedRadio, setSelectedRadio] = useState(2);
   const [isShowOptionsPackage, setIsShowOptionsPackage] = useState(false);
@@ -305,6 +306,7 @@ export default function ServicePackage({
           user={user}
           infoInvoice={infoInvoice}
           lsPack={lsPack}
+          setIsPremium={setIsPremium}
         />
       )}
     </>

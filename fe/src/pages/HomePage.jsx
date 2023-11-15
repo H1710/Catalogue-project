@@ -24,7 +24,6 @@ import ServicePackage from "../components/ServicePackage";
 const HomePage = () => {
   
   const [input, setInput] = useState("");
-  // const [showServiePackages, setShowServiePackages] = useState(true)
   const [user, setOpenAuthForm] = useOutletContext();
   // useEffect(() => {
   //   const handleAPI = async () => {

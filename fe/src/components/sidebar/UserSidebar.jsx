@@ -1,20 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MinidenticonImg from '../common/MinidenticonImg';
 import ServicePackage from '../ServicePackage';
 
 function AdminSidebar({ user }) {
   const [showServiePackages, setShowServiePackages] = useState(false);
-
+  const [isPremium, setIsPremium] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(true);
   const categoryList = ['Education', 'Social media', 'Bussiness'];
-console.log(user);
+  console.log(isPremium);
+  let daysDifference = 0;
+  let remainingDayofService = 0;
+  const length = user.orders.length;
+  if (length !== 0) {
+    const dateBuyService = new Date(user.orders[length - 1].createdAt);
+    const currentDate = new Date();
+    const timeDiff = currentDate.getTime() - dateBuyService.getTime();
+
+    daysDifference = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    remainingDayofService = user.orders[length - 1].service_package.remain_day;
+  }
+  console.log('Day', remainingDayofService, daysDifference);
+
+  useEffect(() => {
+    const checkIsPremium = () => {
+      if (remainingDayofService === 0) {
+        setIsPremium(false);
+      } else if (daysDifference < remainingDayofService) {
+        setIsPremium(true);
+      } else {
+        setIsPremium(false);
+      }
+    };
+    checkIsPremium();
+  }, [daysDifference]);
 
   return (
     <aside className="w-[250px] h-full flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
         {user?.avatar ? (
           <img
-            src={user.avatar}
+            src={user?.avatar}
             className="w-12 h-12 rounded-[5px] object-cover cursor-pointer"
           />
         ) : (
@@ -29,23 +54,25 @@ console.log(user);
         </div>
       </div>
       <div className="flex flex-col flex-1 w-[230px]">
-        <div
-          className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
-          onClick={() => setShowServiePackages(true)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            // strokeWidth={1.5}
-            viewBox="0 0 16 16"
-            className='h-8 w-8'
+        {!isPremium && (
+          <div
+            className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+            onClick={() => setShowServiePackages(true)}
           >
-            <path
-              fill="rgb(255,153,0)"
-              d="M7.51 4.87C7.01 6.27 6.45 6.95 5.94 7c-.57.07-1.07-.18-1.54-.8a.54.54 0 0 0-.1-.1 1 1 0 1 0-.8.4l.01.12.82 3.24A1.5 1.5 0 0 0 5.78 11h4.44a1.5 1.5 0 0 0 1.45-1.14l.82-3.24a.54.54 0 0 0 .01-.12 1 1 0 1 0-.8-.4.54.54 0 0 0-.1.09c-.49.62-1 .87-1.54.81-.5-.05-1.04-.74-1.57-2.13a1 1 0 1 0-.98 0zM11 11.75a.5.5 0 1 1 0 1H5a.5.5 0 1 1 0-1h6z"
-            ></path>
-          </svg>
-          <p>Try to Premium</p>
-        </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              // strokeWidth={1.5}
+              viewBox="0 0 16 16"
+              className="h-8 w-8"
+            >
+              <path
+                fill="rgb(255,153,0)"
+                d="M7.51 4.87C7.01 6.27 6.45 6.95 5.94 7c-.57.07-1.07-.18-1.54-.8a.54.54 0 0 0-.1-.1 1 1 0 1 0-.8.4l.01.12.82 3.24A1.5 1.5 0 0 0 5.78 11h4.44a1.5 1.5 0 0 0 1.45-1.14l.82-3.24a.54.54 0 0 0 .01-.12 1 1 0 1 0-.8-.4.54.54 0 0 0-.1.09c-.49.62-1 .87-1.54.81-.5-.05-1.04-.74-1.57-2.13a1 1 0 1 0-.98 0zM11 11.75a.5.5 0 1 1 0 1H5a.5.5 0 1 1 0-1h6z"
+              ></path>
+            </svg>
+            <p>Try to Premium</p>
+          </div>
+        )}
         <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +124,10 @@ console.log(user);
         {showCategoryList &&
           categoryList.map((category, index) => {
             return (
-              <div className="cursor-pointer w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+              <div
+                className="cursor-pointer w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+                key={index}
+              >
                 <p className="flex-1">{category}</p>
               </div>
             );
@@ -163,6 +193,7 @@ console.log(user);
         showServiePackages={showServiePackages}
         setShowServiePackages={setShowServiePackages}
         user={user}
+       setIsPremium={setIsPremium}
       />
     </aside>
   );

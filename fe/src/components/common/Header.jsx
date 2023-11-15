@@ -1,50 +1,33 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEarthAsia,
-  faCircleQuestion,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { NotifList } from "../../shared/Notification";
-import Tippy from "@tippyjs/react";
-import { Menu } from "@headlessui/react";
+
 import MinidenticonImg from "./MinidenticonImg";
 import Dropdown from "./Dropdown";
 
-const MENU_ITEMS = [
-  {
-    icon: <FontAwesomeIcon icon={faEarthAsia} />,
-    title: "Language",
-    children: {
-      title: "Languge",
-      data: [
-        {
-          code: "en",
-          title: "English",
-          type: "language",
-        },
-        {
-          code: "vi",
-          title: "Vietnamese",
-          type: "language",
-        },
-      ],
-    },
-  },
-  {
-    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-    title: "Help",
-    to: "/help",
-  },
-];
 
-function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
-  const newNotification = 5;
+function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm, isDisableMenu }) {
+  
   const [showNoti, setShowNoti] = useState(false);
   const [dropDown, setDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  // useEffect(() => {
+  //   const handleOutsideClick = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setDropdown(false);
+  //     }
+  //   };
+  //   document.addEventListener('click', handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener('click', handleOutsideClick);
+  //   };
+  // }, []);
+  
   // console.log(showNoti);
   const navList = [
     {
@@ -58,37 +41,23 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
       to: "/blog",
     },
   ];
-  const customFontStyle = {
-    // fontFamily: " 'Be Vietnam Pro', sans-serif",
-  };
-
-  const userMenu = [
-    {
-      icon: <FontAwesomeIcon icon={faUser} />,
-      title: "View Profile",
-      to: "/profile",
-    },
-    ...MENU_ITEMS,
-  ];
-  // const openNoti = () => {
-  //   setShowNoti(true);
-  // }
-  // const closeNoti = () => {
-  //   setShowNoti(false);
-  // }
-  // const notiRef = useRef(null);
-
+  
+ 
+ 
   return (
     <div className="p-2 h-[60px] shadow w-full sticky top-0 z-40 bg-white">
       <div
         className="header flex h-full items-center justify-between text-zinc-700 px-2"
-        style={customFontStyle}
+       
       >
         <div className="flex text-xl h-full items-center gap-6 ">
-          <div
+          <button
             className="p-2 cursor-pointer hover:bg-gray-100 transition-all ease-in-out delay-50 rounded-sm"
             onClick={() => setShowSidebar(!showSidebar)}
             aria-readonly
+           disabled={!isDisableMenu}
+           
+
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +71,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
                 clipRule="evenodd"
               />
             </svg>
-          </div>
+          </button>
           <div className="logo flex font-bold">
             <img
               className="object-cover w-24 h-6"
@@ -150,7 +119,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
                   />
                 )}
 
-                {dropDown && <Dropdown user={user} />}
+                {dropDown && <Dropdown user={user}  ref={dropdownRef}/>}
               </div>
             ) : (
               <>
@@ -159,6 +128,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
                     setOpenAuthForm(true);
                     
                   }}
+                  className="flex-1 ml-3 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[100px] font-semibold"
                 >
                   Login
                 </button>

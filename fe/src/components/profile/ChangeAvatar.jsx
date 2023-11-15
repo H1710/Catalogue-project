@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MinidenticonImg from "../common/MinidenticonImg";
 
 export default function ChangeAvatar({info, setInfo}) {
     const [avatar, setAvatar] = useState(info.avatar);
@@ -15,22 +16,21 @@ export default function ChangeAvatar({info, setInfo}) {
           }
     }
   return  (
-    <div className="border-b-2 border-slate-50  pb-4">
-    <div className="avatar flex items-center  py-2 relative">
-      <img
-        src= {avatar}
-        alt=""
-        className="w-16 h-16 rounded-[50%]"
-      />
-      <div className="flex flex-col pl-5">
-        <div className="  min-w-[240px] text-[18px]">
-          Upload your profile photo
-        </div>
-        <div className="min-w-[250px] text-[16px] italic">
-          This setting helps team members recognize you on Noto.
-        </div>
-      </div>
-      <div className="flex justify-center items-center absolute right-0 ">
+    <div className="border-b-2 border-slate-50    pb-4">
+    <div className="avatar  text-center max-w-20 py-2 relative">
+    {info?.avatar ? (
+          <img
+            src={info?.avatar}
+            className="w-14 h-14 rounded-full object-cover mx-auto cursor-pointer"
+          />
+        ) : (
+          <MinidenticonImg
+            username={info?.name}
+            className="w-14 h-14 rounded-full object-cover mx-auto cursor-pointer border border-[#ccc]"
+          />
+        )}
+       
+      <div className="flex justify-center items-center   ">
         <input
           type="file"
           aria-hidden="true"

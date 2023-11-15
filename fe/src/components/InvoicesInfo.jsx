@@ -19,6 +19,7 @@ export default function InvoicesInfo({
   user,
   infoInvoice,
   lsPack,
+  setIsPremium
 }) {
   const [isPaid, setIsPaid] = useState(false);
   const currentDate = Date.now();
@@ -54,6 +55,7 @@ export default function InvoicesInfo({
             throw new Error('Error to paying order');
           } else {
             setIsPaid(true);
+            setIsPremium(true)
           }
         });
     } catch (err) {
