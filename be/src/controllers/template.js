@@ -5,7 +5,7 @@ const Template = db.template;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
 const User = db.user;
-
+const { Op, literal } = require("sequelize");
 class TemplateController {
   static async createTemplate(req, res) {
     try {
@@ -71,6 +71,46 @@ class TemplateController {
     }
   }
 
+  static async getTemplateProcessing(req, res) {
+    try {
+      const status = req.params.status;
+      console.log(status);
+
+      const templates = await Template.findAll({
+        where: {
+          status: status,
+        },
+      });
+
+      res.status(200).json({
+        templates: templates,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+
+  static async searchTemplateByName(req, res) {
+    try {
+      const name = req.params.name;
+      console.log(name);
+
+      const templates = await Template.findAll({
+        where: literal(`name LIKE '%${name}%'`),
+      });
+
+      res.status(200).json({
+        templates: templates,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+
   static async getTemplate(req, res) {
     try {
       const templateId = req.params.templateId;
@@ -91,6 +131,47 @@ class TemplateController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+  static async acceptTemplate(req, res) {
+    try {
+      const { templateId } = req.body;
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      await template.update({
+        status: "Accepted",
+      });
+
+      return res.status(200).json({ message: "Update template successfully", template });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async deniedTemplate(req, res) {
+    try {
+      const { templateId } = req.body;
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      await template.update({
+        status: "Denied",
+      });
+
+      return res.status(200).json({ message: "Update template successfully", template });
+    } catch (error) {
+      console.error(error);
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
 }
 
 exports.TemplateController = TemplateController;
