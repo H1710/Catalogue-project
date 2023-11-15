@@ -72,6 +72,10 @@ const router = createBrowserRouter([
         element: <OrderListPage />,
       },
       {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
+      {
         path: "/myblog",
         element: <MyBlog />,
       },
@@ -82,10 +86,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+ 
 ]);
 
 export default router;

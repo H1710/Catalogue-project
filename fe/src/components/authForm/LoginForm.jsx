@@ -107,33 +107,34 @@ const LoginForm = ({ setOpenAuthForm }) => {
           <div class="flex justify-end mt-2 text-xs text-gray-600">
             <a href="#">Forget Password?</a>
           </div>
-          <div className="flex gap-2 mt-7">
-            <div
-              onClick={() => {
-                setOpenAuthForm(false);
-              }}
-              className="cursor-pointer flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 border border-green"
-            >
-              Cancel
-            </div>
-            <button
-              type="submit"
-              disabled={loadingLogin}
-              className="flex-1 text-center text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
-            >
-              Login
-            </button>
+        </div>
+        <div class="flex gap-2 mt-7">
+          <div
+            onClick={() => {
+              setOpenAuthForm(false);
+            }}
+            className="cursor-pointer  flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
+          >
+            Cancel
           </div>
-          <div class="mt-4 text-center flex items-center justify-center">
-            <div class="flex items-center">
-              <p class="flex justify-center text-xs text-gray-600 mt-[3px]">
-                Do you have no account?
-              </p>
-              <a class="flex justify-center text-[#3386ff] text-sm font-medium ml-1">
-                Register
-              </a>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              // Add your login logic here.
+            }}
+            className="flex-1 text-center  text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
+          >
+            Login
+          </button>
+        </div>
+        <div class="mt-4 text-center flex items-center justify-center">
+          <div class="flex items-center">
+            <p class="flex justify-center text-xs text-gray-600 mt-[3px]">
+              Do you have no account?
+            </p>
+            <a
+              onClick={() => setState("register")}
+              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer"
+          
           {/* <GoogleLogin
         clientId={clientId}
         onSuccess={onSuccess}
