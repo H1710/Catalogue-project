@@ -21,7 +21,7 @@
     "@tippyjs/react": "^4.2.6",
     "axios": "^1.5.0",
     "formik": "^2.4.5",
-    "html2canvas": "^1.4.1",
+    "@nidi/html2canvas": "1.0.0-rc.11",
     "minidenticons": "^4.2.0",
     "quill-image-resize-module": "^3.0.0",
     "quill-image-resize-module-react": "^3.0.0",

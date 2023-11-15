@@ -2,10 +2,12 @@ const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
+const uploadImage = require("../utils/uploadImage");
 
 const Role = db.role;
 const User = db.user;
 const Order = db.order;
+const ImageUpload = db.imageUpload;
 
 const ServicePackage = db.servicePackage;
 class UserController {
@@ -40,7 +42,6 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-
 
   static async updateUser(req, res) {
     try {
@@ -104,7 +105,7 @@ class UserController {
           email: faker.internet.email(),
           password: faker.internet.password(),
           endDate: faker.date.future(),
-          roleId: faker.number.int({ min: 1, max: 4 }),
+          roleId: faker.number.int({ min: 1, max: 3 }),
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };
@@ -221,6 +222,56 @@ class UserController {
           order: order,
         });
       }
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async uploadImageByUser(req, res) {
+    try {
+      const { userId } = req.body;
+      const designImage = req.file;
+
+      if (!designImage) {
+        return res.status(400).json({ message: "Image not found" });
+      }
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const data = await uploadImage(
+        designImage.filename,
+        designImage.mimetype
+      );
+
+      await ImageUpload.create({
+        userId: userId,
+        content: data.data.webContentLink,
+      });
+
+      return res.status(200).send({ message: "Upload success" });
+    } catch (error) {
+      res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async getImageUpload(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const images = await ImageUpload.findAll({
+        where: { userId: userId },
+        attributes: ["id", "content"],
+      });
+
+      return res
+        .status(200)
+        .send({ message: "Get images success", images: images });
     } catch (error) {
       res.status(400).send({ message: "Something went wrong." });
     }

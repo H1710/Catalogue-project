@@ -31,6 +31,8 @@ db.notification = require("./notificationModel")(sequelize, DataTypes);
 db.role = require("./roleModel")(sequelize, DataTypes);
 db.tag = require("./tagModel")(sequelize, DataTypes);
 
+db.imageUpload = require("./imageUpload")(sequelize, DataTypes);
+
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Re-sync success");
 });
@@ -183,6 +185,9 @@ db.product_page.hasMany(db.productPageDetail);
 db.productPageDetail.belongsTo(db.product_page, {
   foreignKey: "productPageId",
 });
+
+db.user.hasMany(db.imageUpload);
+db.imageUpload.belongsTo(db.user);
 
 db.user.hasMany(db.notification);
 db.notification.belongsTo(db.user, {
