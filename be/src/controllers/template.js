@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const uploadImage = require("../utils/uploadImage");
 
 const Template = db.template;
 const TemplatePage = db.template_page;
@@ -8,35 +9,38 @@ const User = db.user;
 class TemplateController {
   static async createTemplate(req, res) {
     try {
-      const { data } = req.body;
-      const { userId } = data;
+      const { userId, tags, name, template } = req.body;
+      const thumbnail = req.file;
+
+      const templateData = await JSON.parse(template);
+      console.log(templateData);
+      const data = await uploadImage(thumbnail.filename, thumbnail.mimetype);
       const newTemplate = await Template.create({
-        name: "product-test",
-        thumbnail:
-          "https://variety.com/wp-content/uploads/2023/07/Tom-and-Jerry-Singapore-series-poster.jpg",
+        name: name,
+        thumbnail: data.data.webContentLink,
         rating: 5,
         authorId: userId,
         userId: userId,
       });
 
-      const { template } = data;
-      for (let i = 0; i < template.length; i++) {
+      for (let i = 0; i < templateData.length; i++) {
         const templatePage = await TemplatePage.create({
           templateId: newTemplate.id,
         });
-        for (let j = 0; j < template[i].product_page_details.length; j++) {
+        console.log(template[i]);
+        for (let j = 0; j < templateData[i].product_page_details.length; j++) {
           await TemplatePageDetail.create({
-            name: template[i].product_page_details[j].name,
-            type: template[i].product_page_details[j].type,
-            height: template[i].product_page_details[j].height,
-            width: template[i].product_page_details[j].width,
-            rotate: template[i].product_page_details[j]?.rotate,
-            text: template[i].product_page_details[j]?.text,
-            top: template[i].product_page_details[j]?.top,
-            left: template[i].product_page_details[j]?.left,
-            z_index: template[i].product_page_details[j].z_index,
-            color: template[i].product_page_details[j].color,
-            image: template[i].product_page_details[j]?.image,
+            name: templateData[i].product_page_details[j].name,
+            type: templateData[i].product_page_details[j].type,
+            height: templateData[i].product_page_details[j].height,
+            width: templateData[i].product_page_details[j].width,
+            rotate: templateData[i].product_page_details[j]?.rotate,
+            text: templateData[i].product_page_details[j]?.text,
+            top: templateData[i].product_page_details[j]?.top,
+            left: templateData[i].product_page_details[j]?.left,
+            z_index: templateData[i].product_page_details[j].z_index,
+            color: templateData[i].product_page_details[j].color,
+            image: templateData[i].product_page_details[j]?.image,
             templatePageId: templatePage.id,
           });
         }

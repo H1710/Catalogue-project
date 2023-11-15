@@ -14,20 +14,8 @@ const DesignToolBar = ({
   handleSaveTemplate,
 }) => {
   const navigate = useNavigate();
-  const { mutate: publicTemplate, isLoading } = useMutation({
-    mutationFn: (info) => {
-      return postAPI(createTemplateRoute, {
-        data: { template: [...info], userId: user.id },
-      });
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
-    onSuccess: (data) => {},
-  });
 
   const handlePublicTemplate = () => {
-    publicTemplate(components);
     navigate(`/public-form/${user.id}`, {
       state: { components: JSON.stringify(components) },
     });
