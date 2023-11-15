@@ -137,7 +137,7 @@ class UserController {
       // Tạo một mảng với tất cả các tháng trong năm
       const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
 
-      // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng
+      // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng của năm hiện tại
       const userRegistrations = await User.findAll({
         attributes: [
           [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
@@ -154,7 +154,7 @@ class UserController {
         order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
       });
 
-      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm
+      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm hiện tại
       const totalRegistrations = await User.count({
         where: {
           createdAt: {
@@ -164,28 +164,40 @@ class UserController {
         },
       });
 
+      // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm trước đó
+      const previousYearTotalRegistrations = await User.count({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year - 1}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year - 1}-12-31`),
+          },
+        },
+      });
+
       // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
       const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
 
-      // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm
+      // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm hiện tại
       const result = allMonths.map(month => {
         const data = userMap.get(month);
         return {
           year: year,
           month,
-          registration_count: data ? data.registration_count : 0,
+          registration: data ? data.registration_count : 0,
         };
       });
 
       res.status(200).json({
         registrations: result,
         total_registrations: totalRegistrations,
+        previous_year_total_registrations: previousYearTotalRegistrations,
       });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
 
 }
 
