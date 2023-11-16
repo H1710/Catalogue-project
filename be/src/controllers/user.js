@@ -3,6 +3,7 @@ const db = require("../models/index");
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
 const uploadImage = require("../utils/uploadImage");
+const cloudinary = require("../utils/cloudinary");
 
 const Role = db.role;
 const User = db.user;
@@ -265,6 +266,7 @@ class UserController {
     try {
       const { userId } = req.body;
       const designImage = req.file;
+      console.log(designImage);
 
       if (!designImage) {
         return res.status(400).json({ message: "Image not found" });
@@ -274,14 +276,22 @@ class UserController {
         return res.status(400).json({ message: "User not found" });
       }
 
-      const data = await uploadImage(
-        designImage.filename,
-        designImage.mimetype
-      );
+      // const data = await uploadImage(
+      //   designImage.filename,
+      //   designImage.mimetype
+      // );
+
+      const result = await cloudinary.uploader.upload(designImage.path, {
+        public_id: designImage.originalname,
+        resource_type: "auto",
+        folder: "noto",
+        use_filename: true,
+        unique_filename: false,
+      });
 
       await ImageUpload.create({
         userId: userId,
-        content: data.data.webContentLink,
+        content: result.url,
       });
 
       return res.status(200).send({ message: "Upload success" });

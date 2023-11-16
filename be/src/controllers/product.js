@@ -100,6 +100,26 @@ class ProductController {
         } else {
           pageId = product_page.id;
         }
+        const listDetail = await ProductPageDetail.findAll({
+          where: {
+            productPageId: pageId,
+          },
+        });
+        for (let d of listDetail) {
+          let ind = -1;
+          for (let detail of page.product_page_details) {
+            if (detail.id != d.id) {
+              ind = detail.id;
+            }
+          }
+          if (ind != -1) {
+            await ProductPageDetail.destroy({
+              where: {
+                id: ind,
+              },
+            });
+          }
+        }
         // console.log(pageId);
         for (let detail of page.product_page_details) {
           let product_page_detail = await ProductPageDetail.findOne({

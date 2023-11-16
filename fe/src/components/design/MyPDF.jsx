@@ -1,5 +1,13 @@
 import React from "react";
-import { Document, Page, View, Svg, Polygon, Text } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  View,
+  Svg,
+  Polygon,
+  Text,
+  Image,
+} from "@react-pdf/renderer";
 
 const MyPDF = ({ components }) => {
   return (
@@ -77,6 +85,19 @@ const MyPDF = ({ components }) => {
                   >
                     {c.text}
                   </Text>
+                )}
+
+                {c.name === "image" && (
+                  <Image
+                    src={c.image}
+                    style={{
+                      position: "absolute",
+                      height: c.height,
+                      width: c.width,
+                      left: c.left,
+                      top: c.top,
+                    }}
+                  />
                 )}
               </>
             ))}
