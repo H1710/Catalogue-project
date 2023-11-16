@@ -119,6 +119,10 @@ class TemplateController {
             include: TemplatePageDetail,
           },
           {
+            model: RatingTemplate,
+            attributes: ["rating"]
+          },
+          {
             model: User,
             attributes: ["name"],
           },

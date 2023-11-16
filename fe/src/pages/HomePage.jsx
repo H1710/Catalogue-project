@@ -32,7 +32,7 @@ import ProductList from "../components/home/ProductList";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  
+
   const [input, setInput] = useState("");
   const [user, setOpenAuthForm] = useOutletContext();
 
@@ -40,7 +40,7 @@ const HomePage = () => {
     queryKey: ["products", user?.id],
     queryFn: () => {
       console.log(user.id);
-      return getAPI(`${getProductByUser}/${user.id}`);
+      return getAPI(`${getProductByUser}/${user?.id}`);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -140,6 +140,7 @@ const HomePage = () => {
 
       <br />
       <TemplateList
+        user={user}
         templateList={templateData?.data.data}
         isLoadingTemplateData={isLoadingTemplateData}
       />

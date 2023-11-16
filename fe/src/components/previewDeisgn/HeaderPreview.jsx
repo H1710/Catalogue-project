@@ -17,7 +17,7 @@ function generateStarIcons(rating, precision = 1) {
 
 
 const HeaderPreview = ({ templateData }) => {
-  console.log(templateData?.rating)
+  console.log("!11111", templateData?.rating)
   return (
     <div className="w-full p-1 rounded-md mb-2 mt-3"
       style={{

@@ -82,9 +82,11 @@ export default function ServicePackage({
     initialValues: infoInvoice,
     onSubmit: (values) => {
       values.packageId = infoInvoice.packageId
+      console.log(values)
       closeModal();
       setInfoInvoice(values);
-      setIsShowInvoice(true);
+      setIsShowInvoice(prev => !prev);
+      console.log(isShowInvoice)
     },
 
     validationSchema: Yup.object({
