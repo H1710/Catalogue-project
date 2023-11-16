@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { getProcessingBlogRoute, acceptBlogRoute, acceptTemplateRoute } from "../utils/APIRoute";
+import { getProcessingBlogRoute, acceptBlogRoute, acceptTemplateRoute, getAcceptTemplateRoute, getRejectTemplateRoute } from "../utils/APIRoute";
 import { getAPI, patchAPI } from "../utils/FetchData";
 import { Pagination } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,20 @@ const ApproveTemplate = () => {
 
   const { mutate: acceptTemplate, isLoading: loadingAcceptTemp } = useMutation({
     mutationFn: (info) => {
-      return patchAPI(acceptTemplateRoute, info);
+      return patchAPI(`${getAcceptTemplateRoute}`, info);
+    },
+    onSuccess: (data) => {
+      // console.log(data);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    // enabled: logged,
+  });
+
+  const { mutate: rejectTemplate, isLoading: loadingRejectTemp } = useMutation({
+    mutationFn: (info) => {
+      return patchAPI(`${getRejectTemplateRoute}`, info);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -43,7 +56,12 @@ const ApproveTemplate = () => {
 //   }, []);
 
   const handleAcceptTemp = useCallback((tempId) => {
-    acceptTemplate({ tempId });
+    console.log(tempId)
+    acceptTemplate({ templateId: tempId });
+  }, []);
+
+  const handleRejectTemp = useCallback((tempId) => {
+    rejectTemplate({ templateId: tempId });
   }, []);
   return (
     <div className=" w-full h-screen flex flex-col justify-between">
@@ -52,6 +70,7 @@ const ApproveTemplate = () => {
         templateList={templateList}
           isLoadingTemplateData={loadingTempData}
           handleAcceptTemp={handleAcceptTemp}
+          handleRejectTemp={handleRejectTemp}
           loadingAcceptTemp={loadingAcceptTemp}
         />
       )}

@@ -41,3 +41,6 @@ export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
 
 export const acceptTemplateRoute = `${host}/template/get-template/Processing`;
+export const getAcceptTemplateRoute = `${host}/template/accept-template`;
+export const getRejectTemplateRoute = `${host}/template/denied-template`;
+export const getAcceptTemplate = `${host}/template/get-Accepted`;

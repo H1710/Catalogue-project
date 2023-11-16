@@ -4,6 +4,7 @@ const ProcessTemp = ({
     templateList,
     isLoadingTemplateData,
     handleAcceptTemp,
+    handleRejectTemp,
     loadingAcceptTemp,
   }) => {
     return (
@@ -14,6 +15,7 @@ const ProcessTemp = ({
               key={index}
               template={template}
               handleAcceptTemp={handleAcceptTemp}
+              handleRejectTemp={handleRejectTemp}
               loadingAcceptTemp={loadingAcceptTemp}
             />
           ))}

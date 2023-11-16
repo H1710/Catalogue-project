@@ -4,6 +4,7 @@ import CustomButton from "../components/common/Button";
 const PreviewTemp = ({
     template,
     handleAcceptTemp,
+    handleRejectTemp,
     loadingAcceptTemp
 }) => {
   return (
@@ -32,6 +33,7 @@ const PreviewTemp = ({
             classContent={
               "bg-[--bg-button-danger] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-danger-hover]"
             }
+            handleClick={() => handleRejectTemp(template.id)}
           />
         </div>
       )}

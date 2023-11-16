@@ -11,6 +11,9 @@ import {
   getAllTemplateRoute,
   cloneTemplateRoute,
   saveProductNameRoute,
+  acceptTemplateRoute,
+  getAcceptTemplateRoute,
+  getAcceptTemplate,
 } from "../utils/APIRoute";
 import axios from "axios";
 
@@ -54,7 +57,7 @@ const HomePage = () => {
   const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
-      return getAPI(`${getAllTemplateRoute}`);
+      return getAPI(`${getAcceptTemplate}`);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -64,6 +67,7 @@ const HomePage = () => {
     },
     // enabled: logged,
   });
+
 
   const { mutate: cloneTemplate, isLoading: loadingCloneTemplate } =
     useMutation({
@@ -126,6 +130,8 @@ const HomePage = () => {
     saveNameProduct({ productId, newName });
   };
 
+  console.log("templateData11111111111: ", templateData);
+
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
@@ -140,7 +146,7 @@ const HomePage = () => {
 
       <br />
       <TemplateList
-        templateList={templateData?.data.data}
+        templateList={templateData?.data.templates}
         isLoadingTemplateData={isLoadingTemplateData}
       />
       {/* <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">
