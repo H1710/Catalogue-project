@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Rating } from "@mui/material";
 
 const HeaderPreview = ({ templateData }) => {
+
   const [userRating, setUserRating] = useState(0);
-  console.log(userRating);
+
   return (
     <div
       className="w-full p-1 rounded-md mb-2 mt-3"

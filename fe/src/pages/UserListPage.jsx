@@ -3,13 +3,15 @@ import MinidenticonImg from "../components/common/MinidenticonImg";
 import { useQuery } from "react-query";
 import { getAllUserRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
-import { Pagination } from "@mui/material";
+import { Dialog, Pagination } from "@mui/material";
 import UpdateUserForm from "../components/admin/UpdateUserForm";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const UserListPage = () => {
   const [page, setPage] = useState(1);
   const [userInfo, setUserInfo] = useState(null);
-  // const [isShow, setIsShow] = useState(false)
+  const [isShowDelete, setIsShowDelete] = useState(false)
   const { data: userList, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: () => {
@@ -24,6 +26,13 @@ const UserListPage = () => {
     // enabled: logged,
   });
 
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 3000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+  };
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = useCallback(() => {
@@ -37,6 +46,19 @@ const UserListPage = () => {
     openModal();
     setUserInfo(user);
   };
+  const handleDeletePopup = (user) => {
+    setIsShowDelete(true);
+    setUserInfo(user);
+  }
+  const handleDelete = () => {
+    let res;
+    const callAPI = () => { res = axios.delete(`http://localhost:5000/api/v1/deleteUser${userInfo.id}`); }
+    callAPI();
+    setIsShowDelete(false);
+    console.log(res)
+    // toast.error(error.response.data.message, toastOptions);
+
+  }
   // console.log(userInfo)
   return (
     <div className="w-full flex flex-col min-h-[80vh] justify-center">
@@ -140,6 +162,22 @@ const UserListPage = () => {
           />
         )}
 
+        {isShowDelete && (
+          <Dialog open={isShowDelete} onClose={() => setIsShowDelete(false)}>
+            <Dialog.Panel>
+              <Dialog.Title>Delete confirm</Dialog.Title>
+              <Dialog.Description>
+                Are you sure to want deleted account?
+              </Dialog.Description>
+
+
+
+              <button onClick={() => handleDelete()}>Confirm</button>
+              <button onClick={() => setIsOpen(false)}>Cancel</button>
+            </Dialog.Panel>
+          </Dialog>
+        )}
+
         <Pagination
           className="h-20 flex justify-end"
           count={10}
@@ -147,6 +185,7 @@ const UserListPage = () => {
           shape="rounded"
         />
       </div>
+      <ToastContainer />
     </div>
   );
 };
