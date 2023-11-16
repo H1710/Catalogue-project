@@ -33,16 +33,32 @@ class UserController {
   static async getUserById(req, res) {
     try {
       const userId = req.params.id;
-      const user = await db.user.findByPk(userId);
-      if (user) {
-        res.status(200).send(user);
-      } else {
-        res.status(404).send({ message: "User not found" });
+      const user = await db.user.findByPk(userId, {
+
+        attributes: [
+          "id",
+          "name",
+          "optCode",
+          "avatar",
+          "typeRegister",
+          "email",
+          "password",
+          "endDate",
+          "createAt",
+          "updateAt",
+          "roleId",
+        ]
+      });
+      if (!user) {
+        return res.status(400).send({ message: "User not found." });
       }
+      return res.status(200).json({ user: user });
     } catch (error) {
-      res.status(500).send({ message: "Something went wrong" });
+      res.status(400).send({ message: "Something went wrong." });
     }
   }
+
+
 
   static async updateUser(req, res) {
     try {
