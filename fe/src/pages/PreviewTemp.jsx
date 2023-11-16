@@ -6,10 +6,12 @@ import StarIcon from '@mui/icons-material/Star';
 const PreviewTemp = ({
     template,
     handleAcceptTemp,
+    handleRejectTemp,
     loadingAcceptTemp
 }) => {
     return (
         <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
+
 
 
             <div className="flex items-start gap-8">
@@ -58,6 +60,7 @@ const PreviewTemp = ({
                     />
                 </div>
             )}
+
         </div>
     );
 };

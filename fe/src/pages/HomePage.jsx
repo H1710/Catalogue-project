@@ -12,6 +12,8 @@ import {
   cloneTemplateRoute,
   saveProductNameRoute,
   acceptTemplateRoute,
+  getAcceptTemplateRoute,
+  getAcceptTemplate,
 } from "../utils/APIRoute";
 import axios from "axios";
 
@@ -33,15 +35,16 @@ import ProductList from "../components/home/ProductList";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  
+
   const [input, setInput] = useState("");
   const [user, setOpenAuthForm] = useOutletContext();
+  const navigate = useNavigate();
 
   const { data: productData, isLoading: isLoadingProductData } = useQuery({
     queryKey: ["products", user?.id],
     queryFn: () => {
       console.log(user.id);
-      return getAPI(`${getProductByUser}/${user.id}`);
+      return getAPI(`${getProductByUser}/${user?.id}`);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -55,7 +58,7 @@ const HomePage = () => {
   const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
-      return getAPI(`${acceptTemplateRoute}`);
+      return getAPI(`${getAcceptTemplate}`);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -65,6 +68,7 @@ const HomePage = () => {
     },
     // enabled: logged,
   });
+
 
   const { mutate: cloneTemplate, isLoading: loadingCloneTemplate } =
     useMutation({
@@ -80,9 +84,6 @@ const HomePage = () => {
         // navigate("/");
       },
     });
-
-  const navigate = useNavigate();
-
   const handleCloneTemplate = (template) => {
     cloneTemplate({ template, userId: user.id });
   };
@@ -107,6 +108,7 @@ const HomePage = () => {
       ],
     };
     cloneTemplate({ template, userId: user.id });
+    navigate("/");
   };
 
   const { mutate: saveNameProduct, isLoading: loadingSaveName } = useMutation({
@@ -127,6 +129,8 @@ const HomePage = () => {
     saveNameProduct({ productId, newName });
   };
 
+  console.log("templateData11111111111: ", templateData);
+  
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
@@ -141,6 +145,7 @@ const HomePage = () => {
 
       <br />
       <TemplateList
+        user={user}
         templateList={templateData?.data.data}
         isLoadingTemplateData={isLoadingTemplateData}
       />

@@ -82,9 +82,11 @@ export default function ServicePackage({
     initialValues: infoInvoice,
     onSubmit: (values) => {
       values.packageId = infoInvoice.packageId
+      console.log(values)
       closeModal();
       setInfoInvoice(values);
-      setIsShowInvoice(true);
+      setIsShowInvoice(prev => !prev);
+      console.log(isShowInvoice)
     },
 
     validationSchema: Yup.object({
@@ -130,7 +132,7 @@ export default function ServicePackage({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-lg h-[390px]   transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-lg h-[450px]   transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-xl font-normal leading-7 "
@@ -161,24 +163,24 @@ export default function ServicePackage({
                   {stateOfPopup === 0 && (
                     <>
                       <div className="mt-2">
-                        <p className="text-md text-[#0d1216]">
+                        <p className="text-md text-[#0d1216] leading-7">
                           <strong>🚀 Exclusive Templates:</strong> Access a
                           curated collection of elite designs for a stunning and
                           unique touch to your projects.
                         </p>
-                        <p className="text-md text-[#0d1216]">
+                        <p className="text-md text-[#0d1216] leading-7">
                           <strong>📥 Unlimited Downloads:</strong> Break free
                           from limitations! Download as many templates as you
                           need to fuel your creative journey.
                         </p>
 
-                        <p className="text-md text-[#0d1216]">
+                        <p className="text-md text-[#0d1216] leading-7">
                           <strong>✏️ Advanced Editing:</strong> Dive into
                           precision design with advanced tools, putting ultimate
                           creative control at your fingertips.
                         </p>
 
-                        <strong className="text-md text-[#0d1216]">
+                        <strong className="text-md text-[#0d1216] leading-7">
                           Ready to redefine your design game? Upgrade now and
                           let your creativity shine! 🌟🎨
                         </strong>
@@ -186,7 +188,7 @@ export default function ServicePackage({
 
                       <div className="mt-4">
                         <CustomButton
-                          classContent="inline-flex justify-center w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
+                          classContent="inline-flex justify-center  bg-[#8884d8] w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
                           handleClick={handleNext}
                           text={'Start right now!'}
                         />
@@ -212,7 +214,7 @@ export default function ServicePackage({
                               />
                               <div>
                                 <strong>{pack.name}</strong>
-                                <p className="text-gray-900 text-sm font-medium">
+                                <p className="text-gray-900 text-sm font-medium leading-7">
                                   {pack.cost}$
                                 </p>
                               </div>

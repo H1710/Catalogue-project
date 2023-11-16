@@ -42,3 +42,7 @@ export const publicTemplate = `${host}/public-form`;
 
 export const getProcessingTemplateRoute = `${host}/template/get-template/Processing`;
 export const acceptTemplateRoute = `${host}/template/accept-template`;
+export const acceptTemplateRoute = `${host}/template/get-template/Processing`;
+export const getAcceptTemplateRoute = `${host}/template/accept-template`;
+export const getRejectTemplateRoute = `${host}/template/denied-template`;
+export const getAcceptTemplate = `${host}/template/get-Accepted`;

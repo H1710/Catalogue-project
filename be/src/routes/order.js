@@ -6,4 +6,4 @@ router.post("/auto-create-order", OrderController.autoCreateOrder);
 router.get("/get-monthly-revenue", OrderController.getMonthlyRevenue);
 router.get("/get-yearly-revenue", OrderController.getYearlyRevenue);
 router.get("/get-order-by-year/:year", OrderController.getOrderByYear)
-module.exports = router;
+module.exports = router; 

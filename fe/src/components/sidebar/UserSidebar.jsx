@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import MinidenticonImg from "../common/MinidenticonImg";
-import ServicePackage from "../ServicePackage";
+
+import { useEffect, useState } from 'react';
+import MinidenticonImg from '../common/MinidenticonImg';
+import ServicePackage from '../ServicePackage';
+import { useNavigate } from 'react-router-dom';
 
 function UserSidebar({ user }) {
   const [showServiePackages, setShowServiePackages] = useState(false);
@@ -71,6 +73,7 @@ function UserSidebar({ user }) {
             <p>Try to Premium</p>
           </div>
         )}
+        </div>
         <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -166,6 +169,7 @@ function UserSidebar({ user }) {
           <p>My Product</p>
         </div>
       </div>
+
 
       {/* <div className="">
         <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">

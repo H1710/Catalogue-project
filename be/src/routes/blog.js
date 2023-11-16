@@ -12,7 +12,7 @@ router.post("/vote-blog-cmt", BlogController.voteBlogCmt);
 router.delete("/delete/:id", BlogController.deleteBlog);
 router.patch("/edit/:id", upload.single("thumbnail"), BlogController.editBlog);
 router.patch("/hide", BlogController.hideBlog);
-router.get("/rating", BlogController.ratingBlog);
+router.post("/rating", BlogController.ratingBlog);
 router.get("/search-ByStatus", BlogController.searchBlogByStatus);
 router.patch("/approve-accept", BlogController.acceptBlog);
 router.patch("/cancel-blog", BlogController.cancelBlog);
