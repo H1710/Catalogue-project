@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useMutation, useQuery } from "react-query";
+
 import { getProcessingBlogRoute, acceptBlogRoute, acceptTemplateRoute, getAcceptTemplateRoute, getRejectTemplateRoute } from "../utils/APIRoute";
+>>>>>>> main
 import { getAPI, patchAPI } from "../utils/FetchData";
 import { Pagination } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +16,7 @@ const ApproveTemplate = () => {
   const { data: templateList, isLoading: loadingTempData } = useQuery({
     queryKey: ["templates", page],
     queryFn: () => {
-      return getAPI(`${acceptTemplateRoute}`);
+      return getAPI(`${getProcessingTemplateRoute}`);
     },
     onSuccess: (data) => {
       console.log("dataaaaaaaa:",data);

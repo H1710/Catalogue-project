@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const uploadImage = require("../utils/uploadImage");
 const seq = require("../db/dbConnection");
+
 const Template = db.template;
 const RatingTemplate = db.templateRating;
 const TemplatePage = db.template_page;

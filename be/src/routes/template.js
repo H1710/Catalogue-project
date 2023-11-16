@@ -16,4 +16,5 @@ router.patch("/accept-template", TemplateController.acceptTemplate);
 router.patch("/denied-template", TemplateController.deniedTemplate);
 router.get("/get-Accepted", TemplateController.getAcceptedTemplate);
 router.post("/rating", TemplateController.ratingTemplate);
+
 module.exports = router;
