@@ -39,10 +39,22 @@ const sendEmail = async (to, OTPCode) => {
       to: to,
       subject: "OTP Verify gmail",
       html: `
-            <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to Noto</h2>
-            <div>${OTPCode}</div>
-            </div>
+      <div
+      style="max-width: 400px; margin: 50px auto; padding: 30px; text-align: center; font-size: 120%; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); position: relative;">
+  
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRDn7YDq7gsgIdHOEP2_Mng6Ym3OzmvfUQvQ&usqp=CAU"
+          alt="Noto Image" style="max-width: 100px; height: auto; display: block; margin: 0 auto; border-radius: 50%;">
+  
+      <h2 style="text-transform: uppercase; color: #3498db; margin-top: 20px; font-size: 28px; font-weight: bold;">
+          Welcome to Noto</h2>
+  
+      <div style="font-size: 18px; color: #555; margin-bottom: 30px;">
+          Your OTP Code is: <span style="font-weight: bold; color: #e74c3c;">${OTPCode}</span>
+      </div>
+  
+      <p style="color: #888; font-size: 14px;">Powered by Noto</p>
+  
+  </div>
           `,
     };
 
