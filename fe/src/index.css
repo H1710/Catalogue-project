@@ -11,6 +11,10 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-image: -moz-none;
+  background-image: -webkit-none;
+  background-image: -webkit-none;
+  background-image: -o-none;
 }
 
 code {
@@ -21,9 +25,17 @@ input {
   --tw-ring-shadow: 0 0 #000 !important;
 }
 
+button:hover,
+button:active {
+  background-image: -moz-none;
+  background-image: -webkit-none;
+  background-image: -webkit-none;
+  background-image: -o-none;
+}
+
 body {
-  max-height: 100vh;
+  /* max-height: 100vh; */
   max-width: 100vw;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   overflow-x: hidden;
 }

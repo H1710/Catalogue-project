@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "Active",
+      allowNull: true,
+    },
     endDate: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,

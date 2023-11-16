@@ -2,33 +2,49 @@ module.exports = (sequelize, DataTypes) => {
   const ProductPageDetail = sequelize.define(
     "product_page_detail",
     {
-      textInput: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      imageInput: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      containerStyle: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      height: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
-      inputStyle: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      width: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
-      content: {
+      top: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      left: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      z_index: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      color: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      rotate: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      text: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      maxLength: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      isOneLine: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

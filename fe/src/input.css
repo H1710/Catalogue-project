@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-text: #000;
+  --border-input: #d4d4d4;
+  --bg-button: #8b3dff;
+  --bg-button-hover: #7300e6;
+  --bg-button-success: #5cb85c;
+  --bg-button-success-hover: #4f9a4f;
+  --bg-button-danger: #d9534f;
+  --bg-button-danger-hover: #c14b47;
+}

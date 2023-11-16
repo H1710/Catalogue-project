@@ -5,11 +5,18 @@ import DesignerPage from "./pages/DesignerPage";
 import BlogPage from "./pages/BlogPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateBlog from "./pages/CreateBlog";
-import MainLayout from "./pages/MainLayout";
+import MainLayout from "./components/layout/MainLayout";
 import TemplateDetailsPage from "./pages/TemplateDetailsPage";
 import StatiticsPage from "./pages/StatiticsPage";
 import BlogPageDetail from "./pages/BlogPageDetail";
 import UserListPage from "./pages/UserListPage";
+import DesignPage from "./pages/DesignPage";
+import OrderListPage from "./pages/OrderListPage";
+import ApproveBlogPage from "./pages/ApproveBlogPage";
+import PreviewDesignPage from "./pages/PreviewDesignPage";
+import MyBlog from "./pages/MyBlogPage";
+import PublicTemplate from "./pages/PublicTemplatePage";
+import ApproveTemplate from "./pages/ApproveTemplate";
 
 const router = createBrowserRouter([
   {
@@ -24,10 +31,7 @@ const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
-      {
-        path: "/designer",
-        element: <DesignerPage />,
-      },
+
       {
         path: "/blog",
         element: <BlogPage />,
@@ -37,28 +41,57 @@ const router = createBrowserRouter([
         element: <BlogPageDetail />,
       },
       {
-        path: "/create-blog",
+        path: "/blog/create",
         element: <CreateBlog />,
+      },
+      {
+        path: "/blog/approve",
+        element: <ApproveBlogPage />,
+      },
+      {
+        path: "/design/:productId",
+        element: <DesignPage />,
+      },
+      {
+        path: "/design/preview/:templateId",
+        element: <PreviewDesignPage />,
       },
       {
         path: "/templatedetails/:id",
         element: <TemplateDetailsPage />,
       },
       {
+        path: "/statitics",
+        element: <StatiticsPage />,
+      },
+      {
         path: "/account-list",
         element: <UserListPage />,
       },
       {
-        path: "/statitics",
-        element: <StatiticsPage />,
+        path: "/order-list",
+        element: <OrderListPage />,
+      },
+      {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/myblog",
+        element: <MyBlog />,
+      },
+      {
+        path: "/public-form/:id",
+        element: <PublicTemplate />,
+      },
+      {
+        path: "/template/approve",
+        element: <ApproveTemplate />,
       },
     ],
   },
 
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-  },
+ 
 ]);
 
 export default router;
