@@ -38,6 +38,7 @@ const HomePage = () => {
   
   const [input, setInput] = useState("");
   const [user, setOpenAuthForm] = useOutletContext();
+  const navigate = useNavigate();
 
   const { data: productData, isLoading: isLoadingProductData } = useQuery({
     queryKey: ["products", user?.id],
@@ -83,9 +84,6 @@ const HomePage = () => {
         // navigate("/");
       },
     });
-
-  const navigate = useNavigate();
-
   const handleCloneTemplate = (template) => {
     cloneTemplate({ template, userId: user.id });
   };
@@ -110,6 +108,7 @@ const HomePage = () => {
       ],
     };
     cloneTemplate({ template, userId: user.id });
+    navigate("/");
   };
 
   const { mutate: saveNameProduct, isLoading: loadingSaveName } = useMutation({
@@ -131,7 +130,7 @@ const HomePage = () => {
   };
 
   console.log("templateData11111111111: ", templateData);
-
+  
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
