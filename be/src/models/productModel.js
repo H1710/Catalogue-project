@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     thumbnail: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT("long"),
     },
   });
 

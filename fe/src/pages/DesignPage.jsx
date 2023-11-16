@@ -81,8 +81,6 @@ const DesignPage = () => {
     },
   ]);
 
-  console.log(components);
-
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -188,46 +186,56 @@ const DesignPage = () => {
     window.addEventListener("mouseup", mouseUp);
   }, []);
 
-  const removeComponent = useCallback((id) => {
-    // component[page] = component[page].filter((c) => c.id !== id);
-    setComponents((prev) => {
-      const temp = [...prev];
-      const index = temp[page].findIndex((c) => c.id === id);
+  const removeComponent = useCallback(
+    (id) => {
+      // component[page] = component[page].filter((c) => c.id !== id);
+      setComponents((prev) => {
+        const temp = [...prev];
+        const index = temp[page].product_page_details.findIndex(
+          (c) => c.id === id
+        );
 
-      if (index !== -1) {
-        temp[page].splice(index, 1);
-      }
+        if (index !== -1) {
+          temp[page].product_page_details.splice(index, 1);
+        }
 
-      return temp;
-    });
-    setCurrentComponent("");
-  }, []);
+        return temp;
+      });
+      setCurrentComponent("");
+    },
+    [page]
+  );
 
-  const resizeElement = useCallback((id, currentInfo) => {
-    setCurrentComponent(currentInfo);
-    let isMoving = true;
-    const currentDiv = document.getElementById(id);
+  console.log(components);
 
-    const mouseMove = ({ movementX, movementY }) => {
-      const getStyle = window.getComputedStyle(currentDiv);
-      const width = parseInt(getStyle.width);
-      const height = parseInt(getStyle.height);
-      if (isMoving) {
-        currentDiv.style.width = `${width + movementX}px`;
-        currentDiv.style.height = `${height + movementY}px`;
-      }
-    };
+  const resizeElement = useCallback(
+    (id, currentInfo) => {
+      setCurrentComponent(currentInfo);
+      let isMoving = true;
+      const currentDiv = document.getElementById(id);
 
-    const mouseUp = (e) => {
-      isMoving = false;
-      window.removeEventListener("mousemove", mouseMove);
-      window.removeEventListener("mouseup", mouseUp);
-      setWidth(parseInt(currentDiv.style.width));
-      setHeight(parseInt(currentDiv.style.height));
-    };
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mouseup", mouseUp);
-  }, []);
+      const mouseMove = ({ movementX, movementY }) => {
+        const getStyle = window.getComputedStyle(currentDiv);
+        const width = parseInt(getStyle.width);
+        const height = parseInt(getStyle.height);
+        if (isMoving) {
+          currentDiv.style.width = `${width + movementX}px`;
+          currentDiv.style.height = `${height + movementY}px`;
+        }
+      };
+
+      const mouseUp = (e) => {
+        isMoving = false;
+        window.removeEventListener("mousemove", mouseMove);
+        window.removeEventListener("mouseup", mouseUp);
+        setWidth(parseInt(currentDiv.style.width));
+        setHeight(parseInt(currentDiv.style.height));
+      };
+      window.addEventListener("mousemove", mouseMove);
+      window.addEventListener("mouseup", mouseUp);
+    },
+    [page]
+  );
 
   const rotateElement = (id, currentInfo) => {
     setCurrentComponent("");
@@ -305,38 +313,44 @@ const DesignPage = () => {
     });
 
     setPage((prev) => prev + 1);
-  }, [page]);
+  }, []);
 
   const changeText = (e) => {
     setText((prev) => e.target.value);
   };
-  const createText = useCallback((name) => {
-    setComponents((prev) => {
-      const temp = [...prev];
-      const id = Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
-      const style = {
-        id: id,
-        name: name,
-        left: 10,
-        top: 10,
-        opacity: 1,
-        width: 200,
-        height: 50,
-        text: "Add a text",
-        rotate,
-        z_index: 3,
-        color: "#3c3c3d",
-        setCurrentComponent: (a) => setCurrentComponent(a),
-        moveElement,
-        resizeElement,
-        rotateElement,
-        removeComponent,
-        changeText,
-      };
-      temp[page].product_page_details.push(style);
-      return temp;
-    });
-  }, []);
+  const createText = useCallback(
+    (name) => {
+      setComponents((prev) => {
+        const temp = [...prev];
+        const id =
+          Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
+        const style = {
+          id: id,
+          name: name,
+          left: 10,
+          top: 10,
+          opacity: 1,
+          width: 200,
+          height: 50,
+          text: "Add a text",
+          rotate,
+          z_index: 3,
+          productPageId: temp[page].id,
+          color: "#3c3c3d",
+          setCurrentComponent: (a) => setCurrentComponent(a),
+          moveElement,
+          resizeElement,
+          rotateElement,
+          removeComponent,
+          changeText,
+        };
+        console.log(page);
+        temp[page].product_page_details.push(style);
+        return temp;
+      });
+    },
+    [page]
+  );
 
   const setElement = useCallback((type) => {
     setState(type);
@@ -362,10 +376,16 @@ const DesignPage = () => {
     return html2canvas(element, {
       allowTaint: true,
       useCORS: true,
+      // scale: 1,
     })
       .then((canvas) => {
-        console.log(canvas);
-        return canvas.toDataURL("image/png");
+        const reducedCanvas = document.createElement("canvas");
+        reducedCanvas.width = canvas.width / 2; // Adjust the dimensions as needed
+        reducedCanvas.height = canvas.height / 2;
+        reducedCanvas
+          .getContext("2d")
+          .drawImage(canvas, 0, 0, reducedCanvas.width, reducedCanvas.height);
+        return reducedCanvas.toDataURL("image/png", 0.5);
       })
       .catch((error) => {
         // Handle the error, e.g., log it or show an error message
@@ -377,12 +397,9 @@ const DesignPage = () => {
   const handleSaveTemplate = async () => {
     try {
       let capturedCanvas = null;
-      console.log(page);
       if (page == 0) {
         capturedCanvas = await captureContent();
       }
-      console.log(capturedCanvas);
-
       saveTemplate({ components: components, thumbnail: capturedCanvas });
     } catch (error) {
       console.error("Error saving template:", error);
@@ -398,33 +415,36 @@ const DesignPage = () => {
     uploadTemplateImage(formData);
   };
 
-  const createImage = useCallback((img) => {
-    setComponents((prev) => {
-      const temp = [...prev];
-      const style = {
-        id: Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000,
-        name: "image",
-        type: "image",
-        left: 10,
-        top: 10,
-        opacity: 1,
-        width: 200,
-        height: 150,
-        rotate,
-        z_index: 2,
-        productPageId: temp[page].id,
-        image: img,
-        setCurrentComponent: (a) => setCurrentComponent(a),
-        // removeBackground: () => setImage(""),
-        moveElement,
-        resizeElement,
-        rotateElement,
-        removeComponent,
-      };
-      temp[page].product_page_details.push(style);
-      return temp;
-    });
-  }, []);
+  const createImage = useCallback(
+    (img) => {
+      setComponents((prev) => {
+        const temp = [...prev];
+        const style = {
+          id: Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000,
+          name: "image",
+          type: "image",
+          left: 10,
+          top: 10,
+          opacity: 1,
+          width: 200,
+          height: 150,
+          rotate,
+          z_index: 2,
+          productPageId: temp[page].id,
+          image: img,
+          setCurrentComponent: (a) => setCurrentComponent(a),
+          // removeBackground: () => setImage(""),
+          moveElement,
+          resizeElement,
+          rotateElement,
+          removeComponent,
+        };
+        temp[page].product_page_details.push(style);
+        return temp;
+      });
+    },
+    [page]
+  );
 
   const { mutate: uploadTemplateImage, isLoading: isLoadingUpload } =
     useMutation({

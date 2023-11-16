@@ -20,6 +20,8 @@ const DesignToolBar = ({
       state: { components: JSON.stringify(components) },
     });
   };
+  console.log(components);
+
   return (
     <div className="h-[50px] w-full flex items-center  text-gray-300 bg-white border-b border-gray-100 shadow px-8">
       <BlobProvider document={<MyPDF components={components} />}>
@@ -73,7 +75,7 @@ const DesignToolBar = ({
                   onClick={() => {
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = "my-document.pdf";
+                    a.download = "my-docent.pdf";
                     a.click();
                   }}
                   className="px-3 py-[6px] outline-none text-[--primary-text]"

@@ -2,7 +2,7 @@ const db = require("../models/index");
 const uploadImage = require("../utils/uploadImage");
 const seq = require("../db/dbConnection");
 const Template = db.template;
-const RatingTemplate = db.templateRating
+const RatingTemplate = db.templateRating;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
 const User = db.user;
@@ -194,8 +194,8 @@ class TemplateController {
         include: [
           {
             model: RatingTemplate,
-            attributes: []
-          }
+            attributes: [],
+          },
         ],
         attributes: [
           "id",
@@ -227,7 +227,9 @@ class TemplateController {
       const { templateId, userId, rating } = req.body;
 
       // Assuming you have a RatingTemplate model
-      const templateRate = await RatingTemplate.findOne({ where: { templateId, userId } });
+      const templateRate = await RatingTemplate.findOne({
+        where: { templateId, userId },
+      });
 
       if (templateRate) {
         // Update the existing rating
@@ -245,6 +247,26 @@ class TemplateController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async getTemplateProcessing(req, res) {
+    try {
+      const status = req.params.status;
+      console.log(status);
+
+      const templates = await Template.findAll({
+        where: {
+          status: status,
+        },
+      });
+
+      res.status(200).json({
+        templates: templates,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
     }
   }
 }
