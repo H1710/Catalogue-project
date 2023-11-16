@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const TemplateList = ({ templateList, isLoadingTemplateData }) => {
   const navigate = useNavigate();
+  console.log("templateList: ", templateList);
   return (
     <>
       <div className="content col-span-full select-none text-[18px] flex justify-start pb-2 font-bold">
