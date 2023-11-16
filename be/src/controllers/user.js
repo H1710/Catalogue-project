@@ -3,6 +3,7 @@ const db = require("../models/index");
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
 const uploadImage = require("../utils/uploadImage");
+const cloudinary = require("../utils/cloudinary");
 
 const Role = db.role;
 const User = db.user;
@@ -163,7 +164,6 @@ class UserController {
   static async getUserByYear(req, res) {
     try {
       const year = parseInt(req.params.year, 10);
-      console.log(year);
 
       if (isNaN(year)) {
         res.status(400).send({ message: "Invalid year" });
@@ -176,8 +176,8 @@ class UserController {
       // Truy vấn cơ sở dữ liệu để lấy số lượng đăng ký trong từng tháng của năm hiện tại
       const userRegistrations = await User.findAll({
         attributes: [
-          [Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'month'],
-          [Sequelize.fn('COUNT', Sequelize.col('id')), 'registration_count'],
+          [Sequelize.fn("MONTH", Sequelize.col("createdAt")), "month"],
+          [Sequelize.fn("COUNT", Sequelize.col("id")), "registration_count"],
         ],
         where: {
           createdAt: {
@@ -185,9 +185,9 @@ class UserController {
             [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
         },
-        group: [Sequelize.fn('MONTH', Sequelize.col('createdAt'))],
+        group: [Sequelize.fn("MONTH", Sequelize.col("createdAt"))],
         raw: true,
-        order: [[Sequelize.fn('MONTH', Sequelize.col('createdAt')), 'ASC']],
+        order: [[Sequelize.fn("MONTH", Sequelize.col("createdAt")), "ASC"]],
       });
 
       // Truy vấn cơ sở dữ liệu để lấy tổng số lượng đăng ký trong cả năm hiện tại
@@ -211,10 +211,15 @@ class UserController {
       });
 
       // Tạo một Map từ kết quả truy vấn để dễ dàng truy cập thông tin
-      const userMap = new Map(userRegistrations.map(registration => [registration.month, registration]));
+      const userMap = new Map(
+        userRegistrations.map((registration) => [
+          registration.month,
+          registration,
+        ])
+      );
 
       // Tạo kết quả cuối cùng với đủ 12 tháng và tổng số lượng đăng ký trong cả năm hiện tại
-      const result = allMonths.map(month => {
+      const result = allMonths.map((month) => {
         const data = userMap.get(month);
         return {
           year: year,
@@ -261,6 +266,7 @@ class UserController {
     try {
       const { userId } = req.body;
       const designImage = req.file;
+      console.log(designImage);
 
       if (!designImage) {
         return res.status(400).json({ message: "Image not found" });
@@ -270,14 +276,22 @@ class UserController {
         return res.status(400).json({ message: "User not found" });
       }
 
-      const data = await uploadImage(
-        designImage.filename,
-        designImage.mimetype
-      );
+      // const data = await uploadImage(
+      //   designImage.filename,
+      //   designImage.mimetype
+      // );
+
+      const result = await cloudinary.uploader.upload(designImage.path, {
+        public_id: designImage.originalname,
+        resource_type: "auto",
+        folder: "noto",
+        use_filename: true,
+        unique_filename: false,
+      });
 
       await ImageUpload.create({
         userId: userId,
-        content: data.data.webContentLink,
+        content: result.url,
       });
 
       return res.status(200).send({ message: "Upload success" });

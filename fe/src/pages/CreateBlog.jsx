@@ -7,8 +7,8 @@ import { useMutation } from "react-query";
 import { postAPI } from "../utils/FetchData";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../components/common/Button";
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateBlog = () => {
   const { state } = useLocation();
@@ -56,6 +56,7 @@ const CreateBlog = () => {
       formData.append(key, newData[key]);
     }
     mutate(formData);
+    navigate("/");
   };
 
   return (
@@ -76,14 +77,12 @@ const CreateBlog = () => {
       <QuillEditor setBody={setBody} setFormValid={setFormValid} />
 
       {!formValid && (
-        <div className="text-red-500 mt-2">
-          Content is required.
-        </div>
+        <div className="text-red-500 mt-2">Content is required.</div>
       )}
 
       <div
         className="w-full flex justify-center mt-4"
-        onClick={() => formValid && handleCreateBlog()} 
+        onClick={() => formValid && handleCreateBlog()}
       >
         <CustomButton
           text={"Create Blog"}

@@ -1,23 +1,50 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import * as Yup from "yup";
 import Tag from "../components/Tag";
+import { useMutation } from "react-query";
+import { createBlogRoute, createTemplateRoute } from "../utils/APIRoute";
+import { postAPI } from "../utils/FetchData";
 
 const PublicTemplate = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const { state } = useLocation();
   const [name, setName] = useState("");
   const [tags, setTags] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [user] = useOutletContext();
 
-  console.log(state);
+  const { mutate: publicTemplate, isLoading } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(createTemplateRoute, info);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {},
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, tags, thumbnail });
+    const newData = {
+      name: name,
+      tags: tags,
+      thumbnail: thumbnail,
+      userId: user.id,
+      template: state.components,
+    };
+    console.log(newData);
+    let formData = new FormData();
+    for (let key in newData) {
+      formData.append(key, newData[key]);
+    }
+    publicTemplate(formData);
   };
 
   return (

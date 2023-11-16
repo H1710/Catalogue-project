@@ -15,7 +15,9 @@ const UserListPage = () => {
     queryFn: () => {
       return getAPI(getAllUserRoute);
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
@@ -85,7 +87,7 @@ const UserListPage = () => {
                   <td className=" text-center">{user.country}</td>
                   <td className=" text-center">{user.role.name}</td>
                   <td className=" text-center">
-                    {user.orders[0].service_package.name}
+                    {user.orders[0]?.service_package.name}
                   </td>
                   <td className=" text-center">
                     <button

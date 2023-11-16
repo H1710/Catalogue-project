@@ -1,16 +1,14 @@
+
 import { useEffect, useState } from 'react';
 import MinidenticonImg from '../common/MinidenticonImg';
 import ServicePackage from '../ServicePackage';
 import { useNavigate } from 'react-router-dom';
 
-function AdminSidebar({ user }) {
+function UserSidebar({ user }) {
   const [showServiePackages, setShowServiePackages] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
-  const navigate = useNavigate();
-
   const [showCategoryList, setShowCategoryList] = useState(true);
-  const categoryList = ['Education', 'Social media', 'Bussiness'];
-  console.log(isPremium);
+  const categoryList = ["Education", "Social media", "Bussiness"];
   let daysDifference = 0;
   let remainingDayofService = 0;
   const length = user.orders.length;
@@ -22,7 +20,6 @@ function AdminSidebar({ user }) {
     daysDifference = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     remainingDayofService = user.orders[length - 1].service_package.remain_day;
   }
-  console.log('Day', remainingDayofService, daysDifference);
 
   useEffect(() => {
     const checkIsPremium = () => {
@@ -52,7 +49,7 @@ function AdminSidebar({ user }) {
           />
         )}
         <div className="flex flex-col gap-1">
-          <p className="font-semibold text-lg">Person</p>
+          <p className="font-semibold text-lg">{user.name}</p>
           <p className="text-md">Free</p>
         </div>
       </div>
@@ -78,11 +75,6 @@ function AdminSidebar({ user }) {
         )}
         </div>
         <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
-        <div 
-        onClick={() => {
-          navigate("/home");
-        }}
-        className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -141,11 +133,7 @@ function AdminSidebar({ user }) {
               </div>
             );
           })}
-        <div 
-        onClick={() => {
-          navigate("/myblog");
-        }}
-        className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -182,15 +170,36 @@ function AdminSidebar({ user }) {
         </div>
       </div>
 
-       
+
+      {/* <div className="">
+        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+            />
+          </svg>
+
+
+          <p>Logout</p>
+        </div>
+      </div> */}
       <ServicePackage
         showServiePackages={showServiePackages}
         setShowServiePackages={setShowServiePackages}
         user={user}
-       setIsPremium={setIsPremium}
+        setIsPremium={setIsPremium}
       />
     </aside>
   );
 }
 
-export default AdminSidebar;
+export default UserSidebar;

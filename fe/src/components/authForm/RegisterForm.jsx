@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from "react";
 import {
   Alert,
   CircularProgress,
@@ -7,52 +7,52 @@ import {
   Stepper,
   TextField,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 // import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import 'react-toastify/dist/ReactToastify.css';
-import CustomButton from '../common/Button';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import "react-toastify/dist/ReactToastify.css";
+import CustomButton from "../common/Button";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   confirmOTPRoute,
   firstStepRegisterationRoute,
   setInfoRoute,
-} from '../../utils/APIRoute';
-import { useMutation } from 'react-query';
-import { postAPI } from '../../utils/FetchData';
-import { validRegister } from '../../utils/Validate';
-import { ToastContainer, toast } from 'react-toastify';
-import OtpInput from 'react-otp-input';
-import { Combobox, Transition } from '@headlessui/react';
-import { Countries } from '../../shared/Countries';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "../../utils/APIRoute";
+import { useMutation } from "react-query";
+import { postAPI } from "../../utils/FetchData";
+import { validRegister } from "../../utils/Validate";
+import { ToastContainer, toast } from "react-toastify";
+import OtpInput from "react-otp-input";
+import { Combobox, Transition } from "@headlessui/react";
+import { Countries } from "../../shared/Countries";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faChevronCircleDown,
   faChevronDown,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
-const steps = ['Account', 'Confirm', 'Information'];
+const steps = ["Account", "Confirm", "Information"];
 const RegisterForm = ({ setState, setOpenAuthForm }) => {
   const countries = Countries.map((country) => country.name);
   const [currentStep, setCurrentStep] = useState(0);
-  const [OTPCode, setOTPCode] = useState('');
-  const [country, setCountry] = useState('');
+  const [OTPCode, setOTPCode] = useState("");
+  const [country, setCountry] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const [values, setValues] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   console.log(values);
 
   const toastOptions = {
-    position: 'top-right',
+    position: "top-right",
     autoClose: 3000,
     pauseOnHover: true,
     draggable: true,
-    theme: 'light',
+    theme: "light",
   };
   const { mutate: firstStep, isLoading: loadingFirstStep } = useMutation({
     mutationFn: (info) => {
@@ -89,7 +89,6 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
         name: values.name,
         email: values.email,
         country: values.country,
-        
       });
     },
     onError: (error) => {
@@ -97,7 +96,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     },
     onSuccess: (data) => {
       toast.success(data.data.message, toastOptions);
-      setState('login')
+      setState("login");
     },
   });
 
@@ -122,8 +121,6 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     submitInfo();
   };
   const handleChange = (e) => {
-    console.log(e.target.name);
-    
     let value = e.target?.files ? e.target.files : e.target.value;
     setValues({
       ...values,
@@ -131,12 +128,12 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     });
   };
   // console.log(infoUser);
-  const updateCountry= (country) => {
+  const updateCountry = (country) => {
     setValues({
       ...values,
-      ['country']: country,
+      ["country"]: country,
     });
-  }
+  };
 
   return (
     <div className=" relative items-center justify-center w-full h-full">
@@ -195,7 +192,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                 <button
                   type="submit"
                   disabled={loadingFirstStep}
-                  className={`flex-1 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400`}
+                  className={`flex-1 text-center text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400`}
                 >
                   {loadingFirstStep ? (
                     <>
@@ -234,9 +231,9 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                     renderInput={(inputProps, index) => (
                       <input
                         {...inputProps}
-                        style={{ ...inputProps.style, width: '3rem' }}
+                        style={{ ...inputProps.style, width: "3rem" }}
                         className={`border-2 h-12 items-center justify-center text-center w-10 ${
-                          index === 0 ? '' : 'ml-2 '
+                          index === 0 ? "" : "ml-2 "
                         }`}
                       />
                     )}
@@ -273,7 +270,10 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
           </div>
         )}
         {currentStep === 2 && (
-          <form onSubmit={submitUserInfo} className='grid justify-items-stretch'>
+          <form
+            onSubmit={submitUserInfo}
+            className="grid justify-items-stretch"
+          >
             <div className="my-4 text-sm">
               <TextField
                 required
@@ -285,12 +285,14 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                 onChange={handleChange}
               />
             </div>
-            
-            <Combobox value={country} 
-            onChange={(country) => {
-              setCountry(country);
-              updateCountry(country);
-            }}  >
+
+            <Combobox
+              value={country}
+              onChange={(country) => {
+                setCountry(country);
+                updateCountry(country);
+              }}
+            >
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
@@ -324,8 +326,8 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                           className={({ active }) =>
                             `relative cursor-default select-none py-2 pl-10 pr-4 ${
                               active
-                                ? 'bg-teal-600 text-white'
-                                : 'text-gray-900'
+                                ? "bg-teal-600 text-white"
+                                : "text-gray-900"
                             }`
                           }
                           value={country}
@@ -334,7 +336,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                             <>
                               <span
                                 className={`block truncate ${
-                                  selected ? 'font-medium' : 'font-normal'
+                                  selected ? "font-medium" : "font-normal"
                                 }`}
                               >
                                 {country}
@@ -342,7 +344,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                               {selected ? (
                                 <span
                                   className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                    active ? 'text-white' : 'text-teal-600'
+                                    active ? "text-white" : "text-teal-600"
                                   }`}
                                 >
                                   <FontAwesomeIcon
@@ -362,25 +364,34 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
               </div>
             </Combobox>
             <button
-                  type="submit"
-                  disabled={loadingSubmitOTP}
-                  className={`  mt-4 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 justify-self-end`}
-                >
-                  {loadingSubmitOTP ? (
-                    <>
-                      Loading...
-                      <CircularProgress size={20} />
-                    </>
-                  ) : (
-                    <p>Save</p>
-                  )}
-                </button>
+              type="submit"
+              disabled={loadingSubmitOTP}
+              className={`  mt-4 text-center text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 justify-self-end`}
+            >
+              {loadingSubmitOTP ? (
+                <>
+                  Loading...
+                  <CircularProgress size={20} />
+                </>
+              ) : (
+                <p>Save</p>
+              )}
+            </button>
           </form>
-
         )}
-
-         
-        
+        <div class="mt-4 text-center flex items-center justify-center">
+          <div class="flex items-center">
+            <p class="flex justify-center text-xs text-gray-600 mt-[3px]">
+              Already have an account?
+            </p>
+            <a
+              onClick={() => setState("login")}
+              class="flex justify-center text-[#3386ff] text-sm font-medium ml-1 cursor-pointer"
+            >
+              Login
+            </a>
+          </div>
+        </div>
       </div>
       <ToastContainer />
     </div>

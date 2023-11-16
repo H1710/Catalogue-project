@@ -55,13 +55,13 @@ class AuthController {
           },
         ],
       });
+
       if (!user)
         return res
           .status(400)
           .send({ message: "This account does not exist." });
 
-      // const isMatch = await bcrypt.compare(password, user.password);
-      const isMatch = password === user.password;
+      const isMatch = await bcrypt.compare(password, user.dataValues.password);
       if (!isMatch) {
         return res.status(400).send({ message: "Password incorrect." });
       }
@@ -182,21 +182,16 @@ class AuthController {
   }
 
   static async submitOTP(req, res) {
-
     try {
       const { email, OTPCode } = req.body;
-   
-      
-      const user = await User.findOne({ where: { email: email  } });
+
+      const user = await User.findOne({ where: { email: email } });
 
       if (!user) {
         return res.status(400).json({ message: "User not found." });
       }
 
-
       if (OTPCode != user.otpCode) {
-       
-        
         return res.status(400).json({ message: "OTP code not correct." });
       }
 
@@ -214,7 +209,7 @@ class AuthController {
   static async setInfo(req, res, next) {
     try {
       const { name, email, country } = req.body;
-      const user = await User.findOne({ where: { email: email  } });
+      const user = await User.findOne({ where: { email: email } });
 
       if (!user) {
         return res.status(400).json({ message: "User not found." });

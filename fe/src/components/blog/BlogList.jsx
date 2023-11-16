@@ -7,11 +7,21 @@ const BlogList = ({
   handleNavigateBlogDetail,
   handleAcceptBlog,
   loadingAcceptBlog,
+  searchText, 
 }) => {
+  const filterBlogs = () => {
+    const search = searchText.toLowerCase();
+    return blogsData.data.blogs.filter((blog) =>
+      blog.title.toLowerCase().includes(search)
+    );
+  };
+
+  const displayedBlogs = searchText ? filterBlogs() : blogsData.data.blogs;
+
   return (
     <div className="flex flex-col gap-4">
       {!isLoading &&
-        blogsData.data.blogs.map((blog, index) => (
+        displayedBlogs.map((blog, index) => (
           <PreviewBlog
             key={index}
             blog={blog}

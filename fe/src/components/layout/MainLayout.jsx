@@ -22,17 +22,16 @@ const MainLayout = () => {
   const { isLoading } = useQuery({
     queryKey: ["refresh_token", dispatch],
     queryFn: () => {
-      
       return getAPI(refreshTokenRoute);
     },
     onSuccess: (data) => {
       setIsDisableMenu(true);
       dispatch(
-        seft({ ...data.data.user, access_token: data.data.access_token }),
+        seft({ ...data.data.user, access_token: data.data.access_token })
       );
     },
     onError: (error) => {},
-    enabled: localStorage.getItem('signed') === 'catalogue-app',
+    enabled: localStorage.getItem("signed") === "catalogue-app",
   });
   return (
     <div className={`w-full min-h-[90vh]`}>
@@ -44,7 +43,6 @@ const MainLayout = () => {
         isDisableMenu={isDisableMenu}
       />
       <div className="w-full h-full flex">
-
         {user?.access_token &&
           showSidebar &&
           (user.role.name === "Admin" ? (
@@ -54,7 +52,7 @@ const MainLayout = () => {
           ))}
         <div
           className={`flex justify-center items-center w-full ${
-            showSidebar && 'ml-[250px]'
+            showSidebar && "ml-[250px]"
           }`}
         >
           <Outlet context={[user, setOpenAuthForm]} />
