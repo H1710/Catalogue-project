@@ -245,6 +245,26 @@ class TemplateController {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  static async getTemplateProcessing(req, res) {
+    try {
+      const status = req.params.status;
+      console.log(status);
+
+      const templates = await Template.findAll({
+        where: {
+          status: status,
+        },
+      });
+
+      res.status(200).json({
+        templates: templates,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
 }
 
 exports.TemplateController = TemplateController;

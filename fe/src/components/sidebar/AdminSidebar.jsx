@@ -69,7 +69,9 @@ function AdminSidebar({ user }) {
             </svg>
             <p>Blog</p>
           </div>
-          <div className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <div 
+          onClick={() => navigate("template/approve")}
+          className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
