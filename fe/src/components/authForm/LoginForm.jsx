@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-const LoginForm = ({ setOpenAuthForm, setState }) => {
+const LoginForm = ({setState, setOpenAuthForm }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
