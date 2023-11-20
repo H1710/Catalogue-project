@@ -11,6 +11,7 @@ import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import TemplateList from "../components/home/TemplateList";
 import ProductList from "../components/home/ProductList";
+import Search from "../components/home/Search";
 
 const HomePage = () => {
   const [user, setOpenAuthForm] = useOutletContext();
@@ -87,7 +88,7 @@ const HomePage = () => {
             "radial-gradient(circle at 52.1% -29.6%, rgb(144, 17, 105) 0%, rgb(51, 0, 131) 100.2%)",
         }}
       >
-        {/* <Search /> */}
+        <Search />
       </div>
 
       <br />

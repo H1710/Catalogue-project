@@ -17,6 +17,7 @@ import MyBlog from "./pages/MyBlogPage";
 import PublicTemplate from "./pages/PublicTemplatePage";
 import ApproveTemplatePage from "./pages/ApproveTemplatePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/template/approve",
         element: <ApproveTemplatePage />,
+      },
+      {
+        path: "/search/:name",
+        element: <SearchPage />,
       },
     ],
   },
