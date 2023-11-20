@@ -23,7 +23,7 @@ const DesignToolBar = ({
   };
 
   return (
-    <div className="h-[50px] w-full flex items-center  text-gray-300 bg-white border-b border-gray-100 shadow px-8">
+    <div className="h-[50px] w-full flex items-center text-gray-300 bg-white border-b border-gray-100 shadow px-8">
       <BlobProvider document={<MyPDF components={components} />}>
         {({ blob, url, loading, error }) => {
           return (
@@ -71,7 +71,7 @@ const DesignToolBar = ({
                   </button>
                   <input
                     type="number"
-                    className="outline-none pl-2 w-10"
+                    className="outline-none w-10 text-center"
                     value={currentComponent?.fontSize || 0}
                   />
                   <button

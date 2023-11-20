@@ -205,7 +205,7 @@ class BlogController {
           "blog.id",
           "tags.id",
         ],
-        offset: (page - 1) * limit,
+        offset: offset,
         limit: limit,
         subQuery: false,
       });
@@ -270,8 +270,12 @@ class BlogController {
         limit: limit,
         subQuery: false,
       });
-
-      res.status(200).json(blogs);
+      const totalCount = await Blog.count({
+        where: {
+          status: "Accepted",
+        },
+      });
+      res.status(200).json({ rows: blogs, count: totalCount });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });

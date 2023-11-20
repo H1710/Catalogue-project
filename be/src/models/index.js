@@ -51,9 +51,6 @@ db.order.belongsTo(db.user);
 db.servicePackage.hasMany(db.order);
 db.order.belongsTo(db.servicePackage);
 
-db.template.belongsTo(db.servicePackage);
-db.servicePackage.hasMany(db.template);
-
 db.user.hasMany(db.blog);
 db.blog.belongsTo(db.user, {
   foreignKey: "userId",

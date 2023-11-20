@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "Processing",
       },
+      classService: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       timeStamp: true,

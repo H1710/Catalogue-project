@@ -1,4 +1,5 @@
-const host = "http://localhost:5000/api/v1";
+const host =
+  process.env.REACT_APP_SERVER_DOMAIN || "http://localhost:5000/api/v1";
 
 export const loginRoute = `${host}/auth/login`;
 export const refreshTokenRoute = `${host}/auth/refresh_token`;
@@ -31,6 +32,8 @@ export const acceptBlogRoute = `${host}/blog/approve-accept`;
 
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 export const commentBlogRoute = `${host}/comment/blog/create`;
+export const getTemplateCommentRoute = `${host}/comment/template`;
+export const commentTemplateRoute = `${host}/comment/template/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const postOrderRoute = `${host}/order/add-order`;
@@ -48,6 +51,5 @@ export const publicTemplate = `${host}/public-form`;
 export const getProcessingTemplateRoute = `${host}/template/get/processing`;
 export const acceptTemplateRoute = `${host}/template/accept-template`;
 export const rejectTemplateRoute = `${host}/template/denied-template`;
-export const getAcceptTemplate = `${host}/template/get-Accepted`;
+export const getAcceptTemplateRoute = `${host}/template/get-accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
- 

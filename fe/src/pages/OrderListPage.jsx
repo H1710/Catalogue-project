@@ -25,12 +25,12 @@ const OrderListPage = () => {
   };
   console.log(orderList);
   return (
-    <div className="w-full flex flex-col min-h-[80vh] justify-between">
-      <div class="p-4">
+    <div className="w-full flex flex-col h-full justify-between overflow-auto">
+      <div class="p-4 h-full">
         {/* <div class="text-3xl font-bold text-Black text-center mb-6">
           All Users
         </div> */}
-        <table class="w-full border rounded text-center">
+        <table class="w-full h-full border rounded text-center">
           <thead>
             <tr class="border-y">
               <th class="p-2 bg-gray-800 text-white">Id</th>
@@ -61,6 +61,7 @@ const OrderListPage = () => {
               ))}
           </tbody>
         </table>
+
         <Pagination
           className="h-20 flex justify-end"
           count={Math.ceil(orderList?.data.count / 10)}
