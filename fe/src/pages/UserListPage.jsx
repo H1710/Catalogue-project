@@ -9,13 +9,16 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ValidateService } from "../utils/ValidateService";
+import DeleteUser from "../components/admin/DeleteUser";
 
 const UserListPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isShowDelete, setIsShowDelete] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
+
   const { data: userList, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: () => {
@@ -30,6 +33,7 @@ const UserListPage = () => {
     // enabled: logged,
   });
 
+
   const toastOptions = {
     position: "top-right",
     autoClose: 3000,
@@ -37,7 +41,7 @@ const UserListPage = () => {
     draggable: true,
     theme: "light",
   };
-  const [isOpen, setIsOpen] = useState(false);
+ 
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
@@ -46,26 +50,22 @@ const UserListPage = () => {
   const openModal = useCallback(() => {
     setIsOpen(true);
   });
+  const closeModalDelete = useCallback(() => {
+    setIsShowDelete(false);
+  });
+
+  const openModalDelete = useCallback(() => {
+    setIsShowDelete(true);
+  });
   const handleUpdate = (user) => () => {
     openModal();
     setUserInfo(user);
   };
-  const handleDeletePopup = (user) => {
-    setIsShowDelete(true);
+  const handleDeletePopup = (user)=> () => {
+     openModalDelete();
     setUserInfo(user);
   };
-  const handleDelete = () => {
-    let res;
-    const callAPI = () => {
-      res = axios.delete(
-        `http://localhost:5000/api/v1/deleteUser${userInfo.id}`
-      );
-    };
-    callAPI();
-    setIsShowDelete(false);
-    console.log(res);
-    // toast.error(error.response.data.message, toastOptions);
-  };
+   
 
   const handleChangePage = (e, value) => {
     navigate(`/account-list?page=${value}`);
@@ -83,6 +83,7 @@ const UserListPage = () => {
               <th className="p-2 bg-gray-800 text-white">Country</th>
               <th className="p-2 bg-gray-800 text-white">Role</th>
               <th className="p-2 bg-gray-800 text-white">Package</th>
+              <th className="p-2 bg-gray-800 text-white">Status</th>
               <th className="p-2 bg-gray-800 text-white"></th>
               <th className="p-2 bg-gray-800 text-white"></th>
             </tr>
@@ -112,14 +113,18 @@ const UserListPage = () => {
                   </td>
                   <td className="">
                     <div className="text-center">
-                      {user.name}
+                      {user?.name}
                       <br />
-                      {user.email}
+                      {user?.email}
                     </div>
                   </td>
                   <td className=" text-center">{user.country}</td>
                   <td className=" text-center">{user?.role?.name}</td>
-                  <td className=" text-center">{ValidateService(user)}</td>
+                  <td className=" text-center">
+                    {/* {user.orders[0]?.service_package?.name} */}
+                    {ValidateService(user)}
+                  </td>
+                  <td className=" text-center">{user.status}</td>
                   <td className=" text-center">
                     <button
                       className="text-green-500 font-bold py-2 px-4 hover:opacity-50 rounded flex items-center"
@@ -142,7 +147,8 @@ const UserListPage = () => {
                     </button>
                   </td>
                   <td className="text-end pr-2 ">
-                    <button className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center">
+                    <button className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
+                    onClick={handleDeletePopup(user)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -180,18 +186,13 @@ const UserListPage = () => {
           />
         )}
 
-        {isShowDelete && (
-          <Dialog open={isShowDelete} onClose={() => setIsShowDelete(false)}>
-            <Dialog.Panel>
-              <Dialog.Title>Delete confirm</Dialog.Title>
-              <Dialog.Description>
-                Are you sure to want deleted account?
-              </Dialog.Description>
-
-              <button onClick={() => handleDelete()}>Confirm</button>
-              <button onClick={() => setIsOpen(false)}>Cancel</button>
-            </Dialog.Panel>
-          </Dialog>
+        {isShowDelete && userInfo && (
+         <DeleteUser 
+         isShowDelete={isShowDelete}
+         userInfo={userInfo}
+         setIsShowDelete={setIsShowDelete}
+         />
+        
         )}
       </div>
       <ToastContainer />

@@ -36,9 +36,14 @@ export const getTemplateCommentRoute = `${host}/comment/template`;
 export const commentTemplateRoute = `${host}/comment/template/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
+export const postOrderRoute = `${host}/order/add-order`;
+
+
 export const getAllUserRoute = `${host}/user/get-all`;
 export const uploadImageUserRoute = `${host}/user/upload-image`;
 export const getUploadImageRoute = `${host}/user/get-images-upload`;
+export const updateUserRoute = `${host}/user/update-user`;
+export const deleteUserRoute = `${host}/user/deleteUser`
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
