@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-const LoginForm = ({setState, setOpenAuthForm }) => {
+const LoginForm = ({ setState, setOpenAuthForm }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -66,8 +66,6 @@ const LoginForm = ({setState, setOpenAuthForm }) => {
       dispatch(seft({ ...data.data.user }));
       localStorage.setItem("signed", "catalogue-app");
       setOpenAuthForm(false);
-      // Replace with your success handling logic
-      navigate("/"); // Or wherever you want to redirect the user after login
     },
   });
 

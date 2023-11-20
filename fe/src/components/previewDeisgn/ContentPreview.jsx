@@ -4,10 +4,10 @@ import { Rating } from "@mui/material";
 const ContentPreview = ({ templateData }) => {
   const [page, setPage] = useState(0);
   return (
-    <div className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden">
+    <div className="m-w-[800px] m-h-[400px] flex justify-center items-center overflow-hidden my-4">
       <button
         onClick={() => page - 1 >= 0 && setPage(page - 1)}
-        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 transition-colors duration-300 cursor-pointer mr-3"
+        className="bg-[--bg-button] hover:bg-[--bg-button-hover] text-white rounded-full p-2"
         disabled={page === 0}
       >
         <svg
@@ -38,7 +38,7 @@ const ContentPreview = ({ templateData }) => {
         onClick={() =>
           page < templateData.length - 1 && setPage((prev) => prev + 1)
         }
-        className="bg-gray-400 rounded-full p-2 focus:outline-none hover:bg-gray-500 ml-3 transition-colors duration-300 cursor-pointer"
+        className="bg-[--bg-button] hover:bg-[--bg-button-hover] text-white rounded-full p-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -107,85 +107,48 @@ class ProductController {
       const data = req.body;
       const productId = data.product_page[0].productId;
 
+      const listPage = await ProductPage.findAll({
+        where: {
+          productId: productId,
+        },
+      });
+
+      for (let page of listPage) {
+        await ProductPageDetail.destroy({
+          where: {
+            productPageId: page.dataValues.id,
+          },
+        });
+      }
+
+      await ProductPage.destroy({
+        where: {
+          productId: productId,
+        },
+      });
       for (let page of data.product_page) {
-        const product_page = await ProductPage.findOne({
-          where: {
-            id: page.id,
-            productId: productId,
-          },
+        const newPage = await ProductPage.create({
+          productId: productId,
         });
-        let pageId;
-        if (!product_page) {
-          const newPage = await ProductPage.create({
-            productId: productId,
-          });
-          pageId = newPage.id;
-        } else {
-          pageId = product_page.id;
-        }
-        const listDetail = await ProductPageDetail.findAll({
-          where: {
-            productPageId: pageId,
-          },
-        });
-        for (let d of listDetail) {
-          let ind = -1;
-          for (let detail of page.product_page_details) {
-            if (detail.id != d.id) {
-              ind = detail.id;
-            }
-          }
-          if (ind != -1) {
-            await ProductPageDetail.destroy({
-              where: {
-                id: ind,
-              },
-            });
-          }
-        }
-        // console.log(pageId);
+        const pageId = newPage.id;
         for (let detail of page.product_page_details) {
-          let product_page_detail = await ProductPageDetail.findOne({
-            where: {
-              id: detail.id,
-              productPageId: pageId,
-            },
+          await ProductPageDetail.create({
+            name: detail.name,
+            type: detail.type,
+            height: detail.height,
+            width: detail.width,
+            top: detail?.top,
+            left: detail?.left,
+            z_index: detail.z_index,
+            rotate: detail?.rotate,
+            text: detail?.text,
+            fontSize: detail?.fontSize,
+            fontWeight: detail?.fontWeight,
+            fontFamily: detail?.fontFamily,
+            color: detail.color,
+            image: detail?.image,
+            productPageId: pageId,
           });
-          if (!product_page_detail) {
-            await ProductPageDetail.create({
-              name: detail.name,
-              type: detail.type,
-              height: detail.height,
-              width: detail.width,
-              top: detail?.top,
-              left: detail?.left,
-              z_index: detail.z_index,
-              rotate: detail?.rotate,
-              text: detail?.text,
-              fontSize: detail?.fontSize,
-              fontWeight: detail?.fontWeight,
-              fontFamily: detail?.fontFamily,
-              color: detail.color,
-              image: detail?.image,
-              productPageId: pageId,
-            });
-          } else {
-            product_page_detail.name = detail.name;
-            product_page_detail.type = detail.type;
-            product_page_detail.height = detail.height;
-            product_page_detail.width = detail.width;
-            product_page_detail.rotate = detail?.rotate;
-            product_page_detail.text = detail?.text;
-            product_page_detail.fontSize = detail?.fontSize;
-            product_page_detail.fontWeight = detail?.fontWeight;
-            product_page_detail.fontFamily = detail?.fontFamily;
-            product_page_detail.top = detail?.top;
-            product_page_detail.left = detail?.left;
-            product_page_detail.z_index = detail.z_index;
-            product_page_detail.color = detail.color;
-            product_page_detail.image = detail?.image;
-            await product_page_detail.save();
-          }
         }
       }
       if (data.thumbnail) {

@@ -385,17 +385,15 @@ const DesignPage = () => {
     })
       .then((canvas) => {
         const reducedCanvas = document.createElement("canvas");
-        reducedCanvas.width = canvas.width / 2; // Adjust the dimensions as needed
-        reducedCanvas.height = canvas.height / 2;
+        reducedCanvas.width = canvas?.width / 2;
+        reducedCanvas.height = canvas?.height / 2;
         reducedCanvas
           .getContext("2d")
           .drawImage(canvas, 0, 0, reducedCanvas.width, reducedCanvas.height);
         return reducedCanvas.toDataURL("image/png", 0.5);
       })
       .catch((error) => {
-        // Handle the error, e.g., log it or show an error message
-        console.error("Error capturing content:", error);
-        throw error; // Propagate the error to the caller
+        throw error;
       });
   }, [components]);
 
@@ -467,9 +465,7 @@ const DesignPage = () => {
     queryFn: () => {
       return getAPI(`${getUploadImageRoute}/${user?.id}`);
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
@@ -477,24 +473,30 @@ const DesignPage = () => {
   });
 
   return (
-    <div className="w-full shadow-lg h-full bg-red-100 flex justify-between overflow-y-hidden">
-      <DesignNavbar state={state} setElement={setElement} />
-      <div className="h-full w-full bg-[#f2f2f2] flex relative">
-        {show && (
-          <DesignTable
-            setShow={setShow}
-            state={state}
-            show={show}
-            createShape={createShape}
-            createText={createText}
-            uploadImage={uploadImage}
-            images={uploadImagesData?.data.images}
-            createImage={createImage}
-            setImage
-          />
-        )}
-
-        <div className="w-full h-full flex flex-col">
+    <div
+      className={`w-full h-[100vh] flex justify-between relative object-fill`}
+      style={{
+        backgroundImage:
+          "url(https://img.freepik.com/free-vector/watercolor-purple-green-background_23-2150296518.jpg)",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
+      <DesignNavbar
+        state={state}
+        setElement={setElement}
+        setShow={setShow}
+        show={show}
+        createShape={createShape}
+        createText={createText}
+        uploadImage={uploadImage}
+        images={uploadImagesData?.data.images}
+        createImage={createImage}
+        setImage
+      />
+      <div className="w-full h-full flex relative">
+        <div className="w-full h-full flex flex-col ml-[80px]">
           <DesignToolBar
             setColor={setColor}
             setFontSize={setFontSize}
@@ -504,13 +506,13 @@ const DesignPage = () => {
             captureContent={captureContent}
             handleSaveTemplate={handleSaveTemplate}
           />
-
-          <div
-            className={`flex justify-center relative items-center h-full w-full gap-4`}
-          >
+          <p className="text-center text-[20px]">
+            {page + 1}/{components.length}
+          </p>
+          <div className={`flex justify-center items-center w-full  gap-4`}>
             <button
               onClick={() => page - 1 >= 0 && setPage(page - 1)}
-              className="bg-gray-400 rounded-full p-2"
+              className="bg-[--bg-button] hover:bg-[--bg-button-hover] text-white rounded-full p-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -548,7 +550,7 @@ const DesignPage = () => {
             </div>
             <button
               onClick={handleNextPage}
-              className="bg-gray-400 rounded-full p-2"
+              className="bg-[--bg-button] hover:bg-[--bg-button-hover] text-white rounded-full p-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -566,9 +568,6 @@ const DesignPage = () => {
               </svg>
             </button>
           </div>
-          <p className="text-center text-[20px]">
-            {page + 1}/{components.length}
-          </p>
         </div>
       </div>
     </div>

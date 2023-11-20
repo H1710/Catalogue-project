@@ -13,10 +13,11 @@ import ContentPreview from "../components/previewDeisgn/ContentPreview";
 import CommentPreview from "../components/previewDeisgn/CommentPreview";
 import CustomButton from "../components/common/Button";
 import { ToastContainer, toast } from "react-toastify";
+import { ValidateService } from "../utils/ValidateService";
 
 const PreviewDesignPage = () => {
   const { templateId } = useParams();
-  const [user] = useOutletContext();
+  const [user, setOpenAuthForm, showServiePackages] = useOutletContext();
   const queryClient = useQueryClient();
   const { data: templateData } = useQuery({
     queryKey: ["template", templateId],
@@ -64,13 +65,24 @@ const PreviewDesignPage = () => {
     draggable: true,
     theme: "light",
   };
+  console.log(user);
   const handleCloneTemplate = () => {
-    if (!user) {
-      toast.error("You need buy Premium to use this template", toastOptions);
+    if (!user?.access_token) {
+      toast.error("Please login to use this function", toastOptions);
       return;
     }
     if (user.role.name === "Admin") {
       cloneTemplate({ templateId: templateId, userId: user.id });
+    } else {
+      if (
+        templateData?.data.data.classService > 0 &&
+        ValidateService(user) === "Free"
+      ) {
+        showServiePackages(true);
+        return;
+      } else {
+        cloneTemplate({ templateId: templateId, userId: user.id });
+      }
     }
   };
   return (
@@ -91,7 +103,11 @@ const PreviewDesignPage = () => {
 
       <ContentPreview templateData={templateData?.data.data.template_pages} />
 
-      <CommentPreview templateData={templateData?.data.data} />
+      <CommentPreview
+        user={user}
+        templateId={templateData?.data.data.id}
+        setOpenAuthForm={setOpenAuthForm}
+      />
 
       <ToastContainer />
     </div>

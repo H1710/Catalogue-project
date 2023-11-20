@@ -39,7 +39,6 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
       refetchComments();
     },
   });
-
   const renderCommentTree = (commentList) => {
     return commentList
       .filter((comment) => comment.replyCommentId === null)
@@ -54,7 +53,7 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
                 />
               ) : (
                 <MinidenticonImg
-                  username={comment.user.name}
+                  username={comment.user.email}
                   className="w-12 rounded-full object-cover cursor-pointer border border-[#ccc]"
                 />
               )}
@@ -118,7 +117,7 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-bold">Comments</h3>
 
-        {!user ? (
+        {!user?.access_token ? (
           <Button
             onClick={() => setOpenAuthForm(true)}
             className="h-[50px] w-full"

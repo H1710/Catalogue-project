@@ -43,13 +43,13 @@ const PreviewTemplate = ({ template }) => {
   }, []);
 
   return (
-    <div
-      className="py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input] mt-4 cursor-pointer"
-      onClick={() => {
-        navigate(`/design/preview/${template.id}`);
-      }}
-    >
-      <div className="flex items-start gap-8">
+    <div className="py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input] mt-4 cursor-pointer">
+      <div
+        className="flex items-start gap-8"
+        onClick={() => {
+          navigate(`/design/preview/${template.id}`);
+        }}
+      >
         <img
           src={template.thumbnail} // Đặt đường dẫn của thumbnail tại đây
           alt={template.name}
