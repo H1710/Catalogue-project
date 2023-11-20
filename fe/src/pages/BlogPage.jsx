@@ -66,7 +66,7 @@ function BlogPage({}) {
   };
 
   return (
-    <div className=" w-full flex flex-col justify-between gap-2 p-4">
+    <div className="h-full w-full flex flex-col justify-between gap-2 p-4 overflow-auto">
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-center gap-2">
           <label className="relative">
@@ -98,7 +98,7 @@ function BlogPage({}) {
 
         {blogsData && (
           <BlogList
-            blogsData={blogsData}
+            blogsData={blogsData?.data.rows}
             isLoading={loadingBlogData}
             handleNavigateBlogDetail={handleNavigateBlogDetail}
             searchText={searchText}

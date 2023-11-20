@@ -8,6 +8,7 @@ import UpdateUserForm from "../components/admin/UpdateUserForm";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ValidateService } from "../utils/ValidateService";
 
 const UserListPage = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -71,8 +72,8 @@ const UserListPage = () => {
   };
   // console.log(userInfo)
   return (
-    <div className="w-full flex flex-col min-h-[80vh] justify-center ">
-      <div className="p-4">
+    <div className="w-full h-full flex flex-col justify-center overflow-auto">
+      <div className="p-4 h-full">
         <table className="w-full border rounded text-center">
           <thead>
             <tr className="border-y">
@@ -118,9 +119,7 @@ const UserListPage = () => {
                   </td>
                   <td className=" text-center">{user.country}</td>
                   <td className=" text-center">{user?.role?.name}</td>
-                  <td className=" text-center">
-                    {user.orders[0]?.service_package.name}
-                  </td>
+                  <td className=" text-center">{ValidateService(user)}</td>
                   <td className=" text-center">
                     <button
                       className="text-green-500 font-bold py-2 px-4 hover:opacity-50 rounded flex items-center"

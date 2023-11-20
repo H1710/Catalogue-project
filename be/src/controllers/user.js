@@ -118,7 +118,7 @@ class UserController {
           email: faker.internet.email(),
           password: faker.internet.password(),
           endDate: faker.date.future(),
-          roleId: faker.number.int({ min: 1, max: 3 }),
+          roleId: faker.number.int({ min: 1, max: 2 }),
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };

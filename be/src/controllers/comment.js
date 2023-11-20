@@ -1,13 +1,14 @@
 const db = require("../models/index");
 const ServicePackage = db.servicePackage;
 const User = db.user;
-const Comment = db.blogComment;
+const BlogComment = db.blogComment;
+const TemplateComment = db.templateComment;
 
 class CommentController {
   static async createCommentBlog(req, res) {
     try {
       const { content, userId, blogId } = req.body;
-      const newComment = await Comment.create({
+      const newComment = await BlogComment.create({
         content,
         userId,
         blogId,
@@ -22,7 +23,6 @@ class CommentController {
         res.status(500).json({ message: "Failed to create comment" });
       }
     } catch (error) {
-      console.error("Error creating comment:", error);
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
@@ -30,8 +30,7 @@ class CommentController {
     try {
       const blogId = req.params.blogId;
       // const blogId = req.body.blogId;
-      console.log(blogId);
-      const comment = await Comment.findAll({
+      const comment = await BlogComment.findAll({
         where: { blogId },
         attributes: [
           "id",
@@ -43,8 +42,8 @@ class CommentController {
         ],
         include: [
           {
-            model: User, // Thay User bằng mô hình tương ứng cho bảng User
-            attributes: ["name", "avatar"], // Lựa chọn các thuộc tính bạn muốn lấy từ bảng User
+            model: User,
+            attributes: ["name", "avatar", "email"],
           },
         ],
       });
@@ -57,7 +56,7 @@ class CommentController {
     try {
       const { date, content, userId, blogId, replyCommentId } = req.body;
 
-      const newReply = await Commentblog.create({
+      const newReply = await BlogComment.create({
         date,
         content,
         userId,
@@ -97,7 +96,7 @@ class CommentController {
 
   static async sortByDate(req, res) {
     try {
-      const comments = await Commentblog.findAll({
+      const comments = await BlogComment.findAll({
         order: [["date", "DESC"]],
       });
 
@@ -109,6 +108,56 @@ class CommentController {
     } catch (error) {
       console.error("Error sorting comments by date:", error);
       res.status(500).json({ message: "Something went wrong!" });
+    }
+  }
+
+  static async createCommentTemplate(req, res) {
+    try {
+      const { content, userId, templateId } = req.body;
+      const newComment = await TemplateComment.create({
+        content,
+        userId,
+        templateId,
+      });
+
+      if (newComment) {
+        res.status(200).json({
+          message: "Comment created successfully",
+          comment: newComment,
+        });
+      } else {
+        res.status(500).json({ message: "Failed to create comment" });
+      }
+    } catch (error) {
+      console.error("Error creating comment:", error);
+      res.status(500).json({ message: "Something went wrong!" });
+    }
+  }
+  static async getCommentsTemplate(req, res) {
+    try {
+      const templateId = req.params.templateId;
+      // const blogId = req.body.blogId;
+      console.log(templateId);
+      const comment = await TemplateComment.findAll({
+        where: { templateId },
+        attributes: [
+          "id",
+          "content",
+          "total_votes",
+          "createdAt",
+          "userId",
+          "replyCommentId",
+        ],
+        include: [
+          {
+            model: User, // Thay User bằng mô hình tương ứng cho bảng User
+            attributes: ["name", "avatar", "email"], // Lựa chọn các thuộc tính bạn muốn lấy từ bảng User
+          },
+        ],
+      });
+      res.status(200).json({ comment });
+    } catch (error) {
+      res.status(500).json({ message: "somehitng went wrong" });
     }
   }
 }

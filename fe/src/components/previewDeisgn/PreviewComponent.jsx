@@ -24,7 +24,7 @@ const PreviewComponent = ({ info, currentComponent, removeComponent }) => {
     html = (
       <div
         id={info.id}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className="absolute group hover:outline hover:outline-[2px] hover:outline-indigo-500"
         style={{
           width: info.width + "px",
           height: info.height + "px",
@@ -53,7 +53,7 @@ const PreviewComponent = ({ info, currentComponent, removeComponent }) => {
           width: info.width + "px",
           height: info.width + "px",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className="absolute group hover:outline hover:outline-[2px] hover:outline-indigo-500"
       >
         <div
           style={{
@@ -78,7 +78,7 @@ const PreviewComponent = ({ info, currentComponent, removeComponent }) => {
           width: info.width + "px",
           height: info.width + "px",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className="absolute group hover:outline hover:outline-[2px] hover:outline-indigo-500"
       >
         <div
           style={{
@@ -107,19 +107,50 @@ const PreviewComponent = ({ info, currentComponent, removeComponent }) => {
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className="absolute group hover:outline hover:outline-[2px] hover:outline-indigo-500"
       >
         <textarea
           onChange={info.changeText}
-          className="w-full h-full bg-transparent resize-none select-none border-none"
+          className="w-full h-full bg-transparent resize-none select-none border-none outline-none"
           readOnly={readOnly}
           onCopy={false}
           value={info.text}
+          style={{
+            color: info.color,
+            fontSize: info.fontSize + "px",
+            fontFamily: info.fontFamily,
+            fontWeight: info.fontWeight,
+          }}
         ></textarea>
       </div>
     );
   }
 
+  if (info.name === "image") {
+    html = (
+      <div
+        id={info?.id}
+        // onMouseDown={() => info.moveElement(randValue, info)}
+        style={{
+          opacity: info.opacity,
+          left: info.left + "px",
+          top: info.top + "px",
+          zIndex: info.z_index,
+          transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
+        }}
+        className={`absolute group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
+      >
+        <div
+          style={{
+            width: info.width + "px",
+            height: info.height + "px",
+            backgroundImage: `url(${info.image})`,
+            backgroundSize: "cover",
+          }}
+        ></div>
+      </div>
+    );
+  }
   return html;
 };
 

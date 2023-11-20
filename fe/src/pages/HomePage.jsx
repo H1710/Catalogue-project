@@ -4,22 +4,23 @@ import {
   getProductByUser,
   createBlankProductRoute,
   saveProductNameRoute,
-  getAcceptTemplate,
+  getAcceptTemplateRoute,
 } from "../utils/APIRoute";
 
 import { getAPI, postAPI } from "../utils/FetchData";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import TemplateList from "../components/home/TemplateList";
 import ProductList from "../components/home/ProductList";
+import { ValidateService } from "../utils/ValidateService";
 
 const HomePage = () => {
-  const [user, setOpenAuthForm] = useOutletContext();
+  const [user, setOpenAuthForm, setShowServiePackages] = useOutletContext();
   const queryClient = useQueryClient();
 
   const { data: templateData, isLoading: isLoadingTemplateData } = useQuery({
     queryKey: ["templates"],
     queryFn: () => {
-      return getAPI(`${getAcceptTemplate}`);
+      return getAPI(`${getAcceptTemplateRoute}`);
     },
     onSuccess: (data) => {
       // console.log(data);
@@ -77,7 +78,6 @@ const HomePage = () => {
   const handleSaveName = (productId, newName) => {
     saveNameProduct({ productId, newName });
   };
-
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
@@ -93,7 +93,7 @@ const HomePage = () => {
       <br />
       <TemplateList
         user={user}
-        templateList={templateData?.data.templates}
+        templateList={templateData?.data}
         isLoadingTemplateData={isLoadingTemplateData}
       />
       {/* <div className="pt-6 pr-8 pb-12 pl-8 col-span-full">

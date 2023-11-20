@@ -4,9 +4,7 @@ import ServicePackage from "../ServicePackage";
 import { ValidateService } from "../../utils/ValidateService";
 import { useNavigate } from "react-router";
 
-function UserSidebar({ user }) {
-  const [showServiePackages, setShowServiePackages] = useState(false);
-  const [showCategoryList, setShowCategoryList] = useState(true);
+function UserSidebar({ user, setShowServiePackages }) {
   const categoryList = ["Education", "Social media", "Bussiness"];
   const navigate = useNavigate();
   return (
@@ -76,7 +74,7 @@ function UserSidebar({ user }) {
 
         <div
           onClick={() => {
-            setShowCategoryList(!showCategoryList);
+            // setShowCategoryList(!showCategoryList);
           }}
           className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
         >
@@ -177,11 +175,6 @@ function UserSidebar({ user }) {
           <p>Logout</p>
         </div>
       </div> */}
-      <ServicePackage
-        showServiePackages={showServiePackages}
-        setShowServiePackages={setShowServiePackages}
-        user={user}
-      />
     </aside>
   );
 }
