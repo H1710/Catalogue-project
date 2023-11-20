@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 import Tippy from "@tippyjs/react/headless";
+import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
@@ -38,7 +39,7 @@ function Search() {
             // },
           });
           console.log(result)
-          setSearchResult(result.data.data);
+          setSearchResult(result.data.templates);
         }
       } catch (error) {
         return;
@@ -65,13 +66,13 @@ function Search() {
             {...attrs}
             className="w-[500px]  inline-block rounded-[3px] shadow-md"
           >
-            {searchResult.map((template) => (
+            {searchResult?.map((template) => (
               <div
-                className="flex justify-start px-4 text-[20px] boder-neutral-700 cursor-pointer hover:bg-white  py-1"
+                className="flex justify-start px-4 text-[20px] boder-neutral-700 cursor-pointer hover:bg-gray-100  bg-white  py-1"
                 key={template.id}
-                onClick={() => handleView(template.id)}
+              // onClick={() => handleView(template.id)}
               >
-                {template.name}
+                <Link to={`/design/preview/${template.id}`}> {template.name}</Link>
               </div>
             ))}
           </div>

@@ -287,6 +287,34 @@ class OrderController {
       res.status(400).json({ message: "Something went wrong!" });
     }
   }
+
+  static async getHistoricalOrder(req, res) {
+    try {
+      const { userId } = req.query;
+      if (userId == null) {
+        return res.status(400).json("User Id is null");
+      } else {
+        const query =
+          'SELECT DISTINCT s.id, s.name, s.price, s.remain_day, s.classService, o.createdAt ' +
+          'FROM catalogue_project.orders o ' +
+          'JOIN catalogue_project.service_packages s ' +
+          'ON o.servicePackageId = s.id ' +
+          'WHERE o.userId = ' + userId;
+        const result = await seq.query(query, { raw: true });
+
+        if (result.length >= 1) {
+          // Use the first array from the result
+          return res.status(200).json({ result: result[0] });
+        } else {
+          // Handle the case when no results are found
+          return res.status(200).json({ result: [] });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Something went wrong!" });
+    }
+  }
 }
 
 exports.OrderController = OrderController;
