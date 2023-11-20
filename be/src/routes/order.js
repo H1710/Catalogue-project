@@ -7,4 +7,5 @@ router.get("/get-all-order", OrderController.getAllOrder);
 router.get("/get-monthly-revenue", OrderController.getMonthlyRevenue);
 router.get("/get-yearly-revenue", OrderController.getYearlyRevenue);
 router.get("/get-order-by-year/:year", OrderController.getOrderByYear);
+router.get("/get-historical-order", OrderController.getHistoricalOrder);
 module.exports = router;

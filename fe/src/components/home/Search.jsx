@@ -4,57 +4,55 @@ import axios from "axios";
 import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(true);
 
   const inputRef = useRef();
+  const nav = useNavigate();
 
-  const handleChange = (e) => {
-    const searchValue = e.target.value;
-    if (!searchValue.startsWith(" ")) {
-      setSearchValue(searchValue);
-    }
+  // const handleChange = (e) => {
+  //   const searchValue = e.target.value;
+  //   if (!searchValue.startsWith(" ")) {
+  //     setSearchValue(searchValue);
+  //   }
+  // };
+  // const handleSearch = () => { };
+  const handleSearch = async () => {
+    console.log('searching');
+    
+   nav(`/search/${inputRef.current.value}`);
   };
-  const handleSearch = () => { };
-  const handleView = async (id) => {
-    try {
-      const templateChoosed = await axios.get("https://localhost:", {
-        params: { id },
-      });
-    } catch (error) {
-      return;
-    }
-  };
-  useEffect(() => {
-    const getSearch = async () => {
-      try {
-        if (searchValue) {
-          const result = await axios.get(`http://localhost:5000/api/v1/template/search-template/${searchValue}`, {
-            // params: {
-            //   search: searchValue,
-            // },
-          });
-          console.log(result)
-          setSearchResult(result.data.data);
-        }
-      } catch (error) {
-        return;
-      }
-    };
+  // useEffect(() => {
+  //   const getSearch = async () => {
+  //     try {
+  //       if (searchValue) {
+  //         const result = await axios.get(`http://localhost:5000/api/v1/template/search-template/${searchValue}`, {
+  //           // params: {
+  //           //   search: searchValue,
+  //           // },
+  //         });
+  //         console.log(result)
+  //         setSearchResult(result.data.data);
+  //       }
+  //     } catch (error) {
+  //       return;
+  //     }
+  //   };
 
-    const timer = setTimeout(() => {
-      getSearch();
-    }, 700);
+  //   const timer = setTimeout(() => {
+  //     getSearch();
+  //   }, 700);
 
-    return () => clearTimeout(timer);
-  }, [searchValue]);
+  //   return () => clearTimeout(timer);
+  // }, [searchValue]);
 
   return (
     <div className="search flex justify-center items-center justify-items-center w-full">
-      <Tippy
+      {/* <Tippy
         interactive={true}
         visible={showResult && searchResult?.length > 0}
         offset={[0, 5]}
@@ -65,7 +63,7 @@ function Search() {
             {...attrs}
             className="w-[500px]  inline-block rounded-[3px] shadow-md"
           >
-            {searchResult.map((template) => (
+             {searchResult.map((template) => (
               <div
                 className="flex justify-start px-4 text-[20px] boder-neutral-700 cursor-pointer hover:bg-white  py-1"
                 key={template.id}
@@ -76,22 +74,22 @@ function Search() {
             ))}
           </div>
         )}
-      >
+      >  */}
         <div className="flex relative w-[500px] h-12 border-neutral-100 focus-within:border-neutral-300 rounded-[5px] justify-end">
           <input
             className="w-full h-full rounded-full text-xl text-black placeholder:text-[#555] pl-8 outline-none border-none"
             type="text"
-            value={searchValue}
+            // value={searchValue}
             spellCheck={false}
             ref={inputRef}
             placeholder="Catalogue"
-            onChange={handleChange}
+            // onChange={handleChange}
           />
           {/* <div className="absolute w-[2px] h-10  top-[8px] bg-[#ccc] ml-[500px] "></div> */}
           <button
             className=" text-2xl rounded-full h-full w-12 flex items-center justify-center
             bg-[#ffe72f] hover:bg-[#ffec5f] text-black  absolute  shadow-2xl"
-            onClick={() => handleSearch}
+            onClick={ handleSearch}
           >
             <svg
               width="24"
@@ -111,7 +109,7 @@ function Search() {
             </svg>
           </button>
         </div>
-      </Tippy>
+      {/* </Tippy> */}
     </div>
   );
 }

@@ -96,7 +96,9 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     },
     onSuccess: (data) => {
       toast.success(data.data.message, toastOptions);
-      setState("login");
+      setTimeout(() => {
+        setState("login");
+    }, 3000); 
     },
   });
 
@@ -279,7 +281,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                 required
                 type="text"
                 label="Name"
-                className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                className="rounded-md px-4 py-3 mt-1 focus:outline-none  bg-[#F3F4F6] w-full"
                 placeholder="name"
                 name="name"
                 onChange={handleChange}
@@ -296,16 +298,18 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
-                    className="w-full bg-[#EDEDED] py-2 pl-3 pr-10   leading-5 text-gray-900 focus:ring-1 h-14 text-[17px] hover:ring-1  "
-                    displayValue={(country) => country}
+                    className="w-full  bg-[#F3F4F6] py-2 pl-3 pr-10   leading-5 text-black focus:ring-1 h-14 text-[17px] hover:ring-1  "
+                    // displayValue={'country'}
                     // onChange={(event) => setQuery(event.target.value)}
                   />
                   <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                    <p className="p-2 text-gray-800 text-[16px]">Country *</p>
                     <FontAwesomeIcon
                       icon={faChevronDown}
                       className="h-5 w-5 text-gray-400"
                       aria-hidden="true"
                     />
+                    
                   </Combobox.Button>
                 </div>
                 <Transition

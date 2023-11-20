@@ -38,8 +38,10 @@ const monthNames = [
   "Nov",
   "Dec",
 ];
-export default function UserStatitic({ year }) {
+export default function UserStatitic({ year, minYear }) {
   const [data, setData] = useState([]);
+  console.log(year, minYear);
+  
   let flag = false;
   useEffect(() => {
     const handleAPI = async () => {
@@ -71,37 +73,39 @@ export default function UserStatitic({ year }) {
 
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
-      <div className="border-1 items-center justify-center flex flex-col h-[100px]   gap-3 ">
+      <div className="border-1 items-center justify-center flex flex-col h-[10vh]   gap-3 ">
         <div className="   rounded-[15px] justify-center items-center  ">
           <div className="text-[20px] flex ">
             <p className="font-semibold">Total user</p>:{" "}
             {data.total_registrations} registrations in {year}
           </div>
         </div>
-        {!flag ? (
-          <div className="flex  rounded-[10px]  justify-center items-center    ">
-            <FontAwesomeIcon
-              icon={faArrowDownLong}
-              className="text-[30px]  text-red-500"
-            />
-            <div className="text-[20px] text-red-500 font-semibold">
-              {rs}% by {year - 1}
+     {year !== minYear && <div>
+          {!flag ? (
+            <div className="flex  rounded-[10px]  justify-center items-center    ">
+              <FontAwesomeIcon
+                icon={faArrowDownLong}
+                className="text-[30px]  text-red-500"
+              />
+              <div className="text-[20px] text-red-500 font-semibold">
+                {rs}% by {year - 1}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="flex   rounded-[10px]  justify-center items-center    ">
-            <FontAwesomeIcon
-              icon={faArrowUpLong}
-              className="text-[30px]  text-emerald-700"
-            />
-            <div className="text-[20px] text-emerald-700 font-semibold">
-              {rs}% by {year - 1}
+          ) : (
+            <div className="flex   rounded-[10px]  justify-center items-center    ">
+              <FontAwesomeIcon
+                icon={faArrowUpLong}
+                className="text-[30px]  text-emerald-700"
+              />
+              <div className="text-[20px] text-emerald-700 font-semibold">
+                {rs}% by {year - 1}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+      </div>}
       </div>
       <LineChart
-        width={550}
+        width={500}
         height={300}
         data={data.registrations}
         margin={{ top: 5, right: 40, left: 0, bottom: 0 }}

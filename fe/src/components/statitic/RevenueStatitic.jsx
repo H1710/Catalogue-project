@@ -28,7 +28,7 @@ const monthNames = [
   "Dec",
 ];
 
-export default function RevenueStatitic({ year }) {
+export default function RevenueStatitic({ year,minYear }) {
   const [data, setData] = useState([]);
   let flag = false;
   useEffect(() => {
@@ -63,40 +63,42 @@ export default function RevenueStatitic({ year }) {
       );
     }
   }
-  console.log(data);
+  console.log(year);
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
-      <div className="border-1 items-center justify-center flex flex-col h-[100px]   gap-3 ">
+      <div className="border-1 items-center justify-center flex flex-col h-[10vh] gap-3 ">
         <div className="   rounded-[15px] justify-center items-center  ">
           <div className="text-[20px] flex flex">
             <p className="font-semibold">Total Revenue</p>:{" "}
             {data.yearly_revenue_current_year}$ in {year}
           </div>
         </div>
-        {!flag ? (
-          <div className="flex  rounded-[10px]  justify-center items-center    ">
-            <FontAwesomeIcon
-              icon={faArrowDownLong}
-              className="text-[30px]  text-red-500"
-            />
-            <div className="text-[20px] text-red-500 font-semibold">
-              {rs}% by {year - 1}
+     { year !== minYear &&  <div>
+          {!flag ? (
+            <div className="flex  rounded-[10px]  justify-center items-center    ">
+              <FontAwesomeIcon
+                icon={faArrowDownLong}
+                className="text-[30px]  text-red-500"
+              />
+             { <div className="text-[20px] text-red-500 font-semibold">
+                {rs}% by {year - 1}
+              </div>}
             </div>
-          </div>
-        ) : (
-          <div className="flex   rounded-[10px]  justify-center items-center    ">
-            <FontAwesomeIcon
-              icon={faArrowUpLong}
-              className="text-[30px]  text-emerald-700"
-            />
-            <div className="text-[20px] text-emerald-700 font-semibold">
-              {rs} % by {year - 1}
+          ) : (
+            <div className="flex   rounded-[10px]  justify-center items-center    ">
+              <FontAwesomeIcon
+                icon={faArrowUpLong}
+                className="text-[30px]  text-emerald-700"
+              />
+              <div className="text-[20px] text-emerald-700 font-semibold">
+                {rs} % by {year - 1}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+       </div>}
       </div>
       <LineChart
-        width={550}
+        width={500}
         height={300}
         data={data?.orders}
         margin={{ top: 5, right: 40, left: 20, bottom: 0 }}
