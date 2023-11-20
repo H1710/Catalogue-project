@@ -50,4 +50,5 @@ export const acceptTemplateRoute = `${host}/template/accept-template`;
 export const rejectTemplateRoute = `${host}/template/denied-template`;
 export const getAcceptTemplate = `${host}/template/get-Accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
+
  

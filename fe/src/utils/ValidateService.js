@@ -21,8 +21,6 @@ export const ValidateService = (user) => {
     const daysDifference = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
     const remainingDayofService = remainingDays;
-      // user.orders[length - 1].service_package.remain_day;
-
     if (remainingDayofService >= daysDifference) {
       return user?.orders[length - 1]?.service_package?.name;
     }
