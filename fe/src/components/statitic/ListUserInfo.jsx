@@ -45,7 +45,7 @@ export default function ListUserInfo({ dataUsers }) {
                   {user.country}
                 </td>
                 <td className="border border-slate-300 py-2 px-9">
-                  {user.createdAt}
+                  {user.createdAt.slice(0, 10)}
                 </td>
               </tr>
             ))}
