@@ -24,7 +24,7 @@ function Search() {
   const handleSearch = async () => {
     console.log('searching');
     
-   nav(`/search/${inputRef.current.value}`);
+   nav(`/template/${inputRef.current.value}`);
   };
   // useEffect(() => {
   //   const getSearch = async () => {
