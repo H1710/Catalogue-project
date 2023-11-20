@@ -154,7 +154,7 @@ class UserController {
             model: Order,
             include: {
               model: ServicePackage,
-              attributes: ["name"],
+              attributes: ["name", "remain_day"],
             },
           },
         ],
@@ -377,22 +377,25 @@ class UserController {
     }
   }
 
-  
   static async getListYears(req, res) {
     try {
       // Truy vấn cơ sở dữ liệu để lấy danh sách các năm distinct từ nhỏ đến lớn
       const distinctYears = await User.findAll({
         attributes: [
-          [Sequelize.fn('DISTINCT', Sequelize.fn('YEAR', Sequelize.col('createdAt'))), 'year'],
+          [
+            Sequelize.fn(
+              "DISTINCT",
+              Sequelize.fn("YEAR", Sequelize.col("createdAt"))
+            ),
+            "year",
+          ],
         ],
-        order: [
-          [Sequelize.fn('YEAR', Sequelize.col('createdAt')), 'ASC'],
-        ],
+        order: [[Sequelize.fn("YEAR", Sequelize.col("createdAt")), "ASC"]],
         raw: true,
       });
 
       // Lấy danh sách năm từ kết quả truy vấn
-      const yearsList = distinctYears.map(entry => entry.year);
+      const yearsList = distinctYears.map((entry) => entry.year);
 
       res.status(200).json({
         years: yearsList,
@@ -402,7 +405,6 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-  
 }
 
 exports.UserController = UserController;
