@@ -58,24 +58,26 @@ class UserController {
 
   static async updateUser(req, res) {
     try {
-      const userId = req.params.id;
-      const newData = {
-        name: req.body.name,
-        address: req.body.address,
-        type_register: req.body.type_register,
-        email: req.body.email,
-        password: req.body.password,
-        end_date: req.body.end_date,
-      };
+      const userId = req.body.id;
 
       const user = await db.user.findByPk(userId);
+
       if (user) {
+        const newData = {
+          name: req.body.name || user.name,
+          email: req.body.email || user.email,
+          country: req.body.country || user.country,
+          roleId: req.body.role || user.roleId,
+          status: req.body.status || user.status
+        };
+
         await user.update(newData);
-        res.status(200).send(user);
+        res.status(200).send({ message: "Update user successfully" });
       } else {
         res.status(404).send({ message: "User not found" });
       }
     } catch (error) {
+      console.error(error); // Log the error for debugging purposes
       res.status(500).send({ message: "Something went wrong" });
     }
   }
@@ -84,14 +86,18 @@ class UserController {
     try {
       const userId = req.params.id;
       const user = await db.user.findByPk(userId);
-      if (user && user.role != 1) {
-        await user.destroy();
-        res.status(204).send();
+      if (user && user.roleId != 1) {
+        await user.update({
+          status: "InActive"
+        })
+        res.status(200).json({
+          message: "Delete user successfully"
+        });
       } else {
-        res.status(404).send({ message: "User not found" });
+        res.status(404).json({ message: "User is not found or role Admin is not banned" });
       }
     } catch (error) {
-      res.status(500).send({ message: "Something went wrong" });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 
@@ -144,7 +150,7 @@ class UserController {
       const offset = (page - 1) * perPage; // Calculate the offset based on the page
 
       const userList = await User.findAndCountAll({
-        attributes: ["avatar", "name", "email", "country"],
+        attributes: ["id","avatar", "name", "email", "country", "status"],
         include: [
           {
             model: Role,
@@ -378,7 +384,7 @@ class UserController {
   }
 
   
-  static async getListYears(req, res) {
+static async getListYears(req, res) {
     try {
       // Truy vấn cơ sở dữ liệu để lấy danh sách các năm distinct từ nhỏ đến lớn
       const distinctYears = await User.findAll({
