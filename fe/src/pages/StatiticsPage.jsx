@@ -12,8 +12,10 @@ const StatiticsPage = () => {
   const [year, setYear] = useState(nowYear);
   const [typeInfo, setTypeInfo] = useState("User");
   const [data, setData] = useState([]);
-  const lsYear = [nowYear - 1, nowYear];
+  const [lsYear, setLsYear] = useState([year])
   const lsType = ["User", "Order"];
+  const [minYear, setMinYear] = useState(nowYear)
+  
   useEffect(() => {
     const callAPI = async () => {
       const res = await axios.get(
@@ -23,7 +25,18 @@ const StatiticsPage = () => {
     };
     callAPI();
   }, [year, typeInfo]);
-  console.log(data);
+  useEffect(() => {
+    const callAPI = async () => {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/user//get-list-year`
+      );
+      console.log(res.data);
+      setLsYear(res.data.years);
+      setMinYear(res.data.years[0])
+    };
+    callAPI();
+  }, []);
+  
 
   return (
     <div className="flex flex-col col-span-full items-center  ">
@@ -42,7 +55,7 @@ const StatiticsPage = () => {
               </span>
             </Listbox.Button>
             <Listbox.Options className={"absolute z-10 rounded "}>
-              {lsYear.map((year, index) => (
+              {lsYear && lsYear?.map((year, index) => (
                 <Listbox.Option
                   key={index}
                   value={year}
@@ -114,18 +127,18 @@ const StatiticsPage = () => {
         </Listbox>
       </div>
 
-      <div className="justify-center flex flex-row items-center w-full">
-        <div className="flex flex-col gap-y-4 justify-center items-center ">
-          <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[200px] font-semibold">
+      <div className="justify-center flex lg:flex-row items-center w-full sm:flex-col md:flex-col">
+        <div className="flex flex-col gap-y-4 justify-center items-center  ">
+          <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[15vw] font-semibold">
             User Oveview
           </span>
-          <UserStatitic year={year} />
+          <UserStatitic year={year} minYear={minYear} />
         </div>
         <div className="flex flex-col gap-y-4 justify-center items-center">
-          <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[200px] font-semibold">
+          <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[15vw] font-semibold">
             Revenue Overview
           </span>
-          <RevenueStatitic year={year} />
+          <RevenueStatitic year={year}  minYear={minYear}/>
         </div>
       </div>
 

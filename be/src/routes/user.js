@@ -19,6 +19,7 @@ router.post(
   upload.single("designImage"),
   UserController.uploadImageByUser
 );
+router.get("/get-list-year", UserController.getListYears);
 
 router.get("/get-images-upload/:userId", UserController.getImageUpload);
 module.exports = router;

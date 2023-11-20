@@ -22,31 +22,31 @@ export default function ListOrder({ dataOrders }) {
       >
         <thead>
           <tr>
-            <td className="border border-slate-300 py-2 px-9">No.</td>
-            <td className="border border-slate-300 py-2 px-9">Username</td>
-            <td className="border border-slate-300 py-2 px-9">Package</td>
-            <td className="border border-slate-300 py-2 px-9">Cost</td>
-            <td className="border border-slate-300 py-2 px-9">CreatedAt</td>
+            <td className="border border-slate-300 py-2 lg:px-9 sm:px-3">No.</td>
+            <td className="border border-slate-300 py-2 lg:px-9 sm:px-3">Username</td>
+            <td className="border border-slate-300 py-2 lg:px-9 sm:px-3">Package</td>
+            <td className="border border-slate-300 py-2 lg:px-9 sm:px-3">Cost</td>
+            <td className="border border-slate-300 py-2 lg:px-9 sm:px-3">CreatedAt</td>
           </tr>
         </thead>
         <tbody>
           {dataOrders &&
             dataOrders?.map((order, index) => (
-              <tr>
+              <tr key={index}>
                 <td className="border border-slate-300 py-2 px-9">
                   {index + 1}
                 </td>
                 <td className="border border-slate-300 py-2 px-9">
-                  {order.user.name}
+                  {order?.user?.name}
                 </td>
                 <td className="border border-slate-300 py-2 px-9">
-                  {order.service_package.name}
+                  {order?.service_package?.name}
                 </td>
                 <td className="border border-slate-300 py-2 px-9">
-                  {order.service_package.price}
+                  {order?.service_package?.price}
                 </td>
                 <td className="border border-slate-300 py-2 px-9">
-                  {order.createdAt}
+                  {order?.createdAt.slice(0,10)}
                 </td>
               </tr>
             ))}
