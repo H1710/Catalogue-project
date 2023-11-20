@@ -7,15 +7,18 @@ import { Dialog, Pagination } from "@mui/material";
 import UpdateUserForm from "../components/admin/UpdateUserForm";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const UserListPage = () => {
-  const [page, setPage] = useState(1);
   const [userInfo, setUserInfo] = useState(null);
-  const [isShowDelete, setIsShowDelete] = useState(false)
+  const [isShowDelete, setIsShowDelete] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
   const { data: userList, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: () => {
-      return getAPI(getAllUserRoute);
+      return getAPI(`${getAllUserRoute}?page=${page}`);
     },
     onSuccess: (data) => {
       console.log(data);
@@ -49,20 +52,27 @@ const UserListPage = () => {
   const handleDeletePopup = (user) => {
     setIsShowDelete(true);
     setUserInfo(user);
-  }
+  };
   const handleDelete = () => {
     let res;
-    const callAPI = () => { res = axios.delete(`http://localhost:5000/api/v1/deleteUser${userInfo.id}`); }
+    const callAPI = () => {
+      res = axios.delete(
+        `http://localhost:5000/api/v1/deleteUser${userInfo.id}`
+      );
+    };
     callAPI();
     setIsShowDelete(false);
-    console.log(res)
+    console.log(res);
     // toast.error(error.response.data.message, toastOptions);
+  };
 
-  }
+  const handleChangePage = (e, value) => {
+    navigate(`/account-list?page=${value}`);
+  };
   // console.log(userInfo)
   return (
-    <div className="w-full flex flex-col min-h-[80vh] justify-center">
-      <div className="p-8">
+    <div className="w-full flex flex-col min-h-[80vh] justify-center ">
+      <div className="p-4">
         <table className="w-full border rounded text-center">
           <thead>
             <tr className="border-y">
@@ -77,8 +87,8 @@ const UserListPage = () => {
             </tr>
           </thead>
           <tbody>
-            {userList?.data?.users &&
-              userList?.data?.users.map((user, index) => (
+            {userList?.data?.rows &&
+              userList?.data?.rows.map((user, index) => (
                 <tr className="border-y hover:bg-gray-100 h-[72px]" key={index}>
                   {/* <td className="pl-2 text-white">
                     <input
@@ -93,7 +103,7 @@ const UserListPage = () => {
                         <img src={user.avatar} />
                       ) : (
                         <MinidenticonImg
-                          username={user.name}
+                          username={user?.email}
                           className="w-12"
                         />
                       )}
@@ -107,7 +117,7 @@ const UserListPage = () => {
                     </div>
                   </td>
                   <td className=" text-center">{user.country}</td>
-                  <td className=" text-center">{user.role.name}</td>
+                  <td className=" text-center">{user?.role?.name}</td>
                   <td className=" text-center">
                     {user.orders[0]?.service_package.name}
                   </td>
@@ -154,6 +164,15 @@ const UserListPage = () => {
               ))}
           </tbody>
         </table>
+
+        <Pagination
+          className="h-20 flex justify-end"
+          count={Math.ceil(userList?.data.count / 10)}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+        />
+
         {isOpen && userInfo && (
           <UpdateUserForm
             isOpen={isOpen}
@@ -170,20 +189,11 @@ const UserListPage = () => {
                 Are you sure to want deleted account?
               </Dialog.Description>
 
-
-
               <button onClick={() => handleDelete()}>Confirm</button>
               <button onClick={() => setIsOpen(false)}>Cancel</button>
             </Dialog.Panel>
           </Dialog>
         )}
-
-        <Pagination
-          className="h-20 flex justify-end"
-          count={10}
-          variant="outlined"
-          shape="rounded"
-        />
       </div>
       <ToastContainer />
     </div>

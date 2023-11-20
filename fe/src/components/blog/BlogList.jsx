@@ -5,18 +5,17 @@ const BlogList = ({
   blogsData,
   isLoading,
   handleNavigateBlogDetail,
-  handleAcceptBlog,
-  loadingAcceptBlog,
-  searchText, 
+  searchText,
+  user,
 }) => {
   const filterBlogs = () => {
     const search = searchText.toLowerCase();
-    return blogsData.data.blogs.filter((blog) =>
+    return blogsData.data.filter((blog) =>
       blog.title.toLowerCase().includes(search)
     );
   };
 
-  const displayedBlogs = searchText ? filterBlogs() : blogsData.data.blogs;
+  const displayedBlogs = searchText ? filterBlogs() : blogsData.data;
 
   return (
     <div className="flex flex-col gap-4">
@@ -27,8 +26,7 @@ const BlogList = ({
             blog={blog}
             author={blog.user.name}
             handleNavigateBlogDetail={handleNavigateBlogDetail}
-            handleAcceptBlog={handleAcceptBlog}
-            loadingAcceptBlog={loadingAcceptBlog}
+            user={user}
           />
         ))}
     </div>

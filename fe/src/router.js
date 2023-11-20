@@ -1,6 +1,5 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import DesignerPage from "./pages/DesignerPage";
 
 import BlogPage from "./pages/BlogPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -16,7 +15,8 @@ import ApproveBlogPage from "./pages/ApproveBlogPage";
 import PreviewDesignPage from "./pages/PreviewDesignPage";
 import MyBlog from "./pages/MyBlogPage";
 import PublicTemplate from "./pages/PublicTemplatePage";
-import ApproveTemplate from "./pages/ApproveTemplate";
+import ApproveTemplatePage from "./pages/ApproveTemplatePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const router = createBrowserRouter([
   {
@@ -86,12 +86,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/template/approve",
-        element: <ApproveTemplate />,
+        element: <ApproveTemplatePage />,
       },
     ],
   },
-
- 
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  },
 ]);
 
 export default router;

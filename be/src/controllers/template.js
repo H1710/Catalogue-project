@@ -1,13 +1,15 @@
 const db = require("../models/index");
 const uploadImage = require("../utils/uploadImage");
 const seq = require("../db/dbConnection");
+const { Op, literal } = require("sequelize");
+const cloudinary = require("../utils/cloudinary");
 
 const Template = db.template;
 const RatingTemplate = db.templateRating;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
 const User = db.user;
-const { Op, literal } = require("sequelize");
+
 class TemplateController {
   static async createTemplate(req, res) {
     try {
@@ -15,11 +17,16 @@ class TemplateController {
       const thumbnail = req.file;
 
       const templateData = await JSON.parse(template);
-      const data = await uploadImage(thumbnail.filename, thumbnail.mimetype);
+      const result = await cloudinary.uploader.upload(thumbnail.path, {
+        public_id: thumbnail.originalname,
+        resource_type: "auto",
+        folder: "noto",
+        use_filename: true,
+        unique_filename: false,
+      });
       const newTemplate = await Template.create({
         name: name,
-        thumbnail: data.data.webContentLink,
-        rating: 5,
+        thumbnail: result.url,
         authorId: userId,
         userId: userId,
       });
@@ -28,7 +35,6 @@ class TemplateController {
         const templatePage = await TemplatePage.create({
           templateId: newTemplate.id,
         });
-        console.log(template[i]);
         for (let j = 0; j < templateData[i].product_page_details.length; j++) {
           await TemplatePageDetail.create({
             name: templateData[i].product_page_details[j].name,
@@ -37,6 +43,9 @@ class TemplateController {
             width: templateData[i].product_page_details[j].width,
             rotate: templateData[i].product_page_details[j]?.rotate,
             text: templateData[i].product_page_details[j]?.text,
+            fontSize: templateData[i].product_page_details[j]?.fontSize,
+            fontWeight: templateData[i].product_page_details[j]?.fontWeight,
+            fontFamily: templateData[i].product_page_details[j]?.fontFamily,
             top: templateData[i].product_page_details[j]?.top,
             left: templateData[i].product_page_details[j]?.left,
             z_index: templateData[i].product_page_details[j].z_index,
@@ -51,7 +60,6 @@ class TemplateController {
         .status(200)
         .send({ template: { components: template, id: newTemplate.id } });
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ message: "Something went wrong" });
     }
   }
@@ -72,14 +80,30 @@ class TemplateController {
     }
   }
 
-  static async getTemplateProcessing(req, res) {
+  static async getTemplateByStatus(req, res) {
     try {
       const status = req.params.status;
-      console.log(status);
 
       const templates = await Template.findAll({
         where: {
           status: status,
+        },
+      });
+
+      res.status(200).json({
+        templates: templates,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+
+  static async getProcessingTemplate(req, res) {
+    try {
+      const templates = await Template.findAll({
+        where: {
+          status: "Processing",
         },
       });
 
@@ -112,25 +136,44 @@ class TemplateController {
 
   static async getTemplate(req, res) {
     try {
-      const templateId = req.params.templateId;
+      const { templateId, userId } = req.params;
       const template = await Template.findByPk(templateId, {
         include: [
           {
-            model: TemplatePage,
-            include: TemplatePageDetail,
-          },
-          {
             model: RatingTemplate,
-            attributes: ["rating"]
+            attributes: [],
           },
           {
             model: User,
             attributes: ["name"],
           },
+          {
+            model: TemplatePage,
+            include: TemplatePageDetail,
+          },
+        ],
+        attributes: [
+          "id",
+          "name",
+          [seq.fn("AVG", seq.col("template_ratings.rating")), "avgRating"],
+        ],
+        group: [
+          "id",
+          "name",
+          "template.id",
+          "template_pages.id",
+          "template_pages.template_page_details.id",
         ],
       });
-      res.status(200).send({ data: template });
+      const currentRating = await RatingTemplate.findOne({
+        where: {
+          userId: userId,
+          templateId: templateId,
+        },
+      });
+      res.status(200).send({ data: template, currentRating });
     } catch (error) {
+      console.log(error);
       res.status(500).send({ message: "Something went wrong" });
     }
   }
@@ -192,20 +235,7 @@ class TemplateController {
       const limit = 10;
       const offset = (page - 1) * limit;
       const templates = await Template.findAll({
-        include: [
-          {
-            model: RatingTemplate,
-            attributes: [],
-          },
-        ],
-        attributes: [
-          "id",
-          "name",
-          "thumbnail",
-          "createdAt",
-          "status",
-          [seq.fn("AVG", seq.col("template_ratings.rating")), "avgRating"],
-        ],
+        attributes: ["id", "name", "thumbnail", "createdAt", "status"],
         where: {
           status: "Accepted",
         },

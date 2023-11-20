@@ -4,42 +4,65 @@ const User = db.user;
 const Product = db.product;
 const ProductPage = db.product_page;
 const ProductPageDetail = db.productPageDetail;
+const Template = db.template;
+const TemplatePage = db.template_page;
+const TemplatePageDetail = db.templatePageDetail;
 
 class ProductController {
-  static async createProduct(req, res) {
+  static async createBlankProduct(req, res) {
     try {
-      const { data } = req.body;
+      const { userId } = req.body;
+
+      const template = {
+        template_pages: [
+          {
+            template_page_details: [
+              {
+                name: "main_frame",
+                type: "rect",
+                id: Math.floor(Math.random() * 100 + 1),
+                height: 418,
+                width: 600,
+                z_index: 1,
+                color: "#fff",
+                image: "",
+              },
+            ],
+          },
+        ],
+      };
       const newProduct = await Product.create({
         name: "product-test",
         thumbnail:
           "https://variety.com/wp-content/uploads/2023/07/Tom-and-Jerry-Singapore-series-poster.jpg",
-        userId: data.userId,
+        userId: userId,
       });
-
-      const { product } = data;
-      for (let i = 0; i < product.length; i++) {
+      for (let i = 0; i < template.template_pages.length; i++) {
         const productPage = await ProductPage.create({
           productId: newProduct.id,
         });
-        for (let j = 0; j < product[i].length; j++) {
+        for (
+          let j = 0;
+          j < template.template_pages[i].template_page_details.length;
+          j++
+        ) {
           await ProductPageDetail.create({
-            name: product[i][j].name,
-            type: product[i][j].type,
-            height: product[i][j].height,
-            width: product[i][j].width,
-            top: product[i][j]?.top,
-            left: product[i][j]?.left,
-            z_index: product[i][j].z_index,
-            color: product[i][j].color,
-            image: product[i][j]?.image,
+            name: template.template_pages[i].template_page_details[j].name,
+            type: template.template_pages[i].template_page_details[j].type,
+            height: template.template_pages[i].template_page_details[j].height,
+            width: template.template_pages[i].template_page_details[j].width,
+            top: template.template_pages[i].template_page_details[j]?.top,
+            left: template.template_pages[i].template_page_details[j]?.left,
+            z_index:
+              template.template_pages[i].template_page_details[j].z_index,
+            color: template.template_pages[i].template_page_details[j].color,
+            image: template.template_pages[i].template_page_details[j]?.image,
             productPageId: productPage.id,
           });
         }
       }
 
-      return res
-        .status(200)
-        .send({ product: { components: product, id: newProduct.id } });
+      return res.status(200).send({ message: "Create success" });
     } catch (error) {
       return res.status(500).send({ message: "Something went wrong" });
     }
@@ -139,6 +162,9 @@ class ProductController {
               z_index: detail.z_index,
               rotate: detail?.rotate,
               text: detail?.text,
+              fontSize: detail?.fontSize,
+              fontWeight: detail?.fontWeight,
+              fontFamily: detail?.fontFamily,
               color: detail.color,
               image: detail?.image,
               productPageId: pageId,
@@ -150,6 +176,9 @@ class ProductController {
             product_page_detail.width = detail.width;
             product_page_detail.rotate = detail?.rotate;
             product_page_detail.text = detail?.text;
+            product_page_detail.fontSize = detail?.fontSize;
+            product_page_detail.fontWeight = detail?.fontWeight;
+            product_page_detail.fontFamily = detail?.fontFamily;
             product_page_detail.top = detail?.top;
             product_page_detail.left = detail?.left;
             product_page_detail.z_index = detail.z_index;
@@ -195,42 +224,62 @@ class ProductController {
 
   static async cloneTemplate(req, res) {
     try {
-      const { template, userId } = req.body;
-      console.log(req.body);
+      const { templateId, userId } = req.body;
+      const template = await Template.findByPk(templateId, {
+        include: [
+          {
+            model: TemplatePage,
+            include: TemplatePageDetail,
+          },
+        ],
+      });
+      const templateData = template.dataValues;
       const newProduct = await Product.create({
-        name: "product-test",
-        thumbnail:
-          "https://variety.com/wp-content/uploads/2023/07/Tom-and-Jerry-Singapore-series-poster.jpg",
+        name: templateData.name,
+        thumbnail: templateData.thumbnail,
         userId: userId,
       });
 
-      for (let i = 0; i < template.template_pages.length; i++) {
+      for (let i = 0; i < templateData.template_pages.length; i++) {
         const productPage = await ProductPage.create({
           productId: newProduct.id,
         });
         for (
           let j = 0;
-          j < template.template_pages[i].template_page_details.length;
+          j < templateData.template_pages[i].template_page_details.length;
           j++
         ) {
           await ProductPageDetail.create({
-            name: template.template_pages[i].template_page_details[j].name,
-            type: template.template_pages[i].template_page_details[j].type,
-            height: template.template_pages[i].template_page_details[j].height,
-            width: template.template_pages[i].template_page_details[j].width,
-            rotate: template.template_pages[i].template_page_details[j]?.rotate,
-            text: template.template_pages[i].template_page_details[j]?.text,
-            top: template.template_pages[i].template_page_details[j]?.top,
-            left: template.template_pages[i].template_page_details[j]?.left,
+            name: templateData.template_pages[i].template_page_details[j].name,
+            type: templateData.template_pages[i].template_page_details[j].type,
+            height:
+              templateData.template_pages[i].template_page_details[j].height,
+            width:
+              templateData.template_pages[i].template_page_details[j].width,
+            rotate:
+              templateData.template_pages[i].template_page_details[j]?.rotate,
+            text: templateData.template_pages[i].template_page_details[j]?.text,
+            top: templateData.template_pages[i].template_page_details[j]?.top,
+            left: templateData.template_pages[i].template_page_details[j]?.left,
+            fontSize:
+              templateData.template_pages[i].template_page_details[j]?.fontSize,
+            fontWeight:
+              templateData.template_pages[i].template_page_details[j]
+                ?.fontWeight,
+            fontFamily:
+              templateData.template_pages[i].template_page_details[j]
+                ?.fontFamily,
             z_index:
-              template.template_pages[i].template_page_details[j].z_index,
-            color: template.template_pages[i].template_page_details[j].color,
-            image: template.template_pages[i].template_page_details[j]?.image,
+              templateData.template_pages[i].template_page_details[j].z_index,
+            color:
+              templateData.template_pages[i].template_page_details[j].color,
+            image:
+              templateData.template_pages[i].template_page_details[j]?.image,
             productPageId: productPage.id,
           });
         }
       }
-      return res.status(200).send({ message: "Success" });
+      return res.status(200).send({ message: "Clone template success" });
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "Something went wrong" });

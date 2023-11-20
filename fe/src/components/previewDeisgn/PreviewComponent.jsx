@@ -112,7 +112,6 @@ const PreviewComponent = ({ info, currentComponent, removeComponent }) => {
         <textarea
           onChange={info.changeText}
           className="w-full h-full bg-transparent resize-none select-none border-none"
-          onMouseDown={() => info.moveElement(info.id, info)}
           readOnly={readOnly}
           onCopy={false}
           value={info.text}

@@ -1,10 +1,10 @@
 import {
   faArrowDownLong,
   faArrowUpLong,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Line,
@@ -12,20 +12,20 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts';
+} from "recharts";
 const monthNames = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 export default function RevenueStatitic({ year }) {
@@ -34,7 +34,7 @@ export default function RevenueStatitic({ year }) {
   useEffect(() => {
     const handleAPI = async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/v1/order/get-order-by-year/${year}`,
+        `http://localhost:5000/api/v1/order/get-order-by-year/${year}`
       );
       setData(res.data);
     };
@@ -48,15 +48,13 @@ export default function RevenueStatitic({ year }) {
   }
   let rs = 0;
   if (data?.orders) {
-    
-    if (data.yearly_revenue_previous_year > data.yearly_revenue_current_year){
+    if (data.yearly_revenue_previous_year > data.yearly_revenue_current_year) {
       rs = parseFloat(
         (
           data.yearly_revenue_previous_year / data.yearly_revenue_current_year
         ).toFixed(2)
       );
-       
-    }else {
+    } else {
       flag = true;
       rs = parseFloat(
         (
@@ -71,7 +69,8 @@ export default function RevenueStatitic({ year }) {
       <div className="border-1 items-center justify-center flex flex-col h-[100px]   gap-3 ">
         <div className="   rounded-[15px] justify-center items-center  ">
           <div className="text-[20px] flex flex">
-            <p className="font-semibold">Total Revenue</p>: {data.yearly_revenue_current_year}$ in {year}
+            <p className="font-semibold">Total Revenue</p>:{" "}
+            {data.yearly_revenue_current_year}$ in {year}
           </div>
         </div>
         {!flag ? (
@@ -81,8 +80,7 @@ export default function RevenueStatitic({ year }) {
               className="text-[30px]  text-red-500"
             />
             <div className="text-[20px] text-red-500 font-semibold">
-              {rs}
-              % by {year - 1}
+              {rs}% by {year - 1}
             </div>
           </div>
         ) : (
@@ -92,7 +90,7 @@ export default function RevenueStatitic({ year }) {
               className="text-[30px]  text-emerald-700"
             />
             <div className="text-[20px] text-emerald-700 font-semibold">
-             {rs} % by {year - 1}
+              {rs} % by {year - 1}
             </div>
           </div>
         )}
@@ -103,7 +101,7 @@ export default function RevenueStatitic({ year }) {
         data={data?.orders}
         margin={{ top: 5, right: 40, left: 20, bottom: 0 }}
       >
-        <XAxis dataKey={'monthName'} />
+        <XAxis dataKey={"monthName"} />
         <YAxis />
         <CartesianGrid
           strokeDasharray="5 5"

@@ -5,10 +5,10 @@ import {
   faDownLong,
   faUpRightAndDownLeftFromCenter,
   faUser,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   XAxis,
   YAxis,
@@ -21,22 +21,22 @@ import {
   PieChart,
   LineChart,
   Line,
-} from 'recharts';
+} from "recharts";
 
-const COLORS = ['#00C49F', '#FFBB28'];
+const COLORS = ["#00C49F", "#FFBB28"];
 const monthNames = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 export default function UserStatitic({ year }) {
   const [data, setData] = useState([]);
@@ -44,7 +44,7 @@ export default function UserStatitic({ year }) {
   useEffect(() => {
     const handleAPI = async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/v1/user/get-user-by-year/${year}`,
+        `http://localhost:5000/api/v1/user/get-user-by-year/${year}`
       );
       setData(res.data);
     };
@@ -69,26 +69,34 @@ export default function UserStatitic({ year }) {
     }
   }
 
-  
-
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
       <div className="border-1 items-center justify-center flex flex-col h-[100px]   gap-3 ">
         <div className="   rounded-[15px] justify-center items-center  ">
-         
-          <div className="text-[20px] flex flex">
-            <p className='font-semibold'>Total user</p>: {data.total_registrations} registrations in {year}
-            </div>
+          <div className="text-[20px] flex ">
+            <p className="font-semibold">Total user</p>:{" "}
+            {data.total_registrations} registrations in {year}
+          </div>
         </div>
         {!flag ? (
           <div className="flex  rounded-[10px]  justify-center items-center    ">
-              <FontAwesomeIcon icon={faArrowDownLong}   className="text-[30px]  text-red-500" />
-              <div className='text-[20px] text-red-500 font-semibold' >{rs}% by {year - 1}</div>
+            <FontAwesomeIcon
+              icon={faArrowDownLong}
+              className="text-[30px]  text-red-500"
+            />
+            <div className="text-[20px] text-red-500 font-semibold">
+              {rs}% by {year - 1}
+            </div>
           </div>
         ) : (
           <div className="flex   rounded-[10px]  justify-center items-center    ">
-            <FontAwesomeIcon icon={faArrowUpLong} className="text-[30px]  text-emerald-700" />
-            <div className='text-[20px] text-emerald-700 font-semibold'>{rs}% by {year - 1}</div>
+            <FontAwesomeIcon
+              icon={faArrowUpLong}
+              className="text-[30px]  text-emerald-700"
+            />
+            <div className="text-[20px] text-emerald-700 font-semibold">
+              {rs}% by {year - 1}
+            </div>
           </div>
         )}
       </div>
@@ -118,7 +126,7 @@ export default function UserStatitic({ year }) {
           stroke="#82ca9d"
           fillOpacity={1}
           fill="url(#coloruv)"
-        />{' '}
+        />{" "}
       </LineChart>
     </div>
   );

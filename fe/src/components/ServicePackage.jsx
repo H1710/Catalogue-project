@@ -4,26 +4,26 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import CustomButton from '../components/common/Button';
-import { Divider, TextField, Typography } from '@mui/material';
-import InvoicesInfo from './InvoicesInfo';
+} from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import CustomButton from "../components/common/Button";
+import { Divider, TextField, Typography } from "@mui/material";
+import InvoicesInfo from "./InvoicesInfo";
 
 const lsPack = [
   {
     id: 2,
-    name: 'Monthly Premium',
+    name: "Monthly Premium",
     remainingDay: 30,
     cost: 100,
   },
   {
     id: 3,
-    name: 'Yearly Premium',
+    name: "Yearly Premium",
     remainingDay: 365,
     cost: 900,
   },
@@ -33,11 +33,9 @@ export default function ServicePackage({
   showServiePackages,
   setShowServiePackages,
   user,
-  setIsPremium
 }) {
   const [selectedRadio, setSelectedRadio] = useState(2);
   const [isShowOptionsPackage, setIsShowOptionsPackage] = useState(false);
-  const [isShowInfoCard, setIsShowInfoCard] = useState(false);
   const [isShowInvoice, setIsShowInvoice] = useState(false);
   const [stateOfPopup, setStateOfPopup] = useState(0);
 
@@ -52,14 +50,14 @@ export default function ServicePackage({
     setIsShowOptionsPackage(true);
   }, []);
   const initInfo = {
-    packageId: '2',
-    cardNumber: '',
-    security: '',
-    expiry: '',
+    packageId: "2",
+    cardNumber: "",
+    security: "",
+    expiry: "",
   };
   const [infoInvoice, setInfoInvoice] = useState(initInfo);
   const handleUpdateInfo = (e) => {
-    if (e.target.name === 'packageId') {
+    if (e.target.name === "packageId") {
       setSelectedRadio(e.target.value);
     }
 
@@ -81,28 +79,26 @@ export default function ServicePackage({
   const formik = useFormik({
     initialValues: infoInvoice,
     onSubmit: (values) => {
-      values.packageId = infoInvoice.packageId
-      console.log(values)
+      values.packageId = infoInvoice.packageId;
       closeModal();
       setInfoInvoice(values);
-      setIsShowInvoice(prev => !prev);
-      console.log(isShowInvoice)
+      setIsShowInvoice((prev) => !prev);
     },
 
     validationSchema: Yup.object({
       cardNumber: Yup.string()
-        .required('Required.')
-        .matches(/^[0-9]+$/, 'Must contain only number digits.')
-        .min(16, 'Must be equal 16 degits')
-        .max(16, 'Must be equal 16 degits'),
+        .required("Required.")
+        .matches(/^[0-9]+$/, "Must contain only number digits.")
+        .min(16, "Must be equal 16 degits")
+        .max(16, "Must be equal 16 degits"),
       security: Yup.string()
-        .required('Required.')
-        .matches(/^[0-9]+$/, 'Must contain only number digits.')
-        .min(3, 'Must be equal 3 degits')
-        .max(3, 'Must be equal 3 degits'),
+        .required("Required.")
+        .matches(/^[0-9]+$/, "Must contain only number digits.")
+        .min(3, "Must be equal 3 degits")
+        .max(3, "Must be equal 3 degits"),
       expiry: Yup.string()
-        .required('Required.')
-        .matches(/^(0[1-9]|1[0-2])\/\d{4}$/, 'Must be in MM/YYYY format.'),
+        .required("Required.")
+        .matches(/^(0[1-9]|1[0-2])\/\d{4}$/, "Must be in MM/YYYY format."),
     }),
   });
   return (
@@ -190,7 +186,7 @@ export default function ServicePackage({
                         <CustomButton
                           classContent="inline-flex justify-center  bg-[#8884d8] w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
                           handleClick={handleNext}
-                          text={'Start right now!'}
+                          text={"Start right now!"}
                         />
                       </div>
                     </>
@@ -226,8 +222,8 @@ export default function ServicePackage({
 
                       <div>
                         <CustomButton
-                          text={'Next'}
-                          classContent={'bg-[#8b3dff] text-white w-full mt-4 '}
+                          text={"Next"}
+                          classContent={"bg-[#8b3dff] text-white w-full mt-4 "}
                           handleClick={handleNext}
                         ></CustomButton>
                       </div>
@@ -289,9 +285,9 @@ export default function ServicePackage({
 
                       <Divider />
                       <CustomButton
-                        text={'Next'}
-                        type={'submit'}
-                        classContent={'bg-[#8b3dff] text-white w-full mt-4 '}
+                        text={"Next"}
+                        type={"submit"}
+                        classContent={"bg-[#8b3dff] text-white w-full mt-4 "}
                       ></CustomButton>
                     </form>
                   )}
@@ -308,7 +304,6 @@ export default function ServicePackage({
           user={user}
           infoInvoice={infoInvoice}
           lsPack={lsPack}
-          setIsPremium={setIsPremium}
         />
       )}
     </>

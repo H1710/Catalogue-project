@@ -1,41 +1,16 @@
-
-import { useEffect, useState } from 'react';
-import MinidenticonImg from '../common/MinidenticonImg';
-import ServicePackage from '../ServicePackage';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import MinidenticonImg from "../common/MinidenticonImg";
+import ServicePackage from "../ServicePackage";
+import { ValidateService } from "../../utils/ValidateService";
+import { useNavigate } from "react-router";
 
 function UserSidebar({ user }) {
   const [showServiePackages, setShowServiePackages] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(true);
   const categoryList = ["Education", "Social media", "Bussiness"];
-  let daysDifference = 0;
-  let remainingDayofService = 0;
-  const length = user.orders.length;
-  if (length !== 0) {
-    const dateBuyService = new Date(user.orders[length - 1].createdAt);
-    const currentDate = new Date();
-    const timeDiff = currentDate.getTime() - dateBuyService.getTime();
-
-    daysDifference = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    remainingDayofService = user.orders[length - 1].service_package.remain_day;
-  }
-
-  useEffect(() => {
-    const checkIsPremium = () => {
-      if (remainingDayofService === 0) {
-        setIsPremium(false);
-      } else if (daysDifference < remainingDayofService) {
-        setIsPremium(true);
-      } else {
-        setIsPremium(false);
-      }
-    };
-    checkIsPremium();
-  }, [daysDifference]);
-
+  const navigate = useNavigate();
   return (
-    <aside className="w-[250px] h-full flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
+    <aside className="w-[250px] h-full overflow-y-auto flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
         {user?.avatar ? (
           <img
@@ -44,37 +19,44 @@ function UserSidebar({ user }) {
           />
         ) : (
           <MinidenticonImg
-            username={user.name}
+            username={user?.email}
             className="w-14 rounded-full object-cover cursor-pointer border border-[#ccc]"
           />
         )}
         <div className="flex flex-col gap-1">
           <p className="font-semibold text-lg">{user.name}</p>
-          <p className="text-md">Free</p>
+          <p className="text-md">{ValidateService(user)}</p>
         </div>
       </div>
-      <div className="flex flex-col flex-1 w-[230px]">
-        {!isPremium && (
-          <div
-            className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
-            onClick={() => setShowServiePackages(true)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              // strokeWidth={1.5}
-              viewBox="0 0 16 16"
-              className="h-8 w-8"
+      <div className="flex flex-col gap-4">
+        <div>
+          {ValidateService(user) === "Free" && (
+            <div
+              className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+              onClick={() => setShowServiePackages(true)}
             >
-              <path
-                fill="rgb(255,153,0)"
-                d="M7.51 4.87C7.01 6.27 6.45 6.95 5.94 7c-.57.07-1.07-.18-1.54-.8a.54.54 0 0 0-.1-.1 1 1 0 1 0-.8.4l.01.12.82 3.24A1.5 1.5 0 0 0 5.78 11h4.44a1.5 1.5 0 0 0 1.45-1.14l.82-3.24a.54.54 0 0 0 .01-.12 1 1 0 1 0-.8-.4.54.54 0 0 0-.1.09c-.49.62-1 .87-1.54.81-.5-.05-1.04-.74-1.57-2.13a1 1 0 1 0-.98 0zM11 11.75a.5.5 0 1 1 0 1H5a.5.5 0 1 1 0-1h6z"
-              ></path>
-            </svg>
-            <p>Try to Premium</p>
-          </div>
-        )}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                // strokeWidth={1.5}
+                viewBox="0 0 16 16"
+                className="h-6 w-6"
+              >
+                <path
+                  fill="rgb(255,153,0)"
+                  d="M7.51 4.87C7.01 6.27 6.45 6.95 5.94 7c-.57.07-1.07-.18-1.54-.8a.54.54 0 0 0-.1-.1 1 1 0 1 0-.8.4l.01.12.82 3.24A1.5 1.5 0 0 0 5.78 11h4.44a1.5 1.5 0 0 0 1.45-1.14l.82-3.24a.54.54 0 0 0 .01-.12 1 1 0 1 0-.8-.4.54.54 0 0 0-.1.09c-.49.62-1 .87-1.54.81-.5-.05-1.04-.74-1.57-2.13a1 1 0 1 0-.98 0zM11 11.75a.5.5 0 1 1 0 1H5a.5.5 0 1 1 0-1h6z"
+                ></path>
+              </svg>
+              <p>Try to Premium</p>
+            </div>
+          )}
         </div>
-        <div className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+
+        <div
+          onClick={() => {
+            navigate("/home");
+          }}
+          className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -91,11 +73,12 @@ function UserSidebar({ user }) {
           </svg>
           <p>Home</p>
         </div>
+
         <div
           onClick={() => {
             setShowCategoryList(!showCategoryList);
           }}
-          className="cursor-pointer w-[230px] p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+          className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
         >
           <svg
             className="w-6 h-6"
@@ -111,7 +94,7 @@ function UserSidebar({ user }) {
             ></path>
           </svg>
           <p className="flex-1">Template</p>
-          <svg
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6"
             viewBox="0 0 24 24"
@@ -120,20 +103,23 @@ function UserSidebar({ user }) {
               fill="currentColor"
               d="m8.55 5.78 5.96 5.97c.1.1.1.25 0 .35l-5.87 5.87a.75.75 0 0 0 1.06 1.06l5.87-5.87c.69-.68.69-1.79 0-2.47L9.61 4.72a.75.75 0 0 0-1.06 1.06z"
             ></path>
-          </svg>
+          </svg> */}
         </div>
-        {showCategoryList &&
+        {/* {showCategoryList &&
           categoryList.map((category, index) => {
             return (
               <div
-                className="cursor-pointer w-full p-2 pl-14 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+                className="cursor-pointer w-full p-2 pl-14 hover:bg-gray-100 rounded-lg flex items-center gap-4"
                 key={index}
               >
                 <p className="flex-1">{category}</p>
               </div>
             );
-          })}
-        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          })} */}
+        <div
+          onClick={() => navigate("/myblog")}
+          className="cursor-pointer w-full p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -151,7 +137,7 @@ function UserSidebar({ user }) {
 
           <p>My Blog</p>
         </div>
-        <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+        {/* <div className="cursor-pointer w-full p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4">
           <svg
             className="w-6 h-6"
             viewBox="0 0 32 32"
@@ -167,9 +153,8 @@ function UserSidebar({ user }) {
           </svg>
 
           <p>My Product</p>
-        </div>
+        </div> */}
       </div>
-
 
       {/* <div className="">
         <div className="cursor-pointer w-full p-2 mb-4 hover:bg-gray-100 rounded-lg flex items-center gap-4">
@@ -196,7 +181,6 @@ function UserSidebar({ user }) {
         showServiePackages={showServiePackages}
         setShowServiePackages={setShowServiePackages}
         user={user}
-        setIsPremium={setIsPremium}
       />
     </aside>
   );

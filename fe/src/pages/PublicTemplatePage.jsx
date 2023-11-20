@@ -12,6 +12,7 @@ import Tag from "../components/Tag";
 import { useMutation } from "react-query";
 import { createBlogRoute, createTemplateRoute } from "../utils/APIRoute";
 import { postAPI } from "../utils/FetchData";
+import CustomButton from "../components/common/Button";
 
 const PublicTemplate = () => {
   const { state } = useLocation();
@@ -20,15 +21,16 @@ const PublicTemplate = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [user] = useOutletContext();
 
-  const { mutate: publicTemplate, isLoading } = useMutation({
-    mutationFn: (info) => {
-      return postAPI(createTemplateRoute, info);
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
-    onSuccess: (data) => {},
-  });
+  const { mutate: publicTemplate, isLoading: loadingPublicTemplate } =
+    useMutation({
+      mutationFn: (info) => {
+        return postAPI(createTemplateRoute, info);
+      },
+      onError: (error) => {
+        // toast.error(error.response.data.message, toastOptions);
+      },
+      onSuccess: (data) => {},
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,12 +88,15 @@ const PublicTemplate = () => {
                 required
               />
             </label>
-            <button
-              type="submit"
-              className="bg-green-500 text-white p-2 rounded"
-            >
-              Public
-            </button>
+            <div className="w-full flex justify-end">
+              <CustomButton
+                text={"Public"}
+                classContent={
+                  "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                }
+                isLoading={loadingPublicTemplate}
+              />
+            </div>
           </form>
         </div>
         <div>

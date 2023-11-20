@@ -7,6 +7,8 @@ const Tag = db.tag;
 const TagBlog = db.TagBlog;
 const blogRating = db.blogRating;
 const voteBlogComment = db.voteBlogComment;
+const cloudinary = require("../utils/cloudinary");
+
 const { faker } = require("@faker-js/faker");
 
 class BlogController {
@@ -23,11 +25,17 @@ class BlogController {
         return res.status(400).json({ message: "User not found" });
       }
 
-      const data = await uploadImage(thumbnail.filename, thumbnail.mimetype);
+      const result = await cloudinary.uploader.upload(thumbnail.path, {
+        public_id: thumbnail.originalname,
+        resource_type: "auto",
+        folder: "noto",
+        use_filename: true,
+        unique_filename: false,
+      });
       const newBlog = await user.createBlog({
         title: title,
         content: content,
-        thumbnail: data.data.webContentLink,
+        thumbnail: result.url,
         description: description,
       });
 
@@ -42,8 +50,7 @@ class BlogController {
 
       return res.status(200).json({ newBlog: newBlog });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "can not create a new blog." });
+      return res.status(500).json({ message: "Can not create a new blog." });
     }
   }
   static async getBlogById(req, res) {
@@ -94,10 +101,7 @@ class BlogController {
 
   static async getAllBlog(req, res) {
     try {
-      let page = req.query.page;
-      if (!page) {
-        page = 1;
-      }
+      const page = parseInt(req.query.page) || 1;
       let sort = req.query.sort;
       if (sort == "") {
         sort = "asc";
@@ -139,14 +143,12 @@ class BlogController {
           "blog.id",
           "tags.id",
         ],
-        offset: (page - 1) * limit,
+        offset: offset,
         limit: limit,
         subQuery: false,
       });
 
-      res.status(200).json({
-        blogs: blogs,
-      });
+      res.status(200).json({ blogs: blogs });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -208,9 +210,7 @@ class BlogController {
         subQuery: false,
       });
 
-      res.status(200).json({
-        blogs: blogs,
-      });
+      res.status(200).json(blogs);
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -219,10 +219,7 @@ class BlogController {
 
   static async getAcceptedBlog(req, res) {
     try {
-      let page = req.query.page;
-      if (!page) {
-        page = 1;
-      }
+      const page = parseInt(req.query.page) || 1;
       let sort = req.query.sort;
       if (sort == "") {
         sort = "asc";
@@ -252,6 +249,7 @@ class BlogController {
           "title",
           "thumbnail",
           "description",
+          "createdAt",
           "status",
           [seq.fn("AVG", seq.col("blog_ratings.rating")), "avgRating"],
         ],
@@ -263,18 +261,17 @@ class BlogController {
           "title",
           "thumbnail",
           "description",
+          "createdAt",
           "status",
           "blog.id",
           "tags.id",
         ],
-        offset: (page - 1) * limit,
+        offset: offset,
         limit: limit,
         subQuery: false,
       });
 
-      res.status(200).json({
-        blogs: blogs,
-      });
+      res.status(200).json(blogs);
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -313,10 +310,10 @@ class BlogController {
       if (title != "" && name == "") {
         const blogsByTitle = await seq.query(
           "SELECT b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-          "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
-          "on br.blogId = b.id " +
-          "where b.title like ? " +
-          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+            "FROM catalogue_project.blog_ratings as br right join catalogue_project.blogs as b " +
+            "on br.blogId = b.id " +
+            "where b.title like ? " +
+            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -327,12 +324,12 @@ class BlogController {
       if (title == "" && name != "") {
         const blogsByName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-          "from catalogue_project.blogs b " +
-          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-          "join catalogue_project.templates t on pb.templateId = t.id " +
-          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-          "where t.name like ? " +
-          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+            "from catalogue_project.blogs b " +
+            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+            "join catalogue_project.templates t on pb.templateId = t.id " +
+            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+            "where t.name like ? " +
+            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -343,12 +340,12 @@ class BlogController {
       if (title != "" && name != "") {
         const blogsByTitleAndName = await seq.query(
           "select b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId, avg(br.rating) as avgRating " +
-          "from catalogue_project.blogs b " +
-          "join catalogue_project.product_blog pb on b.id = pb.blogId " +
-          "join catalogue_project.templates t on pb.templateId = t.id " +
-          "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
-          "where t.name like ? and b.title like ? " +
-          "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
+            "from catalogue_project.blogs b " +
+            "join catalogue_project.product_blog pb on b.id = pb.blogId " +
+            "join catalogue_project.templates t on pb.templateId = t.id " +
+            "LEFT JOIN catalogue_project.blog_ratings br ON b.id = br.blogId " +
+            "where t.name like ? and b.title like ? " +
+            "group by b.id, b.title, b.content, b.thumbnail, b.status, b.createdAt, b.updatedAt, b.userId limit ? offset ?",
           {
             replacements: ["%" + name + "%", "%" + title + "%", limit, offset],
             type: seq.QueryTypes.SELECT,
@@ -396,9 +393,9 @@ class BlogController {
       }
       const totalVote = await seq.query(
         "select blogCommentId, sum(vote) as total_vote " +
-        "from catalogue_project.vote_blog_comments " +
-        "where blogCommentId = ? " +
-        "group by blogCommentId",
+          "from catalogue_project.vote_blog_comments " +
+          "where blogCommentId = ? " +
+          "group by blogCommentId",
         { replacements: [commentId], type: seq.QueryTypes.SELECT }
       );
       res.status(200).json({ totalVote });
@@ -583,17 +580,17 @@ class BlogController {
     try {
       const ratingBlogs = await seq.query(
         "SELECT " +
-        "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
-        "FROM catalogue_project.blogs AS b " +
-        "JOIN catalogue_project.blog_ratings AS br " +
-        "ON b.id = br.blogId " +
-        "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
-        "Having AVG(br.rating) >= ?" +
-        "ORDER BY b.createdAt" +
-        " " +
-        (sortDate === "descDate" ? "DESC" : "ASC") +
-        " " +
-        "LIMIT ? OFFSET ?",
+          "b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt, AVG(br.rating) as avgRating " +
+          "FROM catalogue_project.blogs AS b " +
+          "JOIN catalogue_project.blog_ratings AS br " +
+          "ON b.id = br.blogId " +
+          "GROUP BY b.id, b.title, b.content, b.thumbnail, b.status, b.userId, b.createdAt, b.updatedAt " +
+          "Having AVG(br.rating) >= ?" +
+          "ORDER BY b.createdAt" +
+          " " +
+          (sortDate === "descDate" ? "DESC" : "ASC") +
+          " " +
+          "LIMIT ? OFFSET ?",
         {
           replacements: [rating, limit, offset],
           type: seq.QueryTypes.SELECT,
@@ -617,7 +614,7 @@ class BlogController {
       // }
       const listOfBlogs = [];
       //const randomLink = 'https://source.boringavatars.com/bauhaus/120/'+ faker.person.userName() +'?colors=264653%2C2a9d8f%2Ce9c46a&fbclid=IwAR1YSPuMMagyuxBdUnVD0jeBYkNBLTYTce5DaajXTDJRWQTr6TIp_cflhQg'
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < 100; index++) {
         const randomUser = await User.findByPk(
           faker.number.int({ min: 10, max: 100 })
         );
@@ -626,7 +623,7 @@ class BlogController {
           content: faker.lorem.paragraphs(),
           description: faker.lorem.paragraphs(),
           thumbnail: `https://source.boringavatars.com/bauhaus/180/${index}?square`,
-          status: faker.helpers.arrayElement(["No Process", "In Process"]),
+          status: "Accepted",
           createdAt: faker.date.past(),
           updatedAt: faker.date.past(),
         };
@@ -644,10 +641,9 @@ class BlogController {
   static async getBlogByUserId(req, res) {
     try {
       const userId = req.params.userId;
-      console.log(userId);
       const blog = await Blog.findAll({
         where: {
-          userId: userId
+          userId: userId,
         },
         include: [
           {
@@ -660,6 +656,10 @@ class BlogController {
             through: {
               attributes: [],
             },
+          },
+          {
+            model: User,
+            attributes: ["name"],
           },
         ],
         attributes: [
@@ -706,17 +706,21 @@ class BlogController {
       });
 
       const blog = await Blog.findAll({
-        include: [{
-          model: TagBlog,
-          attributes: ["blogId", "tagId"],
-        }],
-        include: [{
-          model: Tag,
-          attributes: ["id", "name"],
-          where: {
-            name: tag.dataValues.name
-          }
-        }],
+        include: [
+          {
+            model: TagBlog,
+            attributes: ["blogId", "tagId"],
+          },
+        ],
+        include: [
+          {
+            model: Tag,
+            attributes: ["id", "name"],
+            where: {
+              name: tag.dataValues.name,
+            },
+          },
+        ],
         attributes: [
           "id",
           "title",
@@ -738,11 +742,10 @@ class BlogController {
       });
 
       res.status(200).json({
-        blog: blog
-      })
+        blog: blog,
+      });
       // await newBlog.addTag(tag);
     });
-
   }
 }
 

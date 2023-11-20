@@ -26,6 +26,9 @@ const DesignPage = () => {
   const [height, setHeight] = useState("");
   const [text, setText] = useState("");
   const [page, setPage] = useState(0);
+  const [fontSize, setFontSize] = useState(0);
+  const [fontFamily, setFontFamily] = useState("");
+  const [fontWeight, setFontWeight] = useState(0);
   const [currentComponent, setCurrentComponent] = useState("");
 
   const { productId } = useParams();
@@ -80,7 +83,6 @@ const DesignPage = () => {
       ],
     },
   ]);
-
   useEffect(() => {
     if (currentComponent) {
       setComponents((prev) => {
@@ -95,6 +97,8 @@ const DesignPage = () => {
         if (currentComponent.name == "text") {
           temp[page].product_page_details[index].text =
             text || currentComponent.text;
+          temp[page].product_page_details[index].fontSize =
+            fontSize || currentComponent.fontSize;
         }
         if (currentComponent.name == "main_frame" && image) {
           temp[page].product_page_details[index].image =
@@ -125,8 +129,9 @@ const DesignPage = () => {
       setLeft("");
       setColor("");
       setRotate(0);
+      setFontSize(0);
     }
-  }, [color, image, left, top, width, height, text, rotate]);
+  }, [color, image, left, top, width, height, text, rotate, fontSize]);
 
   const createShape = useCallback(
     (name, type) => {
@@ -205,8 +210,6 @@ const DesignPage = () => {
     },
     [page]
   );
-
-  console.log(components);
 
   const resizeElement = useCallback(
     (id, currentInfo) => {
@@ -313,13 +316,13 @@ const DesignPage = () => {
     });
 
     setPage((prev) => prev + 1);
-  }, []);
+  }, [page]);
 
   const changeText = (e) => {
     setText((prev) => e.target.value);
   };
   const createText = useCallback(
-    (name) => {
+    (name, fontSize, fontWeight, fontFamily, content) => {
       setComponents((prev) => {
         const temp = [...prev];
         const id =
@@ -332,7 +335,10 @@ const DesignPage = () => {
           opacity: 1,
           width: 200,
           height: 50,
-          text: "Add a text",
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          fontFamily: fontFamily,
+          text: content,
           rotate,
           z_index: 3,
           productPageId: temp[page].id,
@@ -344,7 +350,6 @@ const DesignPage = () => {
           removeComponent,
           changeText,
         };
-        console.log(page);
         temp[page].product_page_details.push(style);
         return temp;
       });
@@ -492,6 +497,7 @@ const DesignPage = () => {
         <div className="w-full h-full flex flex-col">
           <DesignToolBar
             setColor={setColor}
+            setFontSize={setFontSize}
             currentComponent={currentComponent}
             components={components}
             user={user}
@@ -529,7 +535,7 @@ const DesignPage = () => {
                 id="main_design"
                 className="w-auto relative h-auto overflow-hidden"
               >
-                {components[page].product_page_details.map((c, i) => (
+                {components[page]?.product_page_details.map((c, i) => (
                   <CreateComponent
                     key={i}
                     info={c}

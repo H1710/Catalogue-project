@@ -26,6 +26,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      fontSize: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      fontWeight: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      fontFamily: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       top: {
         type: DataTypes.INTEGER,
         allowNull: true,

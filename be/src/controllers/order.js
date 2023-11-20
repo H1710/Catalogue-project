@@ -117,23 +117,25 @@ class OrderController {
       const yearlyData = [];
       const yearName = [2023, 2024, 2025, 2026];
       for (let index = 0; index < yearName.length; index++) {
-        const query = 'select sum(total) as totalRevenue, sum(numOfPurchase) as quantity '
-          + 'from ('
-          + 'select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) '
-          + 'when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) '
-          + 'when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) '
-          + 'when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) '
-          + 'else 0 end) as total '
-          + 'from ('
-          + 'select servicePackageId, count(servicePackageId) as numOfPurchase '
-          + 'from catalogue_project.orders '
-          + 'where year(createdAt) = ' + yearName[index]
-          + ' group by servicePackageId'
-          + ') as subquery '
-          + 'join catalogue_project.service_packages as sp '
-          + 'on subquery.servicePackageId = sp.id '
-          + 'group by servicePackageId, numOfPurchase'
-          + ') as subquery2';
+        const query =
+          "select sum(total) as totalRevenue, sum(numOfPurchase) as quantity " +
+          "from (" +
+          "select sum(numOfPurchase) as numOfPurchase, sum(case when servicePackageId = 1 then numOfPurchase * (select price from catalogue_project.service_packages where id = 1) " +
+          "when servicePackageId = 2 then numOfPurchase * (select price from catalogue_project.service_packages where id = 2) " +
+          "when servicePackageId = 3 then numOfPurchase * (select price from catalogue_project.service_packages where id = 3) " +
+          "when servicePackageId = 4 then numOfPurchase * (select price from catalogue_project.service_packages where id = 4) " +
+          "else 0 end) as total " +
+          "from (" +
+          "select servicePackageId, count(servicePackageId) as numOfPurchase " +
+          "from catalogue_project.orders " +
+          "where year(createdAt) = " +
+          yearName[index] +
+          " group by servicePackageId" +
+          ") as subquery " +
+          "join catalogue_project.service_packages as sp " +
+          "on subquery.servicePackageId = sp.id " +
+          "group by servicePackageId, numOfPurchase" +
+          ") as subquery2";
         const result = await seq.query(query);
         yearlyData.push({ yearName: yearName[index], result: result[0] });
       }
@@ -143,7 +145,6 @@ class OrderController {
       return res.status(500).json({ message: "Something went wrong!" });
     }
   }
-
 
   static async getOrderByYear(req, res) {
     try {
@@ -158,10 +159,10 @@ class OrderController {
       // Truy vấn cơ sở dữ liệu cho năm hiện tại
       const ordersCurrentYear = await Order.findAll({
         attributes: [
-          [Sequelize.literal('YEAR(createdAt)'), 'year'],
-          [Sequelize.literal('MONTH(createdAt)'), 'month'],
-          [Sequelize.literal('COUNT(*)'), 'order_count'],
-          [Sequelize.literal('SUM(price)'), 'monthly_revenue'],
+          [Sequelize.literal("YEAR(createdAt)"), "year"],
+          [Sequelize.literal("MONTH(createdAt)"), "month"],
+          [Sequelize.literal("COUNT(*)"), "order_count"],
+          [Sequelize.literal("SUM(price)"), "monthly_revenue"],
         ],
         include: [
           {
@@ -174,18 +175,24 @@ class OrderController {
             [Sequelize.Op.between]: [`${year}-01-01`, `${year}-12-31`],
           },
         },
-        group: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
-        order: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        group: [
+          Sequelize.literal("YEAR(createdAt)"),
+          Sequelize.literal("MONTH(createdAt)"),
+        ],
+        order: [
+          Sequelize.literal("YEAR(createdAt)"),
+          Sequelize.literal("MONTH(createdAt)"),
+        ],
         raw: true,
       });
 
       // Truy vấn cơ sở dữ liệu cho năm trước đó
       const ordersPreviousYear = await Order.findAll({
         attributes: [
-          [Sequelize.literal('YEAR(createdAt)'), 'year'],
-          [Sequelize.literal('MONTH(createdAt)'), 'month'],
-          [Sequelize.literal('COUNT(*)'), 'order_count'],
-          [Sequelize.literal('SUM(price)'), 'monthly_revenue'],
+          [Sequelize.literal("YEAR(createdAt)"), "year"],
+          [Sequelize.literal("MONTH(createdAt)"), "month"],
+          [Sequelize.literal("COUNT(*)"), "order_count"],
+          [Sequelize.literal("SUM(price)"), "monthly_revenue"],
         ],
         include: [
           {
@@ -198,8 +205,14 @@ class OrderController {
             [Sequelize.Op.between]: [`${year - 1}-01-01`, `${year - 1}-12-31`],
           },
         },
-        group: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
-        order: [Sequelize.literal('YEAR(createdAt)'), Sequelize.literal('MONTH(createdAt)')],
+        group: [
+          Sequelize.literal("YEAR(createdAt)"),
+          Sequelize.literal("MONTH(createdAt)"),
+        ],
+        order: [
+          Sequelize.literal("YEAR(createdAt)"),
+          Sequelize.literal("MONTH(createdAt)"),
+        ],
         raw: true,
       });
 
@@ -222,15 +235,25 @@ class OrderController {
       });
 
       // Tổng doanh thu hàng năm
-      const yearlyRevenueCurrentYear = ordersCurrentYear.reduce((acc, order) => acc + parseFloat(order.monthly_revenue), 0);
-      const yearlyRevenuePreviousYear = ordersPreviousYear.reduce((acc, order) => acc + parseFloat(order.monthly_revenue), 0);
+      const yearlyRevenueCurrentYear = ordersCurrentYear.reduce(
+        (acc, order) => acc + parseFloat(order.monthly_revenue),
+        0
+      );
+      const yearlyRevenuePreviousYear = ordersPreviousYear.reduce(
+        (acc, order) => acc + parseFloat(order.monthly_revenue),
+        0
+      );
 
       // Tạo mảng kết quả với tất cả các tháng và gán giá trị 0 cho những tháng không có dữ liệu
       const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
-      const result = allMonths.map(month => {
-        const key = `${year}-${String(month).padStart(2, '0')}`;
-        const dataCurrentYear = ordersCurrentYear.find(order => order.year === year && order.month === month);
-        const dataPreviousYear = ordersPreviousYear.find(order => order.year === year - 1 && order.month === month);
+      const result = allMonths.map((month) => {
+        const key = `${year}-${String(month).padStart(2, "0")}`;
+        const dataCurrentYear = ordersCurrentYear.find(
+          (order) => order.year === year && order.month === month
+        );
+        const dataPreviousYear = ordersPreviousYear.find(
+          (order) => order.year === year - 1 && order.month === month
+        );
 
         if (dataCurrentYear) {
           return dataCurrentYear;
@@ -254,18 +277,13 @@ class OrderController {
     }
   }
 
-
-
-
-
-
   static async getAllOrder(req, res) {
     try {
       const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
-      const perPage = 7; // Number of users to show per page
+      const perPage = 10; // Number of users to show per page
       const offset = (page - 1) * perPage; // Calculate the offset based on the page
 
-      const orders = await Order.findAll({
+      const orders = await Order.findAndCountAll({
         attributes: ["id", "createdAt", "updatedAt"],
         include: [
           {
@@ -277,12 +295,10 @@ class OrderController {
             attributes: ["name", "price"],
           },
         ],
-        limit: perPage, // Limit the number of results per page
-        offset: offset, // Offset for pagination
+        limit: perPage,
+        offset: offset,
       });
-      res.status(200).json({
-        orders: orders,
-      });
+      res.status(200).json(orders);
     } catch (error) {
       res.status(400).json({ message: "Something went wrong!" });
     }

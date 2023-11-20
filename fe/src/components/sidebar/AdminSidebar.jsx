@@ -13,13 +13,13 @@ function AdminSidebar({ user }) {
           />
         ) : (
           <MinidenticonImg
-            username={user.name}
+            username={user?.email}
             className="w-14 rounded-full object-cover cursor-pointer border border-[#ccc]"
           />
         )}
         <div className="flex flex-col gap-1">
           <p className="font-semibold text-lg">Admin</p>
-          <p className="text-md">Free</p>
+          {/* <p className="text-md">Free</p> */}
         </div>
       </div>
       <div className="flex flex-col w-full">
@@ -69,9 +69,10 @@ function AdminSidebar({ user }) {
             </svg>
             <p>Blog</p>
           </div>
-          <div 
-          onClick={() => navigate("template/approve")}
-          className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4">
+          <div
+            onClick={() => navigate("template/approve")}
+            className="w-full cursor-pointer p-2 hover:bg-gray-100 rounded-lg flex items-center gap-4"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

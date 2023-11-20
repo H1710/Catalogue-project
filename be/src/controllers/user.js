@@ -2,7 +2,6 @@ const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
-const uploadImage = require("../utils/uploadImage");
 const cloudinary = require("../utils/cloudinary");
 
 const Role = db.role;
@@ -34,7 +33,6 @@ class UserController {
     try {
       const userId = req.params.id;
       const user = await db.user.findByPk(userId, {
-
         attributes: [
           "id",
           "name",
@@ -47,7 +45,7 @@ class UserController {
           "createAt",
           "updateAt",
           "roleId",
-        ]
+        ],
       });
       if (!user) {
         return res.status(400).send({ message: "User not found." });
@@ -57,8 +55,6 @@ class UserController {
       res.status(400).send({ message: "Something went wrong." });
     }
   }
-
-
 
   static async updateUser(req, res) {
     try {
@@ -133,10 +129,8 @@ class UserController {
         const order = await Order.create();
         await fakeUser.addOrder(order);
         await service.addOrder(order);
-
-        listOfUsers.push({});
       }
-      res.status(200).json({ listOfUsers });
+      res.status(200).json({ message: "Success" });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
@@ -146,10 +140,10 @@ class UserController {
   static async getAllUser(req, res) {
     try {
       const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
-      const perPage = 7; // Number of users to show per page
+      const perPage = 10; // Number of users to show per page
       const offset = (page - 1) * perPage; // Calculate the offset based on the page
 
-      const users = await User.findAll({
+      const userList = await User.findAndCountAll({
         attributes: ["avatar", "name", "email", "country"],
         include: [
           {
@@ -164,13 +158,11 @@ class UserController {
             },
           },
         ],
-        limit: perPage, // Limit the number of results per page
-        offset: offset, // Offset for pagination
+        limit: perPage,
+        offset: offset,
       });
 
-      res.json({
-        users: users,
-      });
+      res.json(userList);
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -282,7 +274,6 @@ class UserController {
     try {
       const { userId } = req.body;
       const designImage = req.file;
-      console.log(designImage);
 
       if (!designImage) {
         return res.status(400).json({ message: "Image not found" });
@@ -358,7 +349,8 @@ class UserController {
 
       const orders = await Order.findAll({
         where: {
-          createdAt: {  // Assuming Order has a field named orderDate for creation date
+          createdAt: {
+            // Assuming Order has a field named orderDate for creation date
             [Sequelize.Op.gte]: new Date(`${year}-01-01`),
             [Sequelize.Op.lte]: new Date(`${year}-12-31`),
           },
@@ -384,7 +376,6 @@ class UserController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
-
 }
 
 exports.UserController = UserController;

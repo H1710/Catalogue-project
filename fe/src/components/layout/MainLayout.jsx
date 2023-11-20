@@ -46,13 +46,13 @@ const MainLayout = () => {
         {user?.access_token &&
           showSidebar &&
           (user.role.name === "Admin" ? (
-            <AdminSidebar  user={user}/>
+            <AdminSidebar user={user} />
           ) : (
             <UserSidebar user={user} />
           ))}
         <div
           className={`flex justify-center items-center w-full ${
-            showSidebar && "ml-[250px]"
+            showSidebar && user?.access_token ? "ml-[250px]" : ""
           }`}
         >
           <Outlet context={[user, setOpenAuthForm]} />

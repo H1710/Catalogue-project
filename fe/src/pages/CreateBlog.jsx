@@ -3,7 +3,7 @@ import CreateForm from "../components/blog/CreateBlogForm";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import QuillEditor from "../components/textEditor/QuillEditor";
 import { createBlogRoute } from "../utils/APIRoute";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { postAPI } from "../utils/FetchData";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../components/common/Button";
@@ -14,6 +14,7 @@ const CreateBlog = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [formValid, setFormValid] = useState(false);
+
   useEffect(() => {
     if (!state?.user) {
       navigate("/");
@@ -34,17 +35,16 @@ const CreateBlog = () => {
   const [blog, setBlog] = useState(initState);
   const [body, setBody] = useState("");
 
-  const divRef = useRef(null);
+  console.log(user.access_token);
 
   const { mutate, isLoading: loadingCreate } = useMutation({
     mutationFn: (info) => {
-      return postAPI(createBlogRoute, info);
+      return postAPI(createBlogRoute, info, user?.access_token);
     },
     onError: (error) => {
-      toast.success("Create unsuccessfully!");
+      toast.error(error.response.data.message);
     },
     onSuccess: (data) => {
-      console.log(data);
       toast.success("Create successfully!");
     },
   });
@@ -56,7 +56,6 @@ const CreateBlog = () => {
       formData.append(key, newData[key]);
     }
     mutate(formData);
-    navigate("/");
   };
 
   return (
