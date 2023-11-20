@@ -10,7 +10,6 @@ const ProductList = ({
   handleSaveName,
   isLoadingProductData,
 }) => {
-  console.log(productData);
   return (
     <>
       <div className="content col-span-full select-none text-xl flex justify-between items-center pb-2 font-semibold">
@@ -22,7 +21,7 @@ const ProductList = ({
           classContent={
             "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
           }
-          handleClick={() => handleNewTemplate()}
+          handleClick={handleNewTemplate}
           isLoading={loadingCloneTemplate}
         />
       </div>

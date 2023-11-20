@@ -2,7 +2,7 @@ const db = require("../models/index");
 // const { name, address, random, internet, date } = require('@faker-js/faker');
 const { faker } = require("@faker-js/faker");
 const Sequelize = require("sequelize");
-const uploadImage = require("../utils/uploadImage");
+const cloudinary = require("../utils/cloudinary");
 
 const Role = db.role;
 const User = db.user;
@@ -32,14 +32,27 @@ class UserController {
   static async getUserById(req, res) {
     try {
       const userId = req.params.id;
-      const user = await db.user.findByPk(userId);
-      if (user) {
-        res.status(200).send(user);
-      } else {
-        res.status(404).send({ message: "User not found" });
+      const user = await db.user.findByPk(userId, {
+        attributes: [
+          "id",
+          "name",
+          "optCode",
+          "avatar",
+          "typeRegister",
+          "email",
+          "password",
+          "endDate",
+          "createAt",
+          "updateAt",
+          "roleId",
+        ],
+      });
+      if (!user) {
+        return res.status(400).send({ message: "User not found." });
       }
+      return res.status(200).json({ user: user });
     } catch (error) {
-      res.status(500).send({ message: "Something went wrong" });
+      res.status(400).send({ message: "Something went wrong." });
     }
   }
 
@@ -116,10 +129,8 @@ class UserController {
         const order = await Order.create();
         await fakeUser.addOrder(order);
         await service.addOrder(order);
-
-        listOfUsers.push({});
       }
-      res.status(200).json({ listOfUsers });
+      res.status(200).json({ message: "Success" });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Something went wrong" });
@@ -129,10 +140,10 @@ class UserController {
   static async getAllUser(req, res) {
     try {
       const page = parseInt(req.query.page) || 1; // Parse the page from the request query or default to page 1
-      const perPage = 7; // Number of users to show per page
+      const perPage = 10; // Number of users to show per page
       const offset = (page - 1) * perPage; // Calculate the offset based on the page
 
-      const users = await User.findAll({
+      const userList = await User.findAndCountAll({
         attributes: ["avatar", "name", "email", "country"],
         include: [
           {
@@ -147,13 +158,11 @@ class UserController {
             },
           },
         ],
-        limit: perPage, // Limit the number of results per page
-        offset: offset, // Offset for pagination
+        limit: perPage,
+        offset: offset,
       });
 
-      res.json({
-        users: users,
-      });
+      res.json(userList);
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });
@@ -274,14 +283,22 @@ class UserController {
         return res.status(400).json({ message: "User not found" });
       }
 
-      const data = await uploadImage(
-        designImage.filename,
-        designImage.mimetype
-      );
+      // const data = await uploadImage(
+      //   designImage.filename,
+      //   designImage.mimetype
+      // );
+
+      const result = await cloudinary.uploader.upload(designImage.path, {
+        public_id: designImage.originalname,
+        resource_type: "auto",
+        folder: "noto",
+        use_filename: true,
+        unique_filename: false,
+      });
 
       await ImageUpload.create({
         userId: userId,
-        content: data.data.webContentLink,
+        content: result.url,
       });
 
       return res.status(200).send({ message: "Upload success" });
@@ -308,6 +325,55 @@ class UserController {
         .send({ message: "Get images success", images: images });
     } catch (error) {
       res.status(400).send({ message: "Something went wrong." });
+    }
+  }
+
+  static async getListByYear(req, res) {
+    try {
+      const year = parseInt(req.params.year, 10);
+      console.log(year);
+
+      if (isNaN(year)) {
+        res.status(400).send({ message: "Invalid year" });
+        return;
+      }
+
+      const users = await User.findAll({
+        where: {
+          createdAt: {
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+      });
+
+      const orders = await Order.findAll({
+        where: {
+          createdAt: {
+            // Assuming Order has a field named orderDate for creation date
+            [Sequelize.Op.gte]: new Date(`${year}-01-01`),
+            [Sequelize.Op.lte]: new Date(`${year}-12-31`),
+          },
+        },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+          {
+            model: ServicePackage,
+            attributes: ["name", "price"],
+          },
+        ],
+      });
+
+      res.status(200).json({
+        users: users,
+        orders: orders,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Something went wrong" });
     }
   }
 }

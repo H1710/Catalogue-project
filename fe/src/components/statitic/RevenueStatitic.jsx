@@ -1,52 +1,107 @@
+import {
+  faArrowDownLong,
+  faArrowUpLong,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
+  Line,
+  LineChart,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"];
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export default function RevenueStatitic({ year }) {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+  let flag = false;
   useEffect(() => {
-      const handleAPI = async () => {
-        const res = await axios.get(`http://localhost:5000/api/v1/order/get-order-by-year/${year}`,);
-        setData(res.data);
-      };
-      handleAPI();
-    }, [year]);
-    console.log(data)
-    if (data && data?.orders?.length > 0){
-      for (var i = 0; i < data?.orders?.length; i++) {
-        data.orders[i].monthName = monthNames[i];
-      }
+    const handleAPI = async () => {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/order/get-order-by-year/${year}`
+      );
+      setData(res.data);
+    };
+    handleAPI();
+  }, [year]);
+  console.log(data);
+  if (data && data?.orders?.length > 0) {
+    for (var i = 0; i < data?.orders?.length; i++) {
+      data.orders[i].monthName = monthNames[i];
     }
-  console.log(data)
+  }
+  let rs = 0;
+  if (data?.orders) {
+    if (data.yearly_revenue_previous_year > data.yearly_revenue_current_year) {
+      rs = parseFloat(
+        (
+          data.yearly_revenue_previous_year / data.yearly_revenue_current_year
+        ).toFixed(2)
+      );
+    } else {
+      flag = true;
+      rs = parseFloat(
+        (
+          data.yearly_revenue_current_year / data.yearly_revenue_previous_year
+        ).toFixed(2)
+      );
+    }
+  }
+  console.log(data);
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
-       <div className="   rounded-xl border-teal-400 items-center justify-center flex flex-col">
-        <div className="font-bold  ">TOTAL REVENUE</div>
-        <h1 className="text-[50px]">{data[0]?.yearly_revenue}$</h1>
-        <span className="text-[30px]">In {year} : 5000$</span>
+      <div className="border-1 items-center justify-center flex flex-col h-[100px]   gap-3 ">
+        <div className="   rounded-[15px] justify-center items-center  ">
+          <div className="text-[20px] flex flex">
+            <p className="font-semibold">Total Revenue</p>:{" "}
+            {data.yearly_revenue_current_year}$ in {year}
+          </div>
+        </div>
+        {!flag ? (
+          <div className="flex  rounded-[10px]  justify-center items-center    ">
+            <FontAwesomeIcon
+              icon={faArrowDownLong}
+              className="text-[30px]  text-red-500"
+            />
+            <div className="text-[20px] text-red-500 font-semibold">
+              {rs}% by {year - 1}
+            </div>
+          </div>
+        ) : (
+          <div className="flex   rounded-[10px]  justify-center items-center    ">
+            <FontAwesomeIcon
+              icon={faArrowUpLong}
+              className="text-[30px]  text-emerald-700"
+            />
+            <div className="text-[20px] text-emerald-700 font-semibold">
+              {rs} % by {year - 1}
+            </div>
+          </div>
+        )}
       </div>
-      <AreaChart
-        width={400}
-        height={250}
+      <LineChart
+        width={550}
+        height={300}
         data={data?.orders}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        margin={{ top: 5, right: 40, left: 20, bottom: 0 }}
       >
-        <defs>
-          <linearGradient id="coloruv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-          </linearGradient>
-           
-        </defs>
-        <XAxis dataKey={'monthName'} />
+        <XAxis dataKey={"monthName"} />
         <YAxis />
         <CartesianGrid
           strokeDasharray="5 5"
@@ -54,16 +109,14 @@ export default function RevenueStatitic({ year }) {
           vertical={false}
         />
         <Tooltip />
-        <Area
+        <Line
           type="monotone"
-          dataKey="order_count"
-          stroke="#8884d8"
+          dataKey="monthly_revenue"
+          stroke="#82ca9d"
           fillOpacity={1}
           fill="url(#coloruv)"
-        /> 
-        
-      </AreaChart>
-      
+        />
+      </LineChart>
     </div>
   );
 }

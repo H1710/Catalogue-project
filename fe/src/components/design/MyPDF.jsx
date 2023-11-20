@@ -1,5 +1,35 @@
 import React from "react";
-import { Document, Page, View, Svg, Polygon, Text } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  View,
+  Svg,
+  Polygon,
+  Text,
+  Image,
+  Font,
+} from "@react-pdf/renderer";
+
+Font.register({
+  family: "Open Sans",
+  fonts: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+      fontWeight: 400,
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf",
+      fontWeight: 600,
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-700.ttf",
+      fontWeight: 700,
+    },
+  ],
+});
 
 const MyPDF = ({ components }) => {
   return (
@@ -73,10 +103,27 @@ const MyPDF = ({ components }) => {
                       width: c.width,
                       left: c.left,
                       top: c.top,
+                      color: c.color,
+                      fontSize: c.fontSize,
+                      fontWeight: c.fontWeight,
+                      fontFamily: "Open Sans",
                     }}
                   >
                     {c.text}
                   </Text>
+                )}
+
+                {c.name === "image" && (
+                  <Image
+                    src={c.image}
+                    style={{
+                      position: "absolute",
+                      height: c.height,
+                      width: c.width,
+                      left: c.left,
+                      top: c.top,
+                    }}
+                  />
                 )}
               </>
             ))}

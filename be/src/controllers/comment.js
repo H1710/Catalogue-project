@@ -4,7 +4,7 @@ const User = db.user;
 const Comment = db.blogComment;
 
 class CommentController {
-  static async createComment(req, res) {
+  static async createCommentBlog(req, res) {
     try {
       const { content, userId, blogId } = req.body;
       const newComment = await Comment.create({
@@ -26,7 +26,7 @@ class CommentController {
       res.status(500).json({ message: "Something went wrong!" });
     }
   }
-  static async getComments(req, res) {
+  static async getCommentsBlog(req, res) {
     try {
       const blogId = req.params.blogId;
       // const blogId = req.body.blogId;
@@ -53,7 +53,7 @@ class CommentController {
       res.status(500).json({ message: "somehitng went wrong" });
     }
   }
-  static async replyComment(req, res) {
+  static async replyCommentBlog(req, res) {
     try {
       const { date, content, userId, blogId, replyCommentId } = req.body;
 
@@ -76,7 +76,7 @@ class CommentController {
     }
   }
 
-  static async hideComment(req, res) {
+  static async hideCommentBlog(req, res) {
     try {
       const { commentId } = req.params;
       const result = await Commentblog.update(

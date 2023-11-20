@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Tag from "../Tag";
 import CustomButton from "../common/Button";
+import { acceptBlogRoute } from "../../utils/APIRoute";
+import { useMutation, useQueryClient } from "react-query";
+import { patchAPI } from "../../utils/FetchData";
 
-const PreviewBlog = ({
-  blog,
-  handleAcceptBlog,
-  handleNavigateBlogDetail,
-  author,
-  loadingAcceptBlog,
-}) => {
+const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: acceptBlog, isLoading: loadingAcceptBlog } = useMutation({
+    mutationFn: (info) => {
+      return patchAPI(acceptBlogRoute, info, user.access_token);
+    },
+    onSuccess: (data) => {
+      // console.log(data);
+      queryClient.invalidateQueries(["processing_blogs"]);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    // enabled: logged,
+  });
+  const handleAcceptBlog = useCallback((blogId) => {
+    acceptBlog({ blogId });
+  }, []);
   return (
     <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
       <p

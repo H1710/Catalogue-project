@@ -7,13 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      cacheTime: 1000 * 60 * 60 * 24,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

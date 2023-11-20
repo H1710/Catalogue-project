@@ -3,64 +3,50 @@ import { useMutation, useQuery } from "react-query";
 import { getProcessingBlogRoute, acceptBlogRoute } from "../utils/APIRoute";
 import { getAPI, patchAPI } from "../utils/FetchData";
 import { Pagination } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import BlogList from "../components/blog/BlogList";
+import { ToastContainer, toast } from "react-toastify";
+import NotFoundPage from "./NotFoundPage";
 
 const ApproveBlogPage = () => {
   const [page, setPage] = useState(1);
+  const [user] = useOutletContext();
   const navigate = useNavigate("");
-  const { data: blogsData, isLoading: loadingBlogData } = useQuery({
-    queryKey: ["blogs", page],
+  const {
+    data: blogsData,
+    isLoading: loadingBlogData,
+    isError: getBlogError,
+  } = useQuery({
+    queryKey: ["processing_blogs", page, user?.id],
     queryFn: () => {
-      return getAPI(`${getProcessingBlogRoute}?page=${page}&sort=desc`);
+      return getAPI(
+        `${getProcessingBlogRoute}?page=${page}&sort=desc`,
+        user?.access_token
+      );
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
+    onSuccess: (data) => {},
+    onError: (error) => {},
     // enabled: logged,
   });
 
-  const { mutate: acceptBlog, isLoading: loadingAcceptBlog } = useMutation({
-    mutationFn: (info) => {
-      return patchAPI(acceptBlogRoute, info);
-    },
-    onSuccess: (data) => {
-      // console.log(data);
-    },
-    onError: (error) => {
-      // toast.error(error.response.data.message, toastOptions);
-    },
-    // enabled: logged,
-  });
+  console.log(blogsData);
 
   const handleNavigateBlogDetail = useCallback((blogId) => {
     navigate(`/blog/${blogId}`);
   }, []);
+  if (getBlogError) return <NotFoundPage />;
 
-  const handleAcceptBlog = useCallback((blogId) => {
-    acceptBlog({ blogId });
-  }, []);
   return (
-    <div className=" w-full h-screen flex flex-col justify-between">
+    <div className=" w-full h-screen flex flex-col justify-between mt-4 p-4">
       {blogsData && (
         <BlogList
           blogsData={blogsData}
           isLoading={loadingBlogData}
           handleNavigateBlogDetail={handleNavigateBlogDetail}
-          handleAcceptBlog={handleAcceptBlog}
-          loadingAcceptBlog={loadingAcceptBlog}
+          user={user}
         />
       )}
-
-      <Pagination
-        className="h-20 flex justify-end"
-        count={10}
-        variant="outlined"
-        shape="rounded"
-      />
+      <ToastContainer />
     </div>
   );
 };

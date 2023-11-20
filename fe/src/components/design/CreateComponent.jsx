@@ -4,6 +4,7 @@ import Element from "./Element";
 const CreateComponent = ({ info, currentComponent, removeComponent }) => {
   const randValue = Math.floor(Math.random() * 100);
   const [readOnly, setReadOnly] = useState(true);
+  console.log(currentComponent);
   let html = "";
   if (info.name === "main_frame") {
     html = (
@@ -27,7 +28,10 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
       <div
         id={info.id}
         onClick={() => info.setCurrentComponent(info)}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className={`absolute ${
+          currentComponent.id === info.id &&
+          "outline outline-[2px] outline-indigo-500"
+        } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
         style={{
           width: info.width + "px",
           height: info.height + "px",
@@ -47,7 +51,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
         {currentComponent.id === info.id && (
           <div
             onClick={() => removeComponent(info.id)}
-            className="px-3 py-2 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md"
+            className="px-2 py-2 bg-white absolute top-[-50px] group-hover:block cursor-pointer rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +59,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -82,7 +86,10 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
           width: info.width + "px",
           height: info.width + "px",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className={`absolute ${
+          currentComponent.id === info.id &&
+          "outline outline-[2px] outline-indigo-500"
+        } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
       >
         <Element id={randValue} info={info} exId="" />
 
@@ -98,7 +105,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
         {currentComponent.id === info.id && (
           <div
             onClick={() => removeComponent(info.id)}
-            className="px-3 py-2 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md"
+            className="px-2 py-2 bg-white absolute top-[-50px] group-hover:block cursor-pointer rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +113,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -133,7 +140,10 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
           width: info.width + "px",
           height: info.width + "px",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className={`absolute ${
+          currentComponent.id === info.id &&
+          "outline outline-[2px] outline-indigo-500"
+        } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
       >
         <Element id={randValue} info={info} exId="" />
 
@@ -150,7 +160,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
         {currentComponent.id === info.id && (
           <div
             onClick={() => removeComponent(info.id)}
-            className="px-3 py-2 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md"
+            className="px-2 py-2 bg-white absolute top-[-50px] group-hover:block cursor-pointer rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +168,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -188,23 +198,32 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className={`absolute ${
+          currentComponent.id === info.id &&
+          "outline outline-[2px] outline-indigo-500"
+        } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
       >
         <textarea
           onChange={info.changeText}
-          className="w-full h-full bg-transparent resize-none select-none border-none"
+          className="w-full h-full bg-transparent resize-none select-none border-none outline-none"
           onMouseDown={() => info.moveElement(info.id, info)}
           readOnly={readOnly}
           onDoubleClick={() => setReadOnly(false)}
           onBlur={() => setReadOnly(true)}
           onCopy={false}
+          style={{
+            color: info.color,
+            fontSize: info.fontSize + "px",
+            fontFamily: info.fontFamily,
+            fontWeight: info.fontWeight,
+          }}
           value={info.text}
         ></textarea>
         <Element id={info.id} info={info} exId="" />
         {currentComponent.id === info.id && (
           <div
             onClick={() => removeComponent(info.id)}
-            className="px-3 py-2 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md"
+            className="px-2 py-2 bg-white absolute top-[-50px] group-hover:block cursor-pointer rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +231,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -239,7 +258,10 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
+        className={`absolute ${
+          currentComponent.id === info.id &&
+          "outline outline-[2px] outline-indigo-500"
+        } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
       >
         <div
           style={{
@@ -254,7 +276,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
         {currentComponent.id === info.id && (
           <div
             onClick={() => removeComponent(info.id)}
-            className="px-3 py-2 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md"
+            className="px-2 py-2 bg-white absolute top-[-50px] group-hover:block cursor-pointer rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -262,7 +284,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"

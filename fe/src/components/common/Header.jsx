@@ -1,35 +1,39 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import MinidenticonImg from "./MinidenticonImg";
 import Dropdown from "./Dropdown";
+import CustomButton from "./Button";
+import { logoutRoute } from "../../utils/APIRoute";
+import { ToastContainer, toast } from "react-toastify";
+import { seft } from "../../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
+import { useMutation, useQueryClient } from "react-query";
+import { postAPI } from "../../utils/FetchData";
 
-function Header({
-  setShowSidebar,
-  showSidebar,
-  user,
-  setOpenAuthForm,
-  isDisableMenu,
-}) {
-  const [showNoti, setShowNoti] = useState(false);
+function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   const [dropDown, setDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   const handleOutsideClick = (event) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setDropdown(false);
-  //     }
-  //   };
-  //   document.addEventListener('click', handleOutsideClick);
-  //   return () => {
-  //     document.removeEventListener('click', handleOutsideClick);
-  //   };
-  // }, []);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
-  // console.log(showNoti);
+  const handleLogout = useCallback(async () => {
+    logout(logoutRoute);
+  }, []);
+
+  const { mutate: logout, isLoading: isLogoutting } = useMutation({
+    mutationFn: (info) => {
+      return postAPI(logoutRoute);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+    onSuccess: (data) => {
+      toast.success("Logout success");
+      dispatch(seft(null));
+      queryClient.invalidateQueries(["refresh_token"]);
+    },
+  });
   const navList = [
     {
       id: 1,
@@ -106,24 +110,29 @@ function Header({
                   />
                 ) : (
                   <MinidenticonImg
-                    username={user.name}
+                    username={user?.email}
                     onClick={() => setDropdown((prev) => !prev)}
                     className="w-12 rounded-full object-cover mx-auto cursor-pointer border border-[#ccc]"
                   />
                 )}
 
-                {dropDown && <Dropdown user={user} ref={dropdownRef} />}
+                {dropDown && (
+                  <Dropdown
+                    user={user}
+                    handleLogout={handleLogout}
+                    ref={dropdownRef}
+                  />
+                )}
               </div>
             ) : (
               <>
-                <button
-                  onClick={() => {
-                    setOpenAuthForm(true);
-                  }}
-                  className="flex-1 ml-3 text-center rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[100px] font-semibold"
-                >
-                  Login
-                </button>
+                <CustomButton
+                  text={"Login"}
+                  classContent={
+                    "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                  }
+                  handleClick={() => setOpenAuthForm(true)}
+                />
               </>
             )}
           </div>

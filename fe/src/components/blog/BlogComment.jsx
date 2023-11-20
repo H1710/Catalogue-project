@@ -27,7 +27,7 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
     },
   });
 
-  const { mutate: commentBlog, isLoading: loadingCreate } = useMutation({
+  const { mutate: commentBlog, isLoading: loadingCreateComment } = useMutation({
     mutationFn: (info) => {
       return postAPI(commentBlogRoute, info);
     },
@@ -68,10 +68,10 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
                 __html: comment.content,
               }}
             />
-            <div className="flex items-center gap-3">
-              <ThumbUpOffAltIcon />
+            {/* <div className="flex items-center gap-3">
+              <ThumbUpOffAltIcon className="w-2 h-2" />
               <ThumbDownOffAltIcon />
-            </div>
+            </div> */}
             {renderReplyComments(commentList, comment.id)}
           </div>
         </div>
@@ -116,29 +116,9 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
   return (
     <div>
       <div className="flex flex-col gap-3">
-        <h2 className="text-2xl font-bold">Comments</h2>
+        <h3 className="text-xl font-bold">Comments</h3>
 
-        <div className="">
-          <LiteQuillEditor body={body} setBody={setBody} />
-          <div className="w-full flex justify-end mt-4">
-            <CustomButton
-              text={"Comment"}
-              classContent={
-                "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
-              }
-              handleClick={() =>
-                commentBlog({
-                  userId: user.id,
-                  blogId,
-                  content: body,
-                })
-              }
-              // isLoading={loadingCreate}
-            />
-          </div>
-        </div>
-
-        {!user && (
+        {!user ? (
           <Button
             onClick={() => setOpenAuthForm(true)}
             className="h-[50px] w-full"
@@ -146,6 +126,26 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
           >
             Login to comment
           </Button>
+        ) : (
+          <div className="">
+            <LiteQuillEditor body={body} setBody={setBody} />
+            <div className="w-full flex justify-end mt-4">
+              <CustomButton
+                text={"Comment"}
+                classContent={
+                  "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                }
+                handleClick={() =>
+                  commentBlog({
+                    userId: user.id,
+                    blogId,
+                    content: body,
+                  })
+                }
+                isLoading={loadingCreateComment}
+              />
+            </div>
+          </div>
         )}
         <div className="mb-4 flex flex-col gap-4">
           {comments && comments.data.comment ? (

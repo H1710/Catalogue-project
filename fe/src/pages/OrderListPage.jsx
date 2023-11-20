@@ -3,13 +3,16 @@ import { useQuery } from "react-query";
 import { getAllOrderRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
 import { Pagination } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const OrderListPage = () => {
-  const [page, setPage] = useState(1);
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
+  const navigate = useNavigate();
   const { data: orderList, isLoading } = useQuery({
     queryKey: ["orders", page],
     queryFn: () => {
-      return getAPI(getAllOrderRoute);
+      return getAPI(`${getAllOrderRoute}?page=${page}`);
     },
     onSuccess: (data) => {},
     onError: (error) => {
@@ -17,10 +20,13 @@ const OrderListPage = () => {
     },
     // enabled: logged,
   });
+  const handleChangePage = (e, value) => {
+    navigate(`/order-list?page=${value}`);
+  };
   console.log(orderList);
   return (
-    <div className="w-full flex flex-col min-h-[80vh] px-32 justify-between">
-      <div class="p-8">
+    <div className="w-full flex flex-col min-h-[80vh] justify-between">
+      <div class="p-4">
         {/* <div class="text-3xl font-bold text-Black text-center mb-6">
           All Users
         </div> */}
@@ -35,8 +41,8 @@ const OrderListPage = () => {
             </tr>
           </thead>
           <tbody>
-            {orderList?.data?.orders &&
-              orderList?.data?.orders.map((order, id) => (
+            {orderList?.data?.rows &&
+              orderList?.data?.rows.map((order, id) => (
                 <tr class="border-y hover:bg-gray-100">
                   <td class="p-2 text-center font-bold">{order.id}</td>
                   <td class="p-2 text-center">
@@ -57,9 +63,10 @@ const OrderListPage = () => {
         </table>
         <Pagination
           className="h-20 flex justify-end"
-          count={10}
+          count={Math.ceil(orderList?.data.count / 10)}
           variant="outlined"
           shape="rounded"
+          onChange={handleChangePage}
         />
       </div>
     </div>

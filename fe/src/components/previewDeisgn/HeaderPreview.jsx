@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Rating } from "@mui/material";
 
-const HeaderPreview = ({ templateData }) => {
-  const [userRating, setUserRating] = useState(0);
-  console.log(userRating);
+const HeaderPreview = ({
+  templateData,
+  handleRatingTemplate,
+  currentRating,
+}) => {
   return (
     <div
       className="w-full p-1 rounded-md mb-2 mt-3"
@@ -36,23 +38,20 @@ const HeaderPreview = ({ templateData }) => {
             A5 - horizontal
           </p>
         </div>
-        {/* <div className="flex">
 
-        </div> */}
-
-        {/* <div className="flex items-center">
-          <p id="rating" className="text-yellow-500">
-            <Rating name="half-rating-read" value={templateData?.rating} precision={0.1} readOnly />
+        <div className="flex gap-2">
+          <Rating
+            name="half-rating"
+            value={parseInt(currentRating)}
+            precision={1}
+            onChange={(event, newValue) => {
+              handleRatingTemplate(templateData.id, newValue);
+            }}
+          />
+          <p className="text-[#fef9c3]">
+            {parseFloat(templateData?.avgRating).toFixed(1)}
           </p>
-        </div> */}
-        <Rating
-          name="half-rating"
-          defaultValue={3.7}
-          precision={1}
-          onChange={(event, newValue) => {
-            setUserRating(newValue);
-          }}
-        />
+        </div>
       </div>
     </div>
   );

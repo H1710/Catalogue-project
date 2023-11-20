@@ -18,7 +18,7 @@ function Search() {
       setSearchValue(searchValue);
     }
   };
-  const handleSearch = () => {};
+  const handleSearch = () => { };
   const handleView = async (id) => {
     try {
       const templateChoosed = await axios.get("https://localhost:", {
@@ -32,11 +32,12 @@ function Search() {
     const getSearch = async () => {
       try {
         if (searchValue) {
-          const result = await axios.get("http://localhost:3000", {
-            params: {
-              search: searchValue,
-            },
+          const result = await axios.get(`http://localhost:5000/api/v1/template/search-template/${searchValue}`, {
+            // params: {
+            //   search: searchValue,
+            // },
           });
+          console.log(result)
           setSearchResult(result.data.data);
         }
       } catch (error) {

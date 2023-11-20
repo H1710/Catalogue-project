@@ -11,27 +11,6 @@ const Order = db.order;
 const Package = db.servicePackage;
 
 class AuthController {
-  static async auth(req, res, next) {
-    try {
-      const token = req.header("Authorization");
-      if (!token)
-        return res.status(400).json({ message: "Invalid Authentication." });
-
-      const decoded = jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`);
-      if (!decoded)
-        return res.status(400).json({ message: "Invalid Authentication." });
-
-      const user = await User.findOne({ _id: decoded._id });
-      if (!user)
-        return res.status(400).json({ message: "User does not exist." });
-
-      req.user = user;
-
-      next();
-    } catch (err) {
-      return res.status(500).json({ message: err.message });
-    }
-  }
   static async login(req, res) {
     try {
       const { email, password } = req.body;
@@ -56,7 +35,7 @@ class AuthController {
         ],
       });
 
-      if (!user)
+      if (!user || !user.name)
         return res
           .status(400)
           .send({ message: "This account does not exist." });
@@ -116,6 +95,8 @@ class AuthController {
                   attributes: ["name", "remain_day"],
                 },
               ],
+              order: [["createdAt", "DESC"]],
+              limit: 1,
             },
             {
               model: Role,
@@ -168,6 +149,7 @@ class AuthController {
           email: email,
           otpCode: OTP,
           password: hashedPassword,
+          roleId: 2,
           typeRegister: "normal-register",
         });
       }

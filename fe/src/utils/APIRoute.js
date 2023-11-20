@@ -12,7 +12,7 @@ export const createTemplateRoute = `${host}/template/create`;
 export const getAllTemplateRoute = `${host}/template/get-all`;
 export const getTemplateByIdRoute = `${host}/template/get`;
 
-export const createProductRoute = `${host}/product/create`;
+export const createBlankProductRoute = `${host}/product/create/blank`;
 export const getProductByUser = `${host}/product/get`;
 export const getProductById = `${host}/product/get/product`;
 export const saveProductRoute = `${host}/product/save`;
@@ -30,7 +30,7 @@ export const getAcceptedBlogRoute = `${host}/blog/accepted`;
 export const acceptBlogRoute = `${host}/blog/approve-accept`;
 
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
-export const commentBlogRoute = `${host}/comment/create`;
+export const commentBlogRoute = `${host}/comment/blog/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const getAllUserRoute = `${host}/user/get-all`;
@@ -39,3 +39,9 @@ export const getUploadImageRoute = `${host}/user/get-images-upload`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
+
+export const getProcessingTemplateRoute = `${host}/template/get/processing`;
+export const acceptTemplateRoute = `${host}/template/accept-template`;
+export const rejectTemplateRoute = `${host}/template/denied-template`;
+export const getAcceptTemplate = `${host}/template/get-Accepted`;
+export const ratingTemplateRoute = `${host}/template/rating`;

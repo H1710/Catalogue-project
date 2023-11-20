@@ -15,7 +15,7 @@ const DesignTable = ({
       // className={`${
       //   show ? "px-8 left-[75px] py-5" : "p-0 -left-[350px]"
       // } bg-white h-full fixed transition-all w-[350px] duration-700 z-[5]`}
-      className="bg-white h-full w-[350px] p-8 fixed z-[90]"
+      className="bg-white h-full w-[350px] p-8 fixed z-[3]"
     >
       <div
         onClick={() => setShow(false)}
@@ -55,14 +55,39 @@ const DesignTable = ({
           </div>
         )}
         {state === "text" && (
-          <div>
-            <div>
-              <div
-                onClick={() => createText("text")}
-                className="cursor-pointer bg-[#3c3c3d] cursor--pointer font-bold p-3 text-white text-xl rounded-sm"
-              >
-                <h2>Add a Text</h2>
-              </div>
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold">Default text styles</p>
+            <div
+              onClick={() =>
+                createText("text", 28, 700, "Open Sans", "Add a heading")
+              }
+              className="cursor-pointer bg-[#3c3c3d] cursor--pointer font-bold p-3 text-white text-xl rounded-sm"
+            >
+              <p className="font-bold text-[28px]">Add a heading</p>
+            </div>
+            <div
+              onClick={() =>
+                createText("text", 16, 700, "Open Sans", "Add a subheading")
+              }
+              className="cursor-pointer bg-[#3c3c3d] cursor--pointer font-bold p-3 text-white text-xl rounded-sm"
+            >
+              <p className="font-bold text-[16px]">Add a subheading</p>
+            </div>
+            <div
+              onClick={() =>
+                createText(
+                  "text",
+                  12,
+                  400,
+                  "Open Sans",
+                  "Add a little bit of body text"
+                )
+              }
+              className="cursor-pointer bg-[#3c3c3d] cursor--pointer font-bold p-3 text-white text-xl rounded-sm"
+            >
+              <p className="font-normal text-[12px]">
+                Add a little bit of body text
+              </p>
             </div>
           </div>
         )}

@@ -6,7 +6,7 @@ const LiteQuillEditor = ({ body, setBody }) => {
   const modules = { toolbar: { container } };
 
   return (
-    <div>
+    <div className="w-full">
       <ReactQuill
         theme="snow"
         modules={modules}
