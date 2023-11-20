@@ -22,7 +22,7 @@ export const ValidateService = (user) => {
 
     const remainingDayofService = remainingDays;
     if (remainingDayofService >= daysDifference) {
-      return user?.orders[length - 1]?.service_package?.name;
+      return "Premium";
     }
   }
   return "Free";

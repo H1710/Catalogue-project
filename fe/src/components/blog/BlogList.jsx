@@ -10,12 +10,12 @@ const BlogList = ({
 }) => {
   const filterBlogs = () => {
     const search = searchText.toLowerCase();
-    return blogsData.data.filter((blog) =>
+    return blogsData.filter((blog) =>
       blog.title.toLowerCase().includes(search)
     );
   };
 
-  const displayedBlogs = searchText ? filterBlogs() : blogsData.data;
+  const displayedBlogs = searchText ? filterBlogs() : blogsData;
 
   return (
     <div className="flex flex-col gap-4">

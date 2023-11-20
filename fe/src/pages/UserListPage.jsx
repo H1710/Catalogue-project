@@ -72,8 +72,8 @@ const UserListPage = () => {
   };
   // console.log(userInfo)
   return (
-    <div className="w-full flex flex-col min-h-[80vh] justify-center ">
-      <div className="p-4">
+    <div className="w-full h-full flex flex-col justify-center overflow-auto">
+      <div className="p-4 h-full">
         <table className="w-full border rounded text-center">
           <thead>
             <tr className="border-y">

@@ -155,11 +155,13 @@ class TemplateController {
         attributes: [
           "id",
           "name",
+          "classService",
           [seq.fn("AVG", seq.col("template_ratings.rating")), "avgRating"],
         ],
         group: [
           "id",
           "name",
+          "classService",
           "template.id",
           "template_pages.id",
           "template_pages.template_page_details.id",
@@ -235,7 +237,14 @@ class TemplateController {
       const limit = 10;
       const offset = (page - 1) * limit;
       const templates = await Template.findAll({
-        attributes: ["id", "name", "thumbnail", "createdAt", "status"],
+        attributes: [
+          "id",
+          "name",
+          "thumbnail",
+          "createdAt",
+          "status",
+          "classService",
+        ],
         where: {
           status: "Accepted",
         },
@@ -244,9 +253,7 @@ class TemplateController {
         subQuery: false,
       });
 
-      res.status(200).json({
-        templates: templates,
-      });
+      res.status(200).json(templates);
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });

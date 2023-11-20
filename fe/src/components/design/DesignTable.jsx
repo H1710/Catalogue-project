@@ -15,7 +15,7 @@ const DesignTable = ({
       // className={`${
       //   show ? "px-8 left-[75px] py-5" : "p-0 -left-[350px]"
       // } bg-white h-full fixed transition-all w-[350px] duration-700 z-[5]`}
-      className="bg-white h-full w-[350px] p-8 fixed z-[3]"
+      className="bg-white h-full w-[350px] p-4"
     >
       <div
         onClick={() => setShow(false)}
@@ -41,16 +41,16 @@ const DesignTable = ({
           <div className="grid grid-cols-3 gap-2">
             <div
               onClick={() => createShape("shape", "rect")}
-              className="h-[90px] bg-[#3c3c3d] cursor-pointer"
+              className="h-[100px] bg-[#3c3c3d] cursor-pointer"
             ></div>
             <div
               onClick={() => createShape("shape", "circle")}
-              className="h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full"
+              className="h-[100px] bg-[#3c3c3d] cursor-pointer rounded-full"
             ></div>
             <div
               onClick={() => createShape("shape", "triangle")}
               style={{ clipPath: "polygon(50% 0, 100% 100%, 0 100%)" }}
-              className="h-[90px] bg-[#3c3c3d] cursor-pointer"
+              className="h-[100px] bg-[#3c3c3d] cursor-pointer"
             ></div>
           </div>
         )}

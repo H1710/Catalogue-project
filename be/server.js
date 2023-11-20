@@ -16,6 +16,7 @@ require("dotenv").config();
 app.use(
   cors({
     credentials: true,
+    allowedHeaders: "Content-Type,Authorization",
     origin: process.env.CLIENT_URL ?? "http://localhost:3000",
   })
 );

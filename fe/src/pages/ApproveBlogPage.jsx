@@ -29,8 +29,6 @@ const ApproveBlogPage = () => {
     // enabled: logged,
   });
 
-  console.log(blogsData);
-
   const handleNavigateBlogDetail = useCallback((blogId) => {
     navigate(`/blog/${blogId}`);
   }, []);
@@ -40,7 +38,7 @@ const ApproveBlogPage = () => {
     <div className=" w-full h-screen flex flex-col justify-between mt-4 p-4">
       {blogsData && (
         <BlogList
-          blogsData={blogsData}
+          blogsData={blogsData?.data}
           isLoading={loadingBlogData}
           handleNavigateBlogDetail={handleNavigateBlogDetail}
           user={user}

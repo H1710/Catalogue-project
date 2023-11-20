@@ -48,7 +48,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   ];
 
   return (
-    <div className="p-2 h-[60px] shadow w-full sticky top-0 z-40 bg-white">
+    <div className="p-2 h-[60px] shadow w-full fixed top-0 z-40 bg-white">
       <div className="header flex h-full items-center justify-between text-zinc-700 px-2">
         <div className="flex text-xl h-full items-center gap-6 ">
           {user?.access_token && (
