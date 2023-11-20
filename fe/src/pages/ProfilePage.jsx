@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Header from '../components/common/Header';
 import { faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -9,15 +10,26 @@ import { Disclosure } from '@headlessui/react';
 import { useOutletContext } from 'react-router-dom';
 // import { use } from '../../../be/src/routes/template';
 import axios from 'axios';
+=======
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from "../components/common/Header";
+import { faChevronDown, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import InfoDetail from "../components/profile/InfoDetail";
+import ChangeAvatar from "../components/profile/ChangeAvatar";
+import ListBoxLanguage from "../components/profile/ListBoxLanguage";
+import { Disclosure } from "@headlessui/react";
+import { useOutletContext } from "react-router-dom";
+>>>>>>> 1038c4a1548f7ce03031c62b3e971920f1f9789e
 
 const languages = [
   {
     id: 1,
-    name: 'English',
+    name: "English",
   },
   {
     id: 2,
-    name: 'Vietnamese',
+    name: "Vietnamese",
   },
 ];
 function ProfilePage() {
@@ -36,16 +48,25 @@ function ProfilePage() {
 
   console.log(user?.orders);
 
+<<<<<<< HEAD
   return (
     <div className='flex flex-row grid col-span-full  '>
 
       {/* <div className="  ml-3 mt-4 text-center h-10  rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[200px] font-semibold">
+=======
+  console.log(user);
+
+  return (
+    <div className="flex flex-row grid col-span-full md:w-[500px] sm:w-[300px]">
+      <div className="  ml-3 mt-4 text-center h-10  rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[200px] font-semibold">
+>>>>>>> 1038c4a1548f7ce03031c62b3e971920f1f9789e
         Profile
       </div>
 
       <div className=" grid gap-4">
         <ChangeAvatar info={info} setInfo={setInfo} />
         <InfoDetail info={info} setInfo={setInfo} name="name" label="Name" />
+<<<<<<< HEAD
         <InfoDetail info={info} setInfo={setInfo} name="country" label="Country" />
         <InfoDetail info={info} setInfo={setInfo} name="email" label="Email" />
         <InfoDetail info={info} setInfo={setInfo} name="password" label="Password" />
@@ -95,6 +116,24 @@ function ProfilePage() {
 
 
 
+=======
+        <InfoDetail
+          info={info}
+          setInfo={setInfo}
+          name="country"
+          label="Country"
+        />
+        <InfoDetail info={info} setInfo={setInfo} name="email" label="Email" />
+        <InfoDetail
+          info={info}
+          setInfo={setInfo}
+          name="password"
+          label="Password"
+        />
+        <ListBoxLanguage languages={languages} info={info} setInfo={setInfo} />
+      </div>
+    </div>
+>>>>>>> 1038c4a1548f7ce03031c62b3e971920f1f9789e
   );
 }
 

@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Rating } from "@mui/material"
 import CustomButton from "../common/Button"
@@ -31,11 +32,9 @@ const CommentPreview = ({ rating, templateData }) => {
     ></textarea>
     <div className="flex justify-end w-full">
       <CustomButton text={"Comment"} classContent={"text-white  mt-2 bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 hover:from-purple-900 hover:via-purple-700 hover:to-purple-600"}></CustomButton>
+ </div>
     </div>
-  </div>
-
-
-    ;
+  );
 };
 
 export default CommentPreview;

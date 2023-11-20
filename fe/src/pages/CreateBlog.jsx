@@ -56,6 +56,7 @@ const CreateBlog = () => {
       formData.append(key, newData[key]);
     }
     mutate(formData);
+    navigate("/");
   };
 
   return (
