@@ -1,4 +1,5 @@
-const host = "http://localhost:5000/api/v1";
+const host =
+  process.env.REACT_APP_SERVER_DOMAIN || "http://localhost:5000/api/v1";
 
 export const loginRoute = `${host}/auth/login`;
 export const refreshTokenRoute = `${host}/auth/refresh_token`;
@@ -47,4 +48,3 @@ export const acceptTemplateRoute = `${host}/template/accept-template`;
 export const rejectTemplateRoute = `${host}/template/denied-template`;
 export const getAcceptTemplateRoute = `${host}/template/get-accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
- 
