@@ -57,3 +57,4 @@ export const rejectTemplateRoute = `${host}/template/denied-template`;
 export const getAcceptTemplateRoute = `${host}/template/get-accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
 export const updateClassTemplateRoute = `${host}/template/update-service`;
+export const searchTemplateRoute = `${host}/template/search-template`;

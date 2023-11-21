@@ -7,7 +7,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import axios from "axios";
-import { getAcceptTemplateRoute, getAllTemplateRoute } from "../utils/APIRoute";
+import { getAcceptTemplateRoute, searchTemplateRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
@@ -20,9 +20,7 @@ export default function TemplatePage() {
   useEffect(() => {
     const getSearch = async () => {
       try {
-        const result = await axios.get(
-          `http://localhost:5000/api/v1/template/search-template/${search}`
-        );
+        const result = await axios.get(`${searchTemplateRoute}/${search}`);
         setData(result.data.templates);
       } catch (error) {}
     };
@@ -114,8 +112,8 @@ export default function TemplatePage() {
         <>
           <div className="p-2 font-semibold">Template</div>
           <div className="w-full grid grid-cols-4 gap-8">
-            {templateList?.data?.data?.length > 0 ? (
-              templateList?.data?.data?.map((template, index) => (
+            {templateList?.data?.length > 0 ? (
+              templateList?.data?.map((template, index) => (
                 <div key={index} className="relative">
                   {template.classService ? (
                     <div className="absolute bg-[#8b3dff] rounded-full top-1 left-1">
