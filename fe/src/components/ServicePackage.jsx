@@ -25,7 +25,6 @@ import { Divider, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 
-
 const lsPack = [
   {
     id: 2,
@@ -75,7 +74,6 @@ export default function ServicePackage({
 
     setInfoInvoice({ ...infoInvoice, [e.target.name]: e.target.value });
   };
- 
 
   const handleNext = () => {
     setStateOfPopup((pre) => pre + 1);
@@ -157,7 +155,7 @@ export default function ServicePackage({
   return (
     <>
       <Transition appear show={showServiePackages} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-[90]" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -181,270 +179,297 @@ export default function ServicePackage({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-               {!isShowInvoice ? <Dialog.Panel className="w-1/2 h-[410px]   transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-xl font-normal leading-7 "
-                  >
-                    <div className="flex justify-between">
-                      <div>
-                        {stateOfPopup !== 0 && (
-                          <FontAwesomeIcon
-                            icon={faChevronLeft}
-                            className="pr-2 cursor-pointer"
-                            onClick={handlePre}
-                          />
-                        )}
-                        UPGRADE TO PREMIUM
-                      </div>
-                      <div
-                        className="text-lg bg-[#110e1d99] text-white rounded-[50%] w-8 h-8 cursor-pointer flex justify-center items-center "
-                        onClick={closeModal}
-                      >
-                        &times;
-                      </div>
-                    </div>
-                    <p className="text-base leading-7    font-light">
-                      Elevate Your Creativity Instantly
-                    </p>
-                  </Dialog.Title>
-
-                  {stateOfPopup === 0 && (
-                    <>
-                      <div className="mt-2">
-                        <p className="text-md text-[#0d1216] leading-7">
-                          <strong>🚀 Exclusive Templates:</strong> Access a
-                          curated collection of elite designs for a stunning and
-                          unique touch to your projects.
-                        </p>
-                        <p className="text-md text-[#0d1216] leading-7">
-                          <strong>📥 Unlimited Downloads:</strong> Break free
-                          from limitations! Download as many templates as you
-                          need to fuel your creative journey.
-                        </p>
-
-                        <p className="text-md text-[#0d1216] leading-7">
-                          <strong>✏️ Advanced Editing:</strong> Dive into
-                          precision design with advanced tools, putting ultimate
-                          creative control at your fingertips.
-                        </p>
-
-                        <strong className="text-md text-[#0d1216] leading-7">
-                          Ready to redefine your design game? Upgrade now and
-                          let your creativity shine! 🌟🎨
-                        </strong>
-                      </div>
-
-                      <div className="mt-4">
-                        <CustomButton
-                          classContent="inline-flex justify-center  bg-[#8884d8] w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
-                          handleClick={handleNext}
-                          text={"Start right now!"}
-                        />
-                      </div>
-                    </>
-                  )}
-                  {stateOfPopup === 1 && (
-                    <div className="">
-                      <div className="mt-2 mb-5 grid justify-items-stretch ">
-                        <div className="text-lg pb-2 font-semibold justify-self-center">
-                          PACKAGE SERVICE
+                {!isShowInvoice ? (
+                  <Dialog.Panel className="w-[600px] transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-xl font-normal leading-7 "
+                    >
+                      <div className="flex justify-between">
+                        <div>
+                          {stateOfPopup !== 0 && (
+                            <FontAwesomeIcon
+                              icon={faChevronLeft}
+                              className="pr-2 cursor-pointer"
+                              onClick={handlePre}
+                            />
+                          )}
+                          UPGRADE TO PREMIUM
                         </div>
-                        {lsPack.map((pack, i) => (
-                          <div className="grid " key={i}>
-                            <label className="flex flex-row justify-start items-start">
-                              <input
-                                type="radio"
-                                name="packageId"
-                                value={pack.id}
-                                className="m-2"
-                                checked={pack.id == selectedRadio}
-                                onChange={handleUpdateInfo}
-                              />
-                              <div>
-                                <strong>{pack.name}</strong>
-                                <p className="text-gray-900 text-sm font-medium leading-7">
-                                  {pack.cost}$
-                                </p>
-                              </div>
-                            </label>
-                          </div>
-                        ))}
+                        <div
+                          className="text-lg bg-[#110e1d99] text-white rounded-[50%] w-8 h-8 cursor-pointer flex justify-center items-center "
+                          onClick={closeModal}
+                        >
+                          &times;
+                        </div>
                       </div>
-                      <Divider />
+                      <p className="text-base leading-7    font-light">
+                        Elevate Your Creativity Instantly
+                      </p>
+                    </Dialog.Title>
 
-                      <div>
+                    {stateOfPopup === 0 && (
+                      <>
+                        <div className="mt-2">
+                          <p className="text-md text-[#0d1216] leading-7">
+                            <strong>🚀 Exclusive Templates:</strong> Access a
+                            curated collection of elite designs for a stunning
+                            and unique touch to your projects.
+                          </p>
+                          <p className="text-md text-[#0d1216] leading-7">
+                            <strong>📥 Unlimited Downloads:</strong> Break free
+                            from limitations! Download as many templates as you
+                            need to fuel your creative journey.
+                          </p>
+
+                          <p className="text-md text-[#0d1216] leading-7">
+                            <strong>✏️ Advanced Editing:</strong> Dive into
+                            precision design with advanced tools, putting
+                            ultimate creative control at your fingertips.
+                          </p>
+
+                          <strong className="text-md text-[#0d1216] leading-7">
+                            Ready to redefine your design game? Upgrade now and
+                            let your creativity shine! 🌟🎨
+                          </strong>
+                        </div>
+
+                        <div className="mt-4">
+                          <CustomButton
+                            classContent="inline-flex justify-center  bg-[#8884d8] w-full rounded-md border border-transparent  px-4 py-2 text-md font-medium bg[--bg-button] hover:bg-[--bg-button-hover] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:text-white "
+                            handleClick={handleNext}
+                            text={"Start right now!"}
+                          />
+                        </div>
+                      </>
+                    )}
+                    {stateOfPopup === 1 && (
+                      <div className="">
+                        <div className="mt-2 mb-5 grid justify-items-stretch ">
+                          <div className="text-lg pb-2 font-semibold justify-self-center">
+                            PACKAGE SERVICE
+                          </div>
+                          {lsPack.map((pack, i) => (
+                            <div className="grid " key={i}>
+                              <label className="flex flex-row justify-start items-start">
+                                <input
+                                  type="radio"
+                                  name="packageId"
+                                  value={pack.id}
+                                  className="m-2"
+                                  checked={pack.id == selectedRadio}
+                                  onChange={handleUpdateInfo}
+                                />
+                                <div>
+                                  <strong>{pack.name}</strong>
+                                  <p className="text-gray-900 text-sm font-medium leading-7">
+                                    {pack.cost}$
+                                  </p>
+                                </div>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                        <Divider />
+
+                        <div>
+                          <CustomButton
+                            text={"Next"}
+                            classContent={
+                              "bg-[#8b3dff] text-white w-full mt-4 "
+                            }
+                            handleClick={handleNext}
+                          ></CustomButton>
+                        </div>
+                      </div>
+                    )}
+                    {stateOfPopup === 2 && (
+                      <form onSubmit={formik.handleSubmit} className="">
+                        <div className="mt-2 mb-4 grid justify-items-stretch">
+                          <div className="text-lg pb-2 font-semibold justify-self-start">
+                            CARD INFORMATION
+                          </div>
+                          <div className="flex gap-2 items-center  mt-2">
+                            <label className="min-w-[100px]">Card number</label>
+                            <TextField
+                              name="cardNumber"
+                              size="small"
+                              required
+                              value={formik.values.cardNumber}
+                              onChange={formik.handleChange}
+                            />
+                            {formik.errors.cardNumber && (
+                              <Typography variant="caption" color="red">
+                                {formik.errors.cardNumber}
+                              </Typography>
+                            )}
+                          </div>
+                          <div className="flex gap-2 items-center mt-2">
+                            <label className="min-w-[100px]">
+                              Securuty Code
+                            </label>
+                            <TextField
+                              name="security"
+                              type="text "
+                              size="small"
+                              required
+                              value={formik.values.security}
+                              onChange={formik.handleChange}
+                            />
+                            {formik.errors.security && (
+                              <Typography variant="caption" color="red">
+                                {formik.errors.security}
+                              </Typography>
+                            )}
+                          </div>
+                          <div className="flex gap-2 items-center mt-2">
+                            <label className="min-w-[100px]">Expiry day</label>
+                            <TextField
+                              name="expiry"
+                              size="small"
+                              required
+                              value={formik.values.expiry}
+                              onChange={formik.handleChange}
+                            />
+                            {formik.errors.expiry && (
+                              <Typography variant="caption" color="red">
+                                {formik.errors.expiry}
+                              </Typography>
+                            )}
+                          </div>
+                        </div>
+
+                        <Divider />
                         <CustomButton
                           text={"Next"}
+                          type={"submit"}
                           classContent={"bg-[#8b3dff] text-white w-full mt-4 "}
-                          handleClick={handleNext}
                         ></CustomButton>
+                      </form>
+                    )}
+                  </Dialog.Panel>
+                ) : (
+                  <Dialog.Panel className="w-[600px] transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-[25px] font-semibold leading-6 text-gray-900 flex items-center justify-center mb-4"
+                    >
+                      ORDER INFORMATION {!isPaid && "PREVIEW"}
+                    </Dialog.Title>
+                    <div className="flex flex-col w-full gap-4">
+                      <div className="w-full text-end">
+                        Time: {formattedDate}
                       </div>
-                    </div>
-                  )}
-                  {stateOfPopup === 2 && (
-                    <form onSubmit={formik.handleSubmit} className="">
-                      <div className="mt-2 mb-4 grid justify-items-stretch">
-                        <div className="text-lg pb-2 font-semibold justify-self-start">
-                          CARD INFORMATION
+                      <div className="flex flex-row justify-between ">
+                        <div className="user mt-1 mb-2 min-w-[300px] ">
+                          <div className="font-semibold ">
+                            {" "}
+                            USER INFORMATION
+                          </div>
+                          <div>Username: {user.name}</div>
+                          <div>Email: {user.email}</div>
                         </div>
-                        <div className="flex gap-2 items-center  mt-2">
-                          <label className="min-w-[100px]">Card number</label>
-                          <TextField
-                            name="cardNumber"
-                            size="small"
-                            required
-                            value={formik.values.cardNumber}
-                            onChange={formik.handleChange}
-                          />
-                          {formik.errors.cardNumber && (
-                            <Typography variant="caption" color="red">
-                              {formik.errors.cardNumber}
-                            </Typography>
-                          )}
-                        </div>
-                        <div className="flex gap-2 items-center mt-2">
-                          <label className="min-w-[100px]">Securuty Code</label>
-                          <TextField
-                            name="security"
-                            type="text "
-                            size="small"
-                            required
-                            value={formik.values.security}
-                            onChange={formik.handleChange}
-                          />
-                          {formik.errors.security && (
-                            <Typography variant="caption" color="red">
-                              {formik.errors.security}
-                            </Typography>
-                          )}
-                        </div>
-                        <div className="flex gap-2 items-center mt-2">
-                          <label className="min-w-[100px]">Expiry day</label>
-                          <TextField
-                            name="expiry"
-                            size="small"
-                            required
-                            value={formik.values.expiry}
-                            onChange={formik.handleChange}
-                          />
-                          {formik.errors.expiry && (
-                            <Typography variant="caption" color="red">
-                              {formik.errors.expiry}
-                            </Typography>
-                          )}
+
+                        <div className="card mt-1 min-w-[200px]">
+                          <div className="font-semibold ">
+                            {" "}
+                            PAYING INFORMATION{" "}
+                          </div>
+                          <div>Card number: {infoInvoice.cardNumber}</div>
+                          <div>Security Code: {infoInvoice.security}</div>
+                          <div>Expiry day: {infoInvoice.expiry}</div>
                         </div>
                       </div>
-
-                      <Divider />
-                      <CustomButton
-                        text={"Next"}
-                        type={"submit"}
-                        classContent={"bg-[#8b3dff] text-white w-full mt-4 "}
-                      ></CustomButton>
-                    </form>
-                  )}
-                </Dialog.Panel>
-                :
-                <Dialog.Panel className="w-1/2 min-h-[380px] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-[25px] font-semibold leading-6 text-gray-900 flex items-center justify-center"
-                >
-                  ORDER INFORMATION {!isPaid && "PREVIEW"}
-                </Dialog.Title>
-                <div className="mt-2 flex flex-col grid justify-items-stretch">
-                  <div className="justify-self-end px-4  min-w-[200px]">
-                    Time: {formattedDate}
-                  </div>
-                  <div className="flex flex-row justify-between ">
-                    <div className="user mt-1 mb-2 min-w-[300px] ">
-                      <div className="font-semibold "> USER INFORMATION</div>
-                      <div>Username: {user.name}</div>
-                      <div>Email: {user.email}</div>
+                      <div className="total mt-1 font-semibold  ">
+                        <TableContainer component={Paper}>
+                          <Table
+                            sx={{ minWidth: 700 }}
+                            size="medium"
+                            aria-label="a dense table"
+                          >
+                            <TableHead>
+                              <TableRow>
+                                <TableCell sx={{ fontWeight: "bold" }}>
+                                  No.
+                                </TableCell>
+                                <TableCell
+                                  align="left"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  Name
+                                </TableCell>
+                                <TableCell
+                                  align="left"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  Description
+                                </TableCell>
+                                <TableCell
+                                  align="left"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  Cost
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>01</TableCell>
+                                <TableCell align="left">
+                                  {temp[0].name}
+                                </TableCell>
+                                <TableCell align="left">
+                                  You can use all productivity to{" "}
+                                  {formattedExpiryDate}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {temp[0].cost}$
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell
+                                  align="left"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  TOTAL
+                                </TableCell>
+                                <TableCell>{temp[0].cost}$</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </div>
+                      <div className="flex justify-end gap-4">
+                        {isPaid && (
+                          <Alert severity="success">Paying successfully</Alert>
+                        )}
+                        {!isPaid && (
+                          <>
+                            <CustomButton
+                              classContent="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              handleClick={handlePay}
+                              text="Pay"
+                            />
+                            <CustomButton
+                              text="Cancel"
+                              classContent="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              handleClick={closeModal}
+                            />
+                          </>
+                        )}
+                        {isPaid && (
+                          <CustomButton
+                            text="Close"
+                            classContent="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                            handleClick={closeModal}
+                          />
+                        )}
+                      </div>
                     </div>
-
-                    <div className="card mt-1 min-w-[200px] mr-2">
-                      <div className="font-semibold "> PAYING INFORMATION </div>
-                      <div>Card number: {infoInvoice.cardNumber}</div>
-                      <div>Security Code: {infoInvoice.security}</div>
-                      <div>Expiry day: {infoInvoice.expiry}</div>
-                    </div>
-                  </div>
-                  <div className="total mt-1 font-semibold  ">
-                    <TableContainer component={Paper}>
-                      <Table
-                        sx={{ minWidth: 700 }}
-                        size="medium"
-                        aria-label="a dense table"
-                      >
-                        <TableHead>
-                          <TableRow>
-                            <TableCell sx={{ fontWeight: "bold" }}>
-                              No.
-                            </TableCell>
-                            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-                              Name
-                            </TableCell>
-                            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-                              Description
-                            </TableCell>
-                            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-                              Cost
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell>01</TableCell>
-                            <TableCell align="left">{temp[0].name}</TableCell>
-                            <TableCell align="left">
-                              You can use all productivity to{" "}
-                              {formattedExpiryDate}
-                            </TableCell>
-                            <TableCell align="left">{temp[0].cost}$</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-                              TOTAL
-                            </TableCell>
-                            <TableCell>{temp[0].cost}$</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex justify-end gap-4">
-                  {isPaid && (
-                    <Alert severity="success">Paying successfully</Alert>
-                  )}
-                  {!isPaid && (
-                    <>
-                      <CustomButton
-                        classContent="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        handleClick={handlePay}
-                        text="Pay"
-                      />
-                      <CustomButton
-                        text="Cancel"
-                        classContent="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      handleClick={closeModal}
-                      />
-                    </>
-                  )}
-                  {isPaid && (
-                    <CustomButton
-                      text="Close"
-                      classContent="inline-flex justify-center items-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      handleClick={closeModal}
-                    />
-                  )}
-                </div>
-              </Dialog.Panel>}
+                  </Dialog.Panel>
+                )}
               </Transition.Child>
             </div>
           </div>
