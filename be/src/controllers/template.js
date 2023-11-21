@@ -9,6 +9,7 @@ const RatingTemplate = db.templateRating;
 const TemplatePage = db.template_page;
 const TemplatePageDetail = db.templatePageDetail;
 const User = db.user;
+const ServicePackage = db.servicePackage;
 
 class TemplateController {
   static async createTemplate(req, res) {

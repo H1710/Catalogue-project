@@ -58,33 +58,36 @@ class UserController {
 
   static async updateUser(req, res) {
     try {
-      const userId = req.params.id;
-      const newData = {
-        name: req.body.name,
-        address: req.body.address,
-        type_register: req.body.type_register,
-        email: req.body.email,
-        password: req.body.password,
-        end_date: req.body.end_date,
-      };
+      const userId = req.body.userId;
 
       const user = await db.user.findByPk(userId);
+
       if (user) {
+        const newData = {
+          name: req.body.name || user.name,
+          email: req.body.email || user.email,
+          country: req.body.country || user.country,
+          roleId: req.body.role || user.roleId
+        };
+
         await user.update(newData);
         res.status(200).send(user);
       } else {
         res.status(404).send({ message: "User not found" });
       }
     } catch (error) {
+      console.error(error); // Log the error for debugging purposes
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+
 
   static async deleteUser(req, res) {
     try {
       const userId = req.params.id;
       const user = await db.user.findByPk(userId);
-      if (user && user.role != 1) {
+      if (user && user.roleId != 1) {
         await user.update({
           status: "InActive"
         })
