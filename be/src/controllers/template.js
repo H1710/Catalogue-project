@@ -122,7 +122,9 @@ class TemplateController {
       console.log(name);
 
       const templates = await Template.findAll({
-        where: literal(`name LIKE '%${name}%'`),
+        where: {
+          [Op.and]: [literal(`name LIKE '%${name}%'`), { status: "Accepted" }],
+        },
       });
 
       res.status(200).json({

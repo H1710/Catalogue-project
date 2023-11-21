@@ -51,9 +51,9 @@ const PreviewTemplate = ({ template }) => {
         }}
       >
         <img
-          src={template.thumbnail} // Đặt đường dẫn của thumbnail tại đây
+          src={template.thumbnail}
           alt={template.name}
-          className="w-[180px] h-[180px] object-cover rounded" // Tuỳ chỉnh kích thước và góc bo tròn của thumbnail
+          className="w-[180px] h-[180px] object-cover rounded"
         />
 
         <div className="w-full">

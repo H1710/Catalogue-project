@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "react-query";
 import { getAPI, postAPI } from "../../utils/FetchData";
 import { Button } from "@mui/material";
 import MinidenticonImg from "../common/MinidenticonImg";
+import { formatDate } from "../../utils/FormatDate";
 const CommentPreview = ({ user, templateId, setOpenAuthForm }) => {
   const [body, setBody] = useState();
   const {
@@ -60,7 +61,9 @@ const CommentPreview = ({ user, templateId, setOpenAuthForm }) => {
               )}
               <div className="flex flex-col gap-1">
                 <p className="text-blue-700 font-bold">{comment.user.name}</p>
-                <p className="text-gray-500 text-xs">{comment.createdAt}</p>
+                <p className="text-gray-500 text-xs">
+                  {formatDate(comment.createdAt)}
+                </p>
               </div>
             </div>
             <div

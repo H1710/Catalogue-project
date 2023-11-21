@@ -49,7 +49,9 @@ const HeaderPreview = ({
             }}
           />
           <p className="text-[#fef9c3]">
-            {parseFloat(templateData?.avgRating).toFixed(1)}
+            {templateData?.avgRating
+              ? parseFloat(templateData?.avgRating).toFixed(1)
+              : "5.0"}
           </p>
         </div>
       </div>

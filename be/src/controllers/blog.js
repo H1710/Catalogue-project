@@ -191,6 +191,7 @@ class BlogController {
           "thumbnail",
           "description",
           "status",
+          "createdAt",
           [seq.fn("AVG", seq.col("blog_ratings.rating")), "avgRating"],
         ],
         where: {
@@ -202,6 +203,7 @@ class BlogController {
           "thumbnail",
           "description",
           "status",
+          "createdAt",
           "blog.id",
           "tags.id",
         ],
