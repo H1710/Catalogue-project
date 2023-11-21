@@ -1,33 +1,33 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
 import {
   createBlogRoute,
   postOrderRoute,
   updateUserRoute,
-} from '../../utils/APIRoute';
-import CustomButton from '../common/Button';
-import { Countries } from '../../shared/Countries';
-import { patchAPI, postAPI } from '../../utils/FetchData';
-import { toast } from 'react-toastify';
-import { useMutation } from 'react-query';
-import { ValidateService } from '../../utils/ValidateService';
+} from "../../utils/APIRoute";
+import CustomButton from "../common/Button";
+import { Countries } from "../../shared/Countries";
+import { patchAPI, postAPI } from "../../utils/FetchData";
+import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "react-query";
+import { ValidateService } from "../../utils/ValidateService";
 
-export default function UpdateUserForm({ isOpen, setIsOpen, userInfo }) {
+export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
+  const queryClient = useQueryClient();
   const countries = Countries.map((country) => country.name);
-  const [selectedRole, setSelectedRole] = useState(userInfo?.role?.id || '');
+  const [selectedRole, setSelectedRole] = useState(userInfo?.role?.id || "");
   const [selectedCountry, setSelectCountry] = useState(userInfo.country);
-const [selectedStatus,setSelectStatus] = useState(userInfo.status);
   const [userInformation, setUserInformation] = useState(userInfo);
   const orderLength = userInfo?.orders?.length;
   const [selectedService, setSelectedService] = useState(
-    userInfo?.orders[orderLength - 1]?.servicePackageId,
+    userInfo?.orders[orderLength - 1]?.servicePackageId
   );
   const toastOptions = {
-    position: 'top-right',
+    position: "top-right",
     autoClose: 3000,
     pauseOnHover: true,
     draggable: true,
-    theme: 'light',
+    theme: "light",
   };
   function closeModal() {
     setIsOpen(false);
@@ -36,7 +36,6 @@ const [selectedStatus,setSelectStatus] = useState(userInfo.status);
     setIsOpen(true);
   }
   const handleChange = (e) => {
-    console.log(e.target.name, e.target.value);
     setUserInformation({ ...userInformation, [e.target.name]: e.target.value });
   };
   const { mutate: updateUser, isLoading: loadingUpdateUser } = useMutation({
@@ -47,7 +46,7 @@ const [selectedStatus,setSelectStatus] = useState(userInfo.status);
       toast.error(error.response.data.message, toastOptions);
     },
     onSuccess: (data) => {
-      console.log('successs');
+      queryClient.invalidateQueries(["users", page]);
       toast.success(data.data.message, toastOptions);
     },
   });
@@ -136,7 +135,7 @@ const [selectedStatus,setSelectStatus] = useState(userInfo.status);
                         className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
                         defaultValue={userInfo.email}
                         name="email"
-                        onChange={(e) => handleChange(e)}
+                        readOnly
                         required
                       />
                     </div>
@@ -178,13 +177,12 @@ const [selectedStatus,setSelectStatus] = useState(userInfo.status);
                         <option value="3">Guest</option>
                       </select>
                     </div>
-                   
 
                     <div className="my-4 text-sm">
                       <label htmlFor="Service" className="block text-black">
                         Service
                       </label>
-                      {ValidateService(userInfo) === 'Free' ? (
+                      {ValidateService(userInfo) === "Free" ? (
                         // selectedService == 1 || selectedService === null
                         <select
                           id="service_package"
@@ -218,19 +216,19 @@ const [selectedStatus,setSelectStatus] = useState(userInfo.status);
                   <div className="flex justify-end">
                     <div className="mt-4 mr-4">
                       <CustomButton
-                        text={'Update'}
+                        text={"Update"}
                         handleClick={handleUpdate}
                         classContent={
-                          'inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+                          "inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         }
                       ></CustomButton>
                     </div>
                     <div className="mt-4">
                       <CustomButton
-                        text={'Cancel'}
+                        text={"Cancel"}
                         handleClick={closeModal}
                         classContent={
-                          'inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+                          "inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         }
                       ></CustomButton>
                     </div>

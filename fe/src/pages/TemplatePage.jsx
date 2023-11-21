@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import Search from '../components/home/Search';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { getAllTemplateRoute } from '../utils/APIRoute';
-import { getAPI } from '../utils/FetchData';
-import { useQuery } from 'react-query';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import Search from "../components/home/Search";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import axios from "axios";
+import { getAllTemplateRoute } from "../utils/APIRoute";
+import { getAPI } from "../utils/FetchData";
+import { useQuery } from "react-query";
+import { toast } from "react-toastify";
 
 export default function TemplatePage() {
   const { name } = useParams();
   const [data, setData] = useState([]);
-  const [dataTemplate, setDataTemplate] = useState([]);
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
   const navigate = useNavigate();
   useEffect(() => {
     const getSearch = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:5000/api/v1/template/search-template/${name}`,
+          `http://localhost:5000/api/v1/template/search-template/${search}`
         );
         setData(result.data.templates);
       } catch (error) {
@@ -24,14 +30,14 @@ export default function TemplatePage() {
       }
     };
     getSearch();
-  }, [name]);
+  }, [search]);
 
   const toastOptions = {
-    position: 'top-right',
+    position: "top-right",
     autoClose: 3000,
     pauseOnHover: true,
     draggable: true,
-    theme: 'light',
+    theme: "light",
   };
   const { data: templateList, isLoading } = useQuery({
     queryFn: () => {
@@ -39,34 +45,33 @@ export default function TemplatePage() {
     },
     onSuccess: (data) => {},
     onError: (error) => {
-      toast.error('No template here', toastOptions);
+      toast.error("No template here", toastOptions);
     },
   });
-  console.log(templateList);
-  
+
   return (
     <div className="w-full h-full items-center justify-center overflow-auto p-4">
       <div
         className="rounded-[5px] w-full mb-2 h-[250px] flex items-center justify-center"
         style={{
           background:
-            'radial-gradient(circle at 52.1% -29.6%, rgb(144, 17, 105) 0%, rgb(51, 0, 131) 100.2%)',
+            "radial-gradient(circle at 52.1% -29.6%, rgb(144, 17, 105) 0%, rgb(51, 0, 131) 100.2%)",
         }}
       >
         <Search />
       </div>
 
-      {name ? (
+      {search ? (
         <div>
-          <div className="p-2 font-semibold">Search result for '{name}'</div>
+          <div className="p-2 font-semibold">Search result for '{search}'</div>
           <div className="w-full grid grid-cols-4 gap-8">
-            {data.length > 0 ? (
+            {data.length > 0 &&
               data?.map(
                 (template, index) =>
-                  template.status === 'Accepted' && (
+                  template.status === "Accepted" && (
                     <div key={index} className="relative">
                       <div className="absolute bg-[#8b3dff] rounded-full top-1 left-1">
-                        {' '}
+                        {" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           // strokeWidth={1.5}
@@ -103,24 +108,19 @@ export default function TemplatePage() {
                         A5 - horizontal
                       </p>
                     </div>
-                  ),
-              )
-            ) : (
-              <div className="p-2 text-[20px]">No result for key '{name}'</div>
-            )}
+                  )
+              )}
           </div>
         </div>
       ) : (
-        <> 
-        <div className="p-2 font-semibold">Template</div>
-        <div className="w-full grid grid-cols-4 gap-8">
-        {templateList?.data?.data?.length > 0 ? (
-          templateList?.data?.data?.map(
-            (template, index) =>
-              template.status === 'Accepted' && (
+        <>
+          <div className="p-2 font-semibold">Template</div>
+          <div className="w-full grid grid-cols-4 gap-8">
+            {templateList?.data?.data?.length > 0 ? (
+              templateList?.data?.data?.map((template, index) => (
                 <div key={index} className="relative">
                   <div className="absolute bg-[#8b3dff] rounded-full top-1 left-1">
-                    {' '}
+                    {" "}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       // strokeWidth={1.5}
@@ -157,12 +157,12 @@ export default function TemplatePage() {
                     A5 - horizontal
                   </p>
                 </div>
-              ),
-          )
-        ) : (
-          <div className="p-2 text-[20px]">No template</div>
-        )}
-      </div></>
+              ))
+            ) : (
+              <div className="p-2 text-[20px]">No template</div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

@@ -65,7 +65,6 @@ const PreviewDesignPage = () => {
     draggable: true,
     theme: "light",
   };
-  console.log(user);
   const handleCloneTemplate = () => {
     if (!user?.access_token) {
       toast.error("Please login to use this function", toastOptions);

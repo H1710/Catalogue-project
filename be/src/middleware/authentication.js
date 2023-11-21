@@ -6,7 +6,6 @@ class AuthMiddleware {
   static async auth(req, res, next) {
     try {
       const token = req.header("Authorization");
-      console.log(token);
       if (!token)
         return res
           .status(400)
@@ -15,15 +14,18 @@ class AuthMiddleware {
       const decoded = jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`);
       if (!decoded)
         return res
-          .status(400)
+          .status(500)
           .json({ message: "User should login to use this function" });
 
       const user = await User.findByPk(decoded.id);
       if (!user)
         return res
-          .status(400)
+          .status(500)
           .json({ message: "User should login to use this function" });
 
+      if (user.status === "InActive") {
+        return res.status(500).json({ message: "Account has been banned" });
+      }
       req.user = user;
 
       next();
@@ -37,7 +39,6 @@ class AuthMiddleware {
       if (!req.user) {
         return res.status(400).json({ message: "User not found" });
       }
-      console.log(req.user.dataValues.roleId);
       if (req.user.dataValues.roleId !== 1) {
         return res
           .status(500)

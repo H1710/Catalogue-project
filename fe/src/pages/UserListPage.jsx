@@ -5,13 +5,18 @@ import { getAllUserRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
 import { Dialog, Pagination } from "@mui/material";
 import UpdateUserForm from "../components/admin/UpdateUserForm";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 import { ValidateService } from "../utils/ValidateService";
 import DeleteUser from "../components/admin/DeleteUser";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const UserListPage = () => {
+  const [user] = useOutletContext();
   const [userInfo, setUserInfo] = useState(null);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -19,20 +24,21 @@ const UserListPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
 
-  const { data: userList, isLoading } = useQuery({
-    queryKey: ["users", page],
+  const {
+    data: userList,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["users", page, user?.access_token],
     queryFn: () => {
-      return getAPI(`${getAllUserRoute}?page=${page}`);
+      return getAPI(`${getAllUserRoute}?page=${page}`, user?.access_token);
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
     // enabled: logged,
   });
-
 
   const toastOptions = {
     position: "top-right",
@@ -41,7 +47,6 @@ const UserListPage = () => {
     draggable: true,
     theme: "light",
   };
- 
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
@@ -61,36 +66,39 @@ const UserListPage = () => {
     openModal();
     setUserInfo(user);
   };
-  const handleDeletePopup = (user)=> () => {
-     openModalDelete();
+  const handleDeletePopup = (user) => () => {
+    openModalDelete();
     setUserInfo(user);
   };
-   
 
   const handleChangePage = (e, value) => {
     navigate(`/account-list?page=${value}`);
   };
+
+  if (isError) {
+    return <NotFoundPage />;
+  }
   // console.log(userInfo)
   return (
     <div className="w-full h-full flex flex-col justify-center overflow-auto">
       <div className="p-4 h-full">
-        <table className="w-full border rounded text-center">
-          <thead>
-            <tr className="border-y">
-              {/* <th className="p-2 bg-gray-800 text-white"></th> */}
-              <th className="p-2 bg-gray-800 text-white">Avatar</th>
-              <th className="p-2 bg-gray-800 text-white">Name and Email</th>
-              <th className="p-2 bg-gray-800 text-white">Country</th>
-              <th className="p-2 bg-gray-800 text-white">Role</th>
-              <th className="p-2 bg-gray-800 text-white">Package</th>
-              <th className="p-2 bg-gray-800 text-white">Status</th>
-              <th className="p-2 bg-gray-800 text-white"></th>
-              <th className="p-2 bg-gray-800 text-white"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {userList?.data?.rows &&
-              userList?.data?.rows.map((user, index) => (
+        {userList?.data?.rows && (
+          <table className="w-full border rounded text-center">
+            <thead>
+              <tr className="border-y">
+                {/* <th className="p-2 bg-gray-800 text-white"></th> */}
+                <th className="p-2 bg-gray-800 text-white">Avatar</th>
+                <th className="p-2 bg-gray-800 text-white">Name and Email</th>
+                <th className="p-2 bg-gray-800 text-white">Country</th>
+                <th className="p-2 bg-gray-800 text-white">Role</th>
+                <th className="p-2 bg-gray-800 text-white">Package</th>
+                <th className="p-2 bg-gray-800 text-white">Status</th>
+                <th className="p-2 bg-gray-800 text-white"></th>
+                <th className="p-2 bg-gray-800 text-white"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {userList?.data?.rows.map((user, index) => (
                 <tr className="border-y hover:bg-gray-100 h-[72px]" key={index}>
                   {/* <td className="pl-2 text-white">
                     <input
@@ -147,8 +155,10 @@ const UserListPage = () => {
                     </button>
                   </td>
                   <td className="text-end pr-2 ">
-                    <button className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
-                    onClick={handleDeletePopup(user)}>
+                    <button
+                      className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
+                      onClick={handleDeletePopup(user)}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -167,8 +177,9 @@ const UserListPage = () => {
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        )}
 
         <Pagination
           className="h-20 flex justify-end"
@@ -183,16 +194,18 @@ const UserListPage = () => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             userInfo={userInfo}
+            page={page}
           />
         )}
 
         {isShowDelete && userInfo && (
-         <DeleteUser 
-         isShowDelete={isShowDelete}
-         userInfo={userInfo}
-         setIsShowDelete={setIsShowDelete}
-         />
-        
+          <DeleteUser
+            isShowDelete={isShowDelete}
+            user={user}
+            page={page}
+            userInfo={userInfo}
+            setIsShowDelete={setIsShowDelete}
+          />
         )}
       </div>
       <ToastContainer />

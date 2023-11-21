@@ -29,9 +29,9 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
       // toast.error(error.response.data.message, toastOptions);
     },
     onSuccess: (data) => {
-      toast.success("Logout success");
       dispatch(seft(null));
       queryClient.invalidateQueries(["refresh_token"]);
+      toast.success("Logout success");
     },
   });
   const navList = [
