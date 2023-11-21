@@ -16,7 +16,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await User.findOne({
         where: { email: email },
-        attributes: ["id", "name", "email", "password"],
+        attributes: ["id", "name", "email", "password", "status"],
         include: [
           {
             model: Order,
@@ -37,7 +37,7 @@ class AuthController {
 
       if (!user || !user.name)
         return res
-          .status(400)
+          .status(500)
           .send({ message: "This account does not exist." });
 
       const isMatch = await bcrypt.compare(password, user.dataValues.password);
@@ -45,11 +45,9 @@ class AuthController {
         return res.status(400).send({ message: "Password incorrect." });
       }
 
-      // if (!user.name) {
-      //   return res
-      //     .status(400)
-      //     .send({ message: "Account has not been registered" });
-      // }
+      if (user.status === "InActive") {
+        return res.status(500).send({ message: "Account has been banned" });
+      }
 
       const access_token = await Token.generateAccessToken({ id: user.id });
       const refresh_token = await Token.generateRefreshToken({ id: user.id });

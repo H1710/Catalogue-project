@@ -7,6 +7,7 @@ import { useMutation } from "react-query";
 import { postAPI } from "../../utils/FetchData";
 import { loginRoute } from "../../utils/APIRoute";
 import { seft } from "../../redux/reducers/authReducer";
+import CustomButton from "../common/Button";
 // import GoogleLogin from "react-google-login";
 
 // const clientId =
@@ -127,18 +128,18 @@ const LoginForm = ({ setState, setOpenAuthForm }) => {
               onClick={() => {
                 setOpenAuthForm(false);
               }}
-              className="cursor-pointer  flex-1 text-center text-black p-3 duration-300 rounded-sm hover:bg-slate-300 w-full border border-green"
+              className="cursor-pointer  flex-1 text-center text-black p-3 duration-300 rounded hover:bg-slate-300 w-full border border-green"
             >
               Cancel
             </div>
-            <button
-              onClick={() => {
-                // Add your login logic here.
-              }}
-              className="flex-1 text-center  text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400"
-            >
-              Login
-            </button>
+            <CustomButton
+              text={"Login"}
+              classContent={
+                "flex-1 bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+              }
+              isLoading={loadingLogin}
+              handleClick={() => handleSubmit}
+            />
           </div>
           <div class="mt-4 text-center flex items-center justify-center">
             <div class="flex items-center">

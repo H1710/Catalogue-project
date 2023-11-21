@@ -92,7 +92,7 @@ function UserSidebar({ user, setShowServiePackages }) {
               fill="currentColor"
             ></path>
           </svg>
-          <p className="flex-1">Template</p>
+          <p className="flex-1" onClick={()=> navigate('/template')}>Template</p>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6"
