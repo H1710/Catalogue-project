@@ -307,6 +307,32 @@ class TemplateController {
       res.status(500).send({ message: "Something went wrong" });
     }
   }
+
+  static async updateService(req, res) {
+    const templateId = req.params.id;
+    const classService = req.body.classService; // Ensure you are getting the correct property from the request body
+
+    try {
+      const template = await Template.findByPk(templateId);
+
+      if (!template) {
+        return res.status(404).json({ message: "Template not found" });
+      }
+
+      // Check if classService is provided in the request body
+      if (!classService) {
+        return res.status(400).json({ message: "classService is required in the request body" });
+      }
+
+      await template.update({ classService });
+
+      res.status(200).json({ message: "Update success" });
+    } catch (error) {
+      console.error("Error updating template:", error);
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+
 }
 
 exports.TemplateController = TemplateController;
