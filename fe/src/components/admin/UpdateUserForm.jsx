@@ -11,9 +11,11 @@ import { patchAPI, postAPI } from "../../utils/FetchData";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "react-query";
 import { ValidateService } from "../../utils/ValidateService";
+import { useOutletContext } from "react-router-dom";
 
 export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
   const queryClient = useQueryClient();
+  const [user] = useOutletContext();
   const countries = Countries.map((country) => country.name);
   const [selectedRole, setSelectedRole] = useState(userInfo?.role?.id || "");
   const [selectedCountry, setSelectCountry] = useState(userInfo.country);
@@ -165,7 +167,7 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
                       <label htmlFor="role" className="block text-black">
                         Role
                       </label>
-                      <select
+                      {userInfo.id !== user.id ? <select
                         id="role"
                         name="role"
                         defaultValue={selectedRole}
@@ -176,14 +178,19 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
                         <option value="1">Admin</option>
                         <option value="2">Customer</option>
                         <option value="3">Guest</option>
-                      </select>
+                      </select>:
+                      <input
+                      className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                      value={userInfo?.role.name}
+                      readOnly/>}
                     </div>
 
                     <div className="my-4 text-sm">
                       <label htmlFor="Service" className="block text-black">
                         Service
                       </label>
-                      {ValidateService(userInfo) === "Free" ? (
+
+                      {userInfo.role.id !== 1 ? (ValidateService(userInfo) === "Free" ? (
                         // selectedService == 1 || selectedService === null
                         <select
                           id="service_package"
@@ -210,7 +217,12 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
                           // onChange={(e) => handleChange(e)}
                           readOnly
                         />
-                      )}
+                      ))
+                      :
+                      <input
+                      className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                      value={'Free'}
+                      readOnly/>}
                     </div>
                   </div>
 

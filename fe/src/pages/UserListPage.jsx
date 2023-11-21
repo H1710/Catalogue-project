@@ -1,35 +1,37 @@
-import React, { Fragment, useCallback, useState } from "react";
-import MinidenticonImg from "../components/common/MinidenticonImg";
-import { useQuery } from "react-query";
-import { getAllUserRoute } from "../utils/APIRoute";
-import { getAPI } from "../utils/FetchData";
-import { Dialog, Pagination } from "@mui/material";
-import UpdateUserForm from "../components/admin/UpdateUserForm";
-import { ToastContainer, toast } from "react-toastify";
+import React, { Fragment, useCallback, useState } from 'react';
+import MinidenticonImg from '../components/common/MinidenticonImg';
+import { useQuery } from 'react-query';
+import { getAllUserRoute } from '../utils/APIRoute';
+import { getAPI } from '../utils/FetchData';
+import { Dialog, Pagination } from '@mui/material';
+import UpdateUserForm from '../components/admin/UpdateUserForm';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   useNavigate,
   useOutletContext,
   useSearchParams,
-} from "react-router-dom";
-import { ValidateService } from "../utils/ValidateService";
-import DeleteUser from "../components/admin/DeleteUser";
-import NotFoundPage from "../pages/NotFoundPage";
+} from 'react-router-dom';
+import { ValidateService } from '../utils/ValidateService';
+import DeleteUser from '../components/admin/DeleteUser';
+import NotFoundPage from '../pages/NotFoundPage';
+import RestoreUser from '../components/admin/RestoreUser';
 
 const UserListPage = () => {
   const [user] = useOutletContext();
   const [userInfo, setUserInfo] = useState(null);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isShowRestore, setIsShowRestore] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
+  const page = searchParams.get('page');
 
   const {
     data: userList,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["users", page, user?.access_token],
+    queryKey: ['users', page, user?.access_token],
     queryFn: () => {
       return getAPI(`${getAllUserRoute}?page=${page}`, user?.access_token);
     },
@@ -41,11 +43,11 @@ const UserListPage = () => {
   });
 
   const toastOptions = {
-    position: "top-right",
+    position: 'top-right',
     autoClose: 3000,
     pauseOnHover: true,
     draggable: true,
-    theme: "light",
+    theme: 'light',
   };
 
   const closeModal = useCallback(() => {
@@ -62,6 +64,9 @@ const UserListPage = () => {
   const openModalDelete = useCallback(() => {
     setIsShowDelete(true);
   });
+  const openModelRestore = useCallback(() => {
+    setIsShowRestore(true);
+  })
   const handleUpdate = (user) => () => {
     openModal();
     setUserInfo(user);
@@ -70,6 +75,10 @@ const UserListPage = () => {
     openModalDelete();
     setUserInfo(user);
   };
+  const handleRestorePopup = (user) => () => {
+    openModelRestore();
+    setUserInfo(user)
+  }
 
   const handleChangePage = (e, value) => {
     navigate(`/account-list?page=${value}`);
@@ -155,25 +164,49 @@ const UserListPage = () => {
                     </button>
                   </td>
                   <td className="text-end pr-2 ">
-                    <button
-                      className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
-                      onClick={handleDeletePopup(user)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6"
+                    {user.status === 'Active' ? (
+                      <button
+                        className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
+                        onClick={handleDeletePopup(user)}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                        />
-                      </svg>
-                    </button>
+                        {' '}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                          />
+                        </svg>
+                      </button>
+                    ) : (
+                      <button
+                        className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
+                        onClick={handleRestorePopup(user)}
+                      >
+                        {' '}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="orange"
+                          class="bi bi-arrow-counterclockwise"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"
+                          />
+                          <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                        </svg>
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -205,6 +238,15 @@ const UserListPage = () => {
             page={page}
             userInfo={userInfo}
             setIsShowDelete={setIsShowDelete}
+          />
+        )}
+        {isShowRestore && userInfo && (
+          <RestoreUser
+            isShowRestore={isShowRestore}
+            user={user}
+            page={page}
+            userInfo={userInfo}
+            setIsShowRestore={setIsShowRestore}
           />
         )}
       </div>
