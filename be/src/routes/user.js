@@ -33,4 +33,5 @@ router.post(
 router.get("/get-list-year", UserController.getListYears);
 
 router.get("/get-images-upload/:userId", UserController.getImageUpload);
+router.patch("/restore-user/:id", UserController.restoreUser);
 module.exports = router;

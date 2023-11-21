@@ -43,7 +43,8 @@ export const getAllUserRoute = `${host}/user/get-all`;
 export const uploadImageUserRoute = `${host}/user/upload-image`;
 export const getUploadImageRoute = `${host}/user/get-images-upload`;
 export const updateUserRoute = `${host}/user/update-user`;
-export const deleteUserRoute = `${host}/user/deleteUser`
+export const deleteUserRoute = `${host}/user/deleteUser`;
+export const restoreUserRoute = `${host}/user/restore-user`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;

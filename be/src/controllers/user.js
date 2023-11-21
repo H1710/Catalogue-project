@@ -99,6 +99,24 @@ class UserController {
       res.status(500).json({ message: "Something went wrong" });
     }
   }
+  static async restoreUser(req, res) {
+    try {
+      const userId = req.params.id;
+      const user = await db.user.findByPk(userId);
+      if (user && user.roleId != 1) {
+        await user.update({
+          status: "Active",
+        });
+        res.status(200).json({
+          message: "Restore status user successfully",
+        });
+      } else {
+        res.status(404).json({ message: "Cannot restore this user" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
 
   static async autoCreateUser(req, res) {
     try {
