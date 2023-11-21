@@ -71,7 +71,6 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
   const handleUpdate = () => {
     closeModal();
     updateUser(userInformation);
-    console.log(userInformation);
     if (
       userInformation.service_package == 2 ||
       userInformation.service_package == 3
@@ -79,7 +78,6 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
       createOrder();
     }
   };
-  console.log(userInformation);
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -167,22 +165,26 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
                       <label htmlFor="role" className="block text-black">
                         Role
                       </label>
-                      {userInfo.id !== user.id ? <select
-                        id="role"
-                        name="role"
-                        defaultValue={selectedRole}
-                        onChange={(e) => handleChange(e)}
-                        className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                        required
-                      >
-                        <option value="1">Admin</option>
-                        <option value="2">Customer</option>
-                        <option value="3">Guest</option>
-                      </select>:
-                      <input
-                      className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                      value={userInfo?.role.name}
-                      readOnly/>}
+                      {userInfo.id !== user.id ? (
+                        <select
+                          id="role"
+                          name="role"
+                          defaultValue={selectedRole}
+                          onChange={(e) => handleChange(e)}
+                          className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                          required
+                        >
+                          <option value="1">Admin</option>
+                          <option value="2">Customer</option>
+                          <option value="3">Guest</option>
+                        </select>
+                      ) : (
+                        <input
+                          className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                          value={userInfo?.role.name}
+                          readOnly
+                        />
+                      )}
                     </div>
 
                     <div className="my-4 text-sm">
@@ -190,39 +192,42 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
                         Service
                       </label>
 
-                      {userInfo.role.id !== 1 ? (ValidateService(userInfo) === "Free" ? (
-                        // selectedService == 1 || selectedService === null
-                        <select
-                          id="service_package"
-                          name="service_package"
-                          // defaultValue={selectedService}
-                          onChange={(e) => handleChange(e)}
-                          className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                          required
-                        >
-                          <option value="1">Free</option>
-                          <option value="2">Monthly Premium</option>
-                          <option value="3">Yearly Premium</option>
-                        </select>
+                      {userInfo.role.id !== 1 ? (
+                        ValidateService(userInfo) === "Free" ? (
+                          // selectedService == 1 || selectedService === null
+                          <select
+                            id="service_package"
+                            name="service_package"
+                            // defaultValue={selectedService}
+                            onChange={(e) => handleChange(e)}
+                            className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                            required
+                          >
+                            <option value="1">Free</option>
+                            <option value="2">Monthly Premium</option>
+                            <option value="3">Yearly Premium</option>
+                          </select>
+                        ) : (
+                          <input
+                            type="service"
+                            autoComplete="off"
+                            className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
+                            value={
+                              userInfo?.orders[orderLength - 1]?.service_package
+                                ?.name
+                            }
+                            name="service"
+                            // onChange={(e) => handleChange(e)}
+                            readOnly
+                          />
+                        )
                       ) : (
                         <input
-                          type="service"
-                          autoComplete="off"
                           className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                          value={
-                            userInfo?.orders[orderLength - 1]?.service_package
-                              ?.name
-                          }
-                          name="service"
-                          // onChange={(e) => handleChange(e)}
+                          value={"Free"}
                           readOnly
                         />
-                      ))
-                      :
-                      <input
-                      className="rounded-md px-4 py-3 mt-1 focus:outline-none bg-gray-100 w-full"
-                      value={'Free'}
-                      readOnly/>}
+                      )}
                     </div>
                   </div>
 

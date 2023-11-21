@@ -24,9 +24,7 @@ export default function TemplatePage() {
           `http://localhost:5000/api/v1/template/search-template/${search}`
         );
         setData(result.data.templates);
-      } catch (error) {
-        console.log(error.message);
-      }
+      } catch (error) {}
     };
     getSearch();
   }, [search]);

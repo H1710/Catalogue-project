@@ -25,6 +25,7 @@ import { Divider, TextField, Typography } from "@mui/material";
 // import InvoicesInfo from "./InvoicesInfo";
 import axios from "axios";
 import { useQueryClient } from "react-query";
+import { addOrderRoute } from "../utils/APIRoute";
 
 const lsPack = [
   {
@@ -135,7 +136,7 @@ export default function ServicePackage({
   const handlePay = useCallback(async () => {
     try {
       const rs = await axios
-        .post("http://localhost:5000/api/v1/order/add-order", orderInfo, {
+        .post(addOrderRoute, orderInfo, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -148,9 +149,7 @@ export default function ServicePackage({
             queryClient.invalidateQueries(["refresh_token"]);
           }
         });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }, [orderInfo]);
 
   return (
@@ -362,7 +361,7 @@ export default function ServicePackage({
                         Time: {formattedDate}
                       </div>
                     </div>
-                    <div>
+                    <div className="flex flex-col gap-4">
                       <div className="flex flex-row justify-between ">
                         <div className="user mt-1 mb-2 min-w-[300px] ">
                           <div className="font-semibold ">

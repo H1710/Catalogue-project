@@ -13,7 +13,6 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
       return patchAPI(acceptBlogRoute, info, user.access_token);
     },
     onSuccess: (data) => {
-      // console.log(data);
       queryClient.invalidateQueries(["processing_blogs"]);
     },
     onError: (error) => {

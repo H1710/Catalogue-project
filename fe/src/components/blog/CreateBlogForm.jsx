@@ -8,10 +8,14 @@ const CreateForm = ({ blog, setBlog }) => {
   //   const { categories } = useSelector((state) => state);
 
   const validationSchema = Yup.object({
-    title: Yup.string().required("Title is required").max(50, "Title is too long"),
+    title: Yup.string()
+      .required("Title is required")
+      .max(50, "Title is too long"),
     tag: Yup.string().required("Tag is required"),
     thumbnail: Yup.mixed().required("Thumbnail is required"),
-    description: Yup.string().required("Description is required").max(300, "Description is too long"),
+    description: Yup.string()
+      .required("Description is required")
+      .max(300, "Description is too long"),
   });
 
   const formik = useFormik({
@@ -22,9 +26,7 @@ const CreateForm = ({ blog, setBlog }) => {
       description: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: (values) => {},
   });
 
   const handleChangeInput = (e) => {
@@ -81,7 +83,9 @@ const CreateForm = ({ blog, setBlog }) => {
       <input
         type="file"
         accept="image/*"
-        onChange={(e) => formik.setFieldValue("thumbnail", e.currentTarget.files[0])}
+        onChange={(e) =>
+          formik.setFieldValue("thumbnail", e.currentTarget.files[0])
+        }
         onBlur={formik.handleBlur}
         required
         style={{ display: "none" }}

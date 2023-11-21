@@ -15,9 +15,7 @@ const BlogPageDetail = () => {
     queryFn: () => {
       return getAPI(`${getBlogByIdRoute}/${blogId}`);
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },

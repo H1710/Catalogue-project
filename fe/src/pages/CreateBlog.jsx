@@ -35,8 +35,6 @@ const CreateBlog = () => {
   const [blog, setBlog] = useState(initState);
   const [body, setBody] = useState("");
 
-  console.log(user.access_token);
-
   const { mutate, isLoading: loadingCreate } = useMutation({
     mutationFn: (info) => {
       return postAPI(createBlogRoute, info, user?.access_token);

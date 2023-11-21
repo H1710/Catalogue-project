@@ -8,18 +8,6 @@ import { postAPI } from "../../utils/FetchData";
 import { loginRoute } from "../../utils/APIRoute";
 import { seft } from "../../redux/reducers/authReducer";
 import CustomButton from "../common/Button";
-// import GoogleLogin from "react-google-login";
-
-// const clientId =
-//   "157579947849-fpas1tonu8jj9dbevcpbqavhi2h1m5u5.apps.googleusercontent.com";
-
-const onSuccess = (res) => {
-  console.log("Success", res.profileObj);
-};
-
-const onFailure = (res) => {
-  console.log("Failed", res);
-};
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email format").required("Required"),

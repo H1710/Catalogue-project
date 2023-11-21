@@ -12,10 +12,10 @@ const StatiticsPage = () => {
   const [year, setYear] = useState(nowYear);
   const [typeInfo, setTypeInfo] = useState("User");
   const [data, setData] = useState([]);
-  const [lsYear, setLsYear] = useState([year])
+  const [lsYear, setLsYear] = useState([year]);
   const lsType = ["User", "Order"];
-  const [minYear, setMinYear] = useState(nowYear)
-  
+  const [minYear, setMinYear] = useState(nowYear);
+
   useEffect(() => {
     const callAPI = async () => {
       const res = await axios.get(
@@ -30,13 +30,11 @@ const StatiticsPage = () => {
       const res = await axios.get(
         `http://localhost:5000/api/v1/user//get-list-year`
       );
-      console.log(res.data);
       setLsYear(res.data.years);
-      setMinYear(res.data.years[0])
+      setMinYear(res.data.years[0]);
     };
     callAPI();
   }, []);
-  
 
   return (
     <div className="flex flex-col col-span-full items-center  ">
@@ -55,31 +53,32 @@ const StatiticsPage = () => {
               </span>
             </Listbox.Button>
             <Listbox.Options className={"absolute z-10 rounded "}>
-              {lsYear && lsYear?.map((year, index) => (
-                <Listbox.Option
-                  key={index}
-                  value={year}
-                  className={({ active }) =>
-                    ` select-none py-2 pl-10 pr-5 w-40 hover:bg-[#8884d8]   ${
-                      active
-                        ? "bg-violet-600 text-white"
-                        : "text-white bg-violet-600"
-                    } `
-                  }
-                >
-                  {({ selected }) => (
-                    <>
-                      <span
-                        className={`block truncate ${
-                          selected ? "font-semibold" : "font-normal"
-                        }`}
-                      >
-                        {year}
-                      </span>
-                    </>
-                  )}
-                </Listbox.Option>
-              ))}
+              {lsYear &&
+                lsYear?.map((year, index) => (
+                  <Listbox.Option
+                    key={index}
+                    value={year}
+                    className={({ active }) =>
+                      ` select-none py-2 pl-10 pr-5 w-40 hover:bg-[#8884d8]   ${
+                        active
+                          ? "bg-violet-600 text-white"
+                          : "text-white bg-violet-600"
+                      } `
+                    }
+                  >
+                    {({ selected }) => (
+                      <>
+                        <span
+                          className={`block truncate ${
+                            selected ? "font-semibold" : "font-normal"
+                          }`}
+                        >
+                          {year}
+                        </span>
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
             </Listbox.Options>
           </div>
         </Listbox>
@@ -138,7 +137,7 @@ const StatiticsPage = () => {
           <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[15vw] font-semibold">
             Revenue Overview
           </span>
-          <RevenueStatitic year={year}  minYear={minYear}/>
+          <RevenueStatitic year={year} minYear={minYear} />
         </div>
       </div>
 

@@ -13,6 +13,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getOrderByYearRoute } from "../../utils/APIRoute";
+
 const monthNames = [
   "Jan",
   "Feb",
@@ -28,19 +30,16 @@ const monthNames = [
   "Dec",
 ];
 
-export default function RevenueStatitic({ year,minYear }) {
+export default function RevenueStatitic({ year, minYear }) {
   const [data, setData] = useState([]);
   let flag = false;
   useEffect(() => {
     const handleAPI = async () => {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/order/get-order-by-year/${year}`
-      );
+      const res = await axios.get(`${getOrderByYearRoute}/${year}`);
       setData(res.data);
     };
     handleAPI();
   }, [year]);
-  console.log(data);
   if (data && data?.orders?.length > 0) {
     for (var i = 0; i < data?.orders?.length; i++) {
       data.orders[i].monthName = monthNames[i];
@@ -63,39 +62,42 @@ export default function RevenueStatitic({ year,minYear }) {
       );
     }
   }
-  console.log(year);
   return (
     <div className="col-span-full flex flex-col gap-4 px-10  py-4">
       <div className="border-1 items-center justify-center flex flex-col h-[10vh] gap-3 ">
         <div className="   rounded-[15px] justify-center items-center  ">
-          <div className="text-[20px] flex flex">
+          <div className="text-[20px] flex">
             <p className="font-semibold">Total Revenue</p>:{" "}
             {data.yearly_revenue_current_year}$ in {year}
           </div>
         </div>
-     { year !== minYear &&  <div>
-          {!flag ? (
-            <div className="flex  rounded-[10px]  justify-center items-center    ">
-              <FontAwesomeIcon
-                icon={faArrowDownLong}
-                className="text-[30px]  text-red-500"
-              />
-             { <div className="text-[20px] text-red-500 font-semibold">
-                {rs}% by {year - 1}
-              </div>}
-            </div>
-          ) : (
-            <div className="flex   rounded-[10px]  justify-center items-center    ">
-              <FontAwesomeIcon
-                icon={faArrowUpLong}
-                className="text-[30px]  text-emerald-700"
-              />
-              <div className="text-[20px] text-emerald-700 font-semibold">
-                {rs} % by {year - 1}
+        {year !== minYear && (
+          <div>
+            {!flag ? (
+              <div className="flex  rounded-[10px]  justify-center items-center    ">
+                <FontAwesomeIcon
+                  icon={faArrowDownLong}
+                  className="text-[30px]  text-red-500"
+                />
+                {
+                  <div className="text-[20px] text-red-500 font-semibold">
+                    {rs}% by {year - 1}
+                  </div>
+                }
               </div>
-            </div>
-          )}
-       </div>}
+            ) : (
+              <div className="flex   rounded-[10px]  justify-center items-center    ">
+                <FontAwesomeIcon
+                  icon={faArrowUpLong}
+                  className="text-[30px]  text-emerald-700"
+                />
+                <div className="text-[20px] text-emerald-700 font-semibold">
+                  {rs} % by {year - 1}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <LineChart
         width={500}

@@ -44,7 +44,6 @@ const PublicTemplate = () => {
       userId: user.id,
       template: state.components,
     };
-    console.log(newData);
     let formData = new FormData();
     for (let key in newData) {
       formData.append(key, newData[key]);

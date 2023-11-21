@@ -6,8 +6,8 @@ import { useNavigate } from "react-router";
 
 function UserSidebar({ user, setShowServiePackages }) {
   const categoryList = ["Education", "Social media", "Bussiness"];
-  const navigate = useNavigate();console.log(user);
-  
+  const navigate = useNavigate();
+
   return (
     <aside className="w-[250px] h-full overflow-y-auto flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">
       <div className="rounded-[4px] mb-4 flex items-center gap-4">
@@ -92,7 +92,9 @@ function UserSidebar({ user, setShowServiePackages }) {
               fill="currentColor"
             ></path>
           </svg>
-          <p className="flex-1" onClick={()=> navigate('/template')}>Template</p>
+          <p className="flex-1" onClick={() => navigate("/template")}>
+            Template
+          </p>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6"
