@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import CustomButton from "../components/common/Button";
 import { Divider, TextField, Typography } from "@mui/material";
-import InvoicesInfo from "./InvoicesInfo";
+// import InvoicesInfo from "./InvoicesInfo";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 
@@ -362,7 +362,7 @@ export default function ServicePackage({
                         Time: {formattedDate}
                       </div>
                     </div>
-                  )}
+                    <div>
                       <div className="flex flex-row justify-between ">
                         <div className="user mt-1 mb-2 min-w-[300px] ">
                           <div className="font-semibold ">

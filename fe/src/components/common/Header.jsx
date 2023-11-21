@@ -138,6 +138,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

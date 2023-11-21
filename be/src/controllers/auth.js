@@ -130,11 +130,11 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email: email } });
-      if (user && !user.otpCode) {
-        return res.status(400).json({ message: "Email already exists" });
+      if (user && !parseInt(user.otpCode)) {
+        return res.status(400).json({ message: "Account already exists" });
       }
 
-      const OTP = Math.floor(10000 + Math.random() * 900000);
+      const OTP = Math.floor(100000 + Math.random() * 900000);
 
       sendEmail(email, OTP);
       const hashedPassword = await bcrypt.hash(password, 10);

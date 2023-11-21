@@ -43,7 +43,6 @@ const ApproveTemplatePage = () => {
           isLoadingTemplateData={loadingTempData}
         />
       )}
-      <ToastContainer />
     </div>
   );
 };

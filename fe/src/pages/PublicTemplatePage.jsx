@@ -13,6 +13,7 @@ import { useMutation } from "react-query";
 import { createBlogRoute, createTemplateRoute } from "../utils/APIRoute";
 import { postAPI } from "../utils/FetchData";
 import CustomButton from "../components/common/Button";
+import { toast } from "react-toastify";
 
 const PublicTemplate = () => {
   const { state } = useLocation();
@@ -29,7 +30,9 @@ const PublicTemplate = () => {
       onError: (error) => {
         // toast.error(error.response.data.message, toastOptions);
       },
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        toast.success("Public success.Please wait admin approve");
+      },
     });
 
   const handleSubmit = async (e) => {

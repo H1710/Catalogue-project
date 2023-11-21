@@ -96,9 +96,7 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
     },
     onSuccess: (data) => {
       toast.success(data.data.message, toastOptions);
-      setTimeout(() => {
-        setState("login");
-    }, 3000); 
+      setState("login");
     },
   });
 
@@ -309,7 +307,6 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
                       className="h-5 w-5 text-gray-400"
                       aria-hidden="true"
                     />
-                    
                   </Combobox.Button>
                 </div>
                 <Transition
@@ -397,7 +394,6 @@ const RegisterForm = ({ setState, setOpenAuthForm }) => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
