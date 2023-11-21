@@ -91,12 +91,12 @@ const DesignPage = () => {
           (c) => c.id === currentComponent.id
         );
         temp[page].product_page_details[index].width =
-          width || currentComponent.width;
+          width || currentComponent?.width || 0;
         temp[page].product_page_details[index].height =
-          height || currentComponent.height;
+          height || currentComponent?.height || 0;
         if (currentComponent.name == "text") {
-          temp[page].product_page_details[index].text =
-            text || currentComponent.text;
+          // temp[page].product_page_details[index].text =
+          //   text || currentComponent.text;
           temp[page].product_page_details[index].fontSize =
             fontSize || currentComponent.fontSize;
         }
@@ -318,8 +318,16 @@ const DesignPage = () => {
     setPage((prev) => prev + 1);
   }, [page]);
 
-  const changeText = (e) => {
-    setText((prev) => e.target.value);
+  const changeText = (e, id) => {
+    // setText((prev) => e.target.value);
+    setComponents((prev) => {
+      const temp = [...prev];
+      const index = temp[page].product_page_details.findIndex(
+        (c) => c.id === id
+      );
+      temp[page].product_page_details[index].text = e.target.value;
+      return temp;
+    });
   };
   const createText = useCallback(
     (name, fontSize, fontWeight, fontFamily, content) => {
@@ -474,14 +482,7 @@ const DesignPage = () => {
 
   return (
     <div
-      className={`w-full h-[100vh] flex justify-between relative object-fill`}
-      style={{
-        backgroundImage:
-          "url(https://img.freepik.com/free-vector/watercolor-purple-green-background_23-2150296518.jpg)",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
+      className={`w-full h-[100vh] flex justify-between relative object-fill bg-[#cdd0b9]`}
     >
       <DesignNavbar
         state={state}
@@ -505,9 +506,10 @@ const DesignPage = () => {
             user={user}
             captureContent={captureContent}
             handleSaveTemplate={handleSaveTemplate}
+            loadingSave={loadingSave}
           />
-          <p className="text-center text-[20px]">
-            {page + 1}/{components.length}
+          <p className="text-center text-[20px] font-semibold text-[--bg-button-hover]">
+            {page + 1} / {components.length}
           </p>
           <div className={`flex justify-center items-center w-full  gap-4`}>
             <button

@@ -4,7 +4,6 @@ import Element from "./Element";
 const CreateComponent = ({ info, currentComponent, removeComponent }) => {
   const randValue = Math.floor(Math.random() * 100);
   const [readOnly, setReadOnly] = useState(true);
-  console.log(currentComponent);
   let html = "";
   if (info.name === "main_frame") {
     html = (
@@ -204,7 +203,7 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
         } group hover:outline hover:outline-[2px] hover:outline-indigo-500`}
       >
         <textarea
-          onChange={info.changeText}
+          onChange={(e) => info.changeText(e, info.id)}
           className="w-full h-full bg-transparent resize-none select-none border-none outline-none"
           onMouseDown={() => info.moveElement(info.id, info)}
           readOnly={readOnly}

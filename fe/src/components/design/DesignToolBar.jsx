@@ -5,6 +5,7 @@ import { createTemplateRoute, saveProductRoute } from "../../utils/APIRoute";
 import { postAPI } from "../../utils/FetchData";
 import { useMutation } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import CustomButton from "../common/Button";
 
 const DesignToolBar = ({
   currentComponent,
@@ -13,6 +14,7 @@ const DesignToolBar = ({
   components,
   user,
   handleSaveTemplate,
+  loadingSave,
 }) => {
   const navigate = useNavigate();
 
@@ -107,41 +109,42 @@ const DesignToolBar = ({
                     </button>
                   </div>
                 )} */}
-              <div className="flex h-full">
-                <button
-                  onClick={handleSaveTemplate}
-                  className="px-3 py-[6px] outline-none text-[--primary-text]"
-                >
-                  Save
-                </button>
-                <div className="w-[1px] bg-[#ccc]"></div>
-                <button
-                  onClick={() => window.open(url, "_blank")}
-                  className="px-3 py-[6px] outline-none text-[--primary-text]"
-                >
-                  View
-                </button>
-                <div className="w-[1px] bg-[#ccc]"></div>
+              <div className="flex h-full gap-2">
+                <CustomButton
+                  handleClick={handleSaveTemplate}
+                  text={"Save"}
+                  isLoading={loadingSave}
+                  classContent={
+                    "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                  }
+                />
+                <CustomButton
+                  handleClick={() => window.open(url, "_blank")}
+                  text={"View"}
+                  classContent={
+                    "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                  }
+                />
 
-                <button
-                  onClick={() => {
+                <CustomButton
+                  handleClick={() => {
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = "my-docent.pdf";
                     a.click();
                   }}
-                  className="px-3 py-[6px] outline-none text-[--primary-text]"
-                >
-                  Dowload
-                </button>
-                <div className="w-[1px] bg-[#ccc]"></div>
-
-                <button
-                  onClick={handlePublicTemplate}
-                  className="px-3 py-[6px] outline-none text-[--primary-text]"
-                >
-                  Public template
-                </button>
+                  text={"Dowload"}
+                  classContent={
+                    "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                  }
+                />
+                <CustomButton
+                  handleClick={handlePublicTemplate}
+                  text={"Public"}
+                  classContent={
+                    "bg-[--bg-button] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-hover]"
+                  }
+                />
               </div>
             </div>
           );

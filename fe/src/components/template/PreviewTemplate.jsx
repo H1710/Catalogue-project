@@ -81,6 +81,9 @@ const selectRef = useRef(0);
           onClick={() => {
             navigate(`/design/preview/${template.id}`);
           }}  
+          src={template.thumbnail}
+          alt={template.name}
+          className="w-[180px] h-[180px] object-cover rounded"
         />
 
         <div className="w-full">

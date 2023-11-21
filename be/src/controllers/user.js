@@ -66,7 +66,7 @@ class UserController {
           name: req.body.name || user.dataValues.name,
           email: req.body.email || user.dataValues.email,
           country: req.body.country || user.dataValues.country,
-          roleId: req.body.role.id || user.dataValues.roleId,
+          roleId: parseInt(req.body.role) || user.dataValues.roleId,
           status: req.body.status || user.dataValues.status,
         };
 

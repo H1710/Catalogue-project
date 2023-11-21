@@ -35,7 +35,7 @@ const ApproveBlogPage = () => {
   if (getBlogError) return <NotFoundPage />;
 
   return (
-    <div className=" w-full h-screen flex flex-col justify-between mt-4 p-4">
+    <div className=" w-full h-full flex flex-col justify-between mt-4 p-4">
       {blogsData && (
         <BlogList
           blogsData={blogsData?.data}

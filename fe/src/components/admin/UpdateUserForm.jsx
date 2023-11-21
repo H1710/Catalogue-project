@@ -71,6 +71,7 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
   const handleUpdate = () => {
     closeModal();
     updateUser(userInformation);
+    console.log(userInformation);
     if (
       userInformation.service_package == 2 ||
       userInformation.service_package == 3
