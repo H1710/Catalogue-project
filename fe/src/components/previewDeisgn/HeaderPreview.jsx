@@ -26,7 +26,7 @@ const HeaderPreview = ({
 
         <div className="flex items-center">
           <p id="author" className="text-[#fef9c3]  italic capitalize">
-            {templateData?.user.name}
+            {templateData?.user?.name}
           </p>
         </div>
 

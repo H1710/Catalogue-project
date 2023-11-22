@@ -116,8 +116,8 @@ export default function TemplatePage() {
         <>
           <div className="p-2 font-semibold">Template</div>
           <div className="w-full grid grid-cols-4 gap-8">
-            {templateList?.data?.data?.length > 0 ? (
-              templateList?.data?.data?.map((template, index) => (
+            {templateList?.data?.length > 0 ? (
+              templateList?.data?.map((template, index) => (
                 <div key={index} className="relative">
                   {template.classService ? (
                     <div className="absolute bg-[#8b3dff] rounded-full top-1 left-1">

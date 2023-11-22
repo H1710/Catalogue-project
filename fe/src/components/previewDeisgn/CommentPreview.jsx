@@ -55,12 +55,12 @@ const CommentPreview = ({ user, templateId, setOpenAuthForm }) => {
                 />
               ) : (
                 <MinidenticonImg
-                  username={comment.user.email}
+                  username={comment?.user?.email}
                   className="w-12 rounded-full object-cover cursor-pointer border border-[#ccc]"
                 />
               )}
               <div className="flex flex-col gap-1">
-                <p className="text-blue-700 font-bold">{comment.user.name}</p>
+                <p className="text-blue-700 font-bold">{comment?.user?.name}</p>
                 <p className="text-gray-500 text-xs">
                   {formatDate(comment.createdAt)}
                 </p>
