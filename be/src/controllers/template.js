@@ -319,11 +319,6 @@ class TemplateController {
         return res.status(404).json({ message: "Template not found" });
       }
 
-      // Check if classService is provided in the request body
-      if (!classService) {
-        return res.status(400).json({ message: "classService is required in the request body" });
-      }
-
       await template.update({ classService });
 
       res.status(200).json({ message: "Update success" });
