@@ -7,7 +7,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import axios from "axios";
-import { getAcceptTemplateRoute, getAllTemplateRoute } from "../utils/APIRoute";
+import { getAcceptTemplateRoute, searchTemplateRoute } from "../utils/APIRoute";
 import { getAPI } from "../utils/FetchData";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
@@ -20,13 +20,9 @@ export default function TemplatePage() {
   useEffect(() => {
     const getSearch = async () => {
       try {
-        const result = await axios.get(
-          `http://localhost:5000/api/v1/template/search-template/${search}`
-        );
+        const result = await axios.get(`${searchTemplateRoute}/${search}`);
         setData(result.data.templates);
-      } catch (error) {
-        console.log(error.message);
-      }
+      } catch (error) {}
     };
     getSearch();
   }, [search]);

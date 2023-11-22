@@ -25,15 +25,12 @@ function BlogPage({}) {
     queryFn: () => {
       return getAPI(`${getAcceptedBlogRoute}?page=${page}`);
     },
-    onSuccess: (data) => {
-      // console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
     // enabled: logged,
   });
-  console.log("blogsData: ", blogsData);
   const handleCreateBlog = useCallback(() => {
     if (!user?.access_token) {
       setOpenAuthForm(true);

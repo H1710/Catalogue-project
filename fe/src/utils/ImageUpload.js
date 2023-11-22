@@ -20,7 +20,5 @@ export const imageUpload = async (file) => {
     formData.append("file", file);
     const data = await axios.post(uploadImageRoute, formData);
     return data.data;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };

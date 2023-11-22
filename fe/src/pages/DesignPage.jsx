@@ -412,9 +412,7 @@ const DesignPage = () => {
         capturedCanvas = await captureContent();
       }
       saveTemplate({ components: components, thumbnail: capturedCanvas });
-    } catch (error) {
-      console.error("Error saving template:", error);
-    }
+    } catch (error) {}
   };
 
   const uploadImage = (e) => {

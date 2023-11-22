@@ -11,7 +11,6 @@ import * as Yup from "yup";
 // import { useAppDispatch } from "../../redux/hooks";
 
 const QuillEditor = ({ setBody, setFormValid }) => {
-
   const validationSchema = Yup.object({
     body: Yup.string().required("Content is required"),
   });
@@ -21,11 +20,8 @@ const QuillEditor = ({ setBody, setFormValid }) => {
       body: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values.body);
-    },
+    onSubmit: (values) => {},
   });
-
 
   const quillRef = useRef(null);
   window.Quill = Quill;
@@ -38,7 +34,6 @@ const QuillEditor = ({ setBody, setFormValid }) => {
     },
   };
 
-  
   const handleChangeImage = useCallback(() => {
     const input = document.createElement("input");
     input.type = "file";
@@ -77,21 +72,19 @@ const QuillEditor = ({ setBody, setFormValid }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div>
-      <ReactQuill
-        theme="snow"
-        modules={modules}
-        placeholder="Write somethings..."
-        onChange={(e) => {
-          setBody(e);
-          
-        }}
-        ref={quillRef}
-        className=""
-      />
+        <ReactQuill
+          theme="snow"
+          modules={modules}
+          placeholder="Write somethings..."
+          onChange={(e) => {
+            setBody(e);
+          }}
+          ref={quillRef}
+          className=""
+        />
         {formik.touched.body && formik.errors.body && (
           <div className="text-red-500">{formik.errors.body}</div>
         )}
-
       </div>
     </form>
   );
@@ -100,15 +93,15 @@ const QuillEditor = ({ setBody, setFormValid }) => {
 let container = [
   [{ font: [] }],
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  [{ size: ["small", false, "large", "huge"] }], 
+  [{ size: ["small", false, "large", "huge"] }],
 
-  ["bold", "italic", "underline", "strike"], 
+  ["bold", "italic", "underline", "strike"],
   ["blockquote", "code-block"],
-  [{ color: [] }, { background: [] }], 
-  [{ script: "sub" }, { script: "super" }], 
+  [{ color: [] }, { background: [] }],
+  [{ script: "sub" }, { script: "super" }],
 
   [{ list: "ordered" }, { list: "bullet" }],
-  [{ indent: "-1" }, { indent: "+1" }], 
+  [{ indent: "-1" }, { indent: "+1" }],
   [{ direction: "rtl" }],
   [{ align: [] }],
 

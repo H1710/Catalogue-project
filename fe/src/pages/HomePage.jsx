@@ -23,9 +23,7 @@ const HomePage = () => {
     queryFn: () => {
       return getAPI(`${getAcceptTemplateRoute}`);
     },
-    onSuccess: (data) => {
-      // console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
@@ -36,9 +34,7 @@ const HomePage = () => {
     queryFn: () => {
       return getAPI(`${getProductByUser}/${user?.id}`);
     },
-    onSuccess: (data) => {
-      // console.log(data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },

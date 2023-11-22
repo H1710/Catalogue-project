@@ -1,20 +1,20 @@
-import React, { Fragment, useCallback, useState } from 'react';
-import MinidenticonImg from '../components/common/MinidenticonImg';
-import { useQuery } from 'react-query';
-import { getAllUserRoute } from '../utils/APIRoute';
-import { getAPI } from '../utils/FetchData';
-import { Dialog, Pagination } from '@mui/material';
-import UpdateUserForm from '../components/admin/UpdateUserForm';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { Fragment, useCallback, useState } from "react";
+import MinidenticonImg from "../components/common/MinidenticonImg";
+import { useQuery } from "react-query";
+import { getAllUserRoute } from "../utils/APIRoute";
+import { getAPI } from "../utils/FetchData";
+import { Dialog, Pagination } from "@mui/material";
+import UpdateUserForm from "../components/admin/UpdateUserForm";
+import { ToastContainer, toast } from "react-toastify";
 import {
   useNavigate,
   useOutletContext,
   useSearchParams,
-} from 'react-router-dom';
-import { ValidateService } from '../utils/ValidateService';
-import DeleteUser from '../components/admin/DeleteUser';
-import NotFoundPage from '../pages/NotFoundPage';
-import RestoreUser from '../components/admin/RestoreUser';
+} from "react-router-dom";
+import { ValidateService } from "../utils/ValidateService";
+import DeleteUser from "../components/admin/DeleteUser";
+import NotFoundPage from "../pages/NotFoundPage";
+import RestoreUser from "../components/admin/RestoreUser";
 
 const UserListPage = () => {
   const [user] = useOutletContext();
@@ -24,14 +24,14 @@ const UserListPage = () => {
   const [isShowRestore, setIsShowRestore] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page');
+  const page = searchParams.get("page");
 
   const {
     data: userList,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['users', page, user?.access_token],
+    queryKey: ["users", page, user?.access_token],
     queryFn: () => {
       return getAPI(`${getAllUserRoute}?page=${page}`, user?.access_token);
     },
@@ -43,11 +43,11 @@ const UserListPage = () => {
   });
 
   const toastOptions = {
-    position: 'top-right',
+    position: "top-right",
     autoClose: 3000,
     pauseOnHover: true,
     draggable: true,
-    theme: 'light',
+    theme: "light",
   };
 
   const closeModal = useCallback(() => {
@@ -66,7 +66,7 @@ const UserListPage = () => {
   });
   const openModelRestore = useCallback(() => {
     setIsShowRestore(true);
-  })
+  });
   const handleUpdate = (user) => () => {
     openModal();
     setUserInfo(user);
@@ -77,8 +77,8 @@ const UserListPage = () => {
   };
   const handleRestorePopup = (user) => () => {
     openModelRestore();
-    setUserInfo(user)
-  }
+    setUserInfo(user);
+  };
 
   const handleChangePage = (e, value) => {
     navigate(`/account-list?page=${value}`);
@@ -87,7 +87,6 @@ const UserListPage = () => {
   if (isError) {
     return <NotFoundPage />;
   }
-  // console.log(userInfo)
   return (
     <div className="w-full h-full flex flex-col justify-center overflow-auto">
       <div className="p-4 h-full">
@@ -164,12 +163,12 @@ const UserListPage = () => {
                     </button>
                   </td>
                   <td className="text-end pr-2 ">
-                    {user.status === 'Active' ? (
+                    {user.status === "Active" ? (
                       <button
                         className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
                         onClick={handleDeletePopup(user)}
                       >
-                        {' '}
+                        {" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -190,7 +189,7 @@ const UserListPage = () => {
                         className="text-red-600 font-bold  hover:opacity-50 rounded flex items-center"
                         onClick={handleRestorePopup(user)}
                       >
-                        {' '}
+                        {" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
