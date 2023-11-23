@@ -52,21 +52,21 @@ const UserListPage = () => {
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
-  });
+  },[]);
 
   const openModal = useCallback(() => {
     setIsOpen(true);
-  });
+  },[]);
   const closeModalDelete = useCallback(() => {
     setIsShowDelete(false);
-  });
+  },[]);
 
   const openModalDelete = useCallback(() => {
     setIsShowDelete(true);
-  });
+  },[]);
   const openModelRestore = useCallback(() => {
     setIsShowRestore(true);
-  });
+  },[]);
   const handleUpdate = (user) => () => {
     openModal();
     setUserInfo(user);

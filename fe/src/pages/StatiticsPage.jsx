@@ -7,34 +7,48 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import ListUserInfo from "../components/statitic/ListUserInfo";
 import ListOrder from "../components/statitic/ListOrder";
+import { useQuery } from "react-query";
+import { getAPI } from "../utils/FetchData";
+import { getListYear, getUserAndOrderByYear } from "../utils/APIRoute";
 const StatiticsPage = () => {
   const nowYear = useMemo(() => new Date().getFullYear());
   const [year, setYear] = useState(nowYear);
   const [typeInfo, setTypeInfo] = useState("User");
-  const [data, setData] = useState([]);
   const [lsYear, setLsYear] = useState([year]);
   const lsType = ["User", "Order"];
   const [minYear, setMinYear] = useState(nowYear);
 
-  useEffect(() => {
-    const callAPI = async () => {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/user/get-list-by-year/${year}`
-      );
-      setData(res.data);
-    };
-    callAPI();
-  }, [year, typeInfo]);
-  useEffect(() => {
-    const callAPI = async () => {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/user//get-list-year`
-      );
-      setLsYear(res.data.years);
-      setMinYear(res.data.years[0]);
-    };
-    callAPI();
-  }, []);
+
+  const {
+    data: dataAPI
+  }
+= useQuery({
+  queryKey: ["dataUserAndOrder", typeInfo, year],
+  queryFn: ()=> {
+    return getAPI(`${getUserAndOrderByYear}/${year}`)
+  },
+  onSuccess: (data) => {},
+  onError: (error) => {
+  },
+})
+
+  
+  const {
+    data: arrYears,
+    isLoading
+  } 
+  = useQuery({
+    queryKey: ["year"],
+    queryFn: ()=> {
+      return getAPI(getListYear);
+    },
+    onSuccess:(data)=> {
+      setLsYear(data.data.years);
+      setMinYear(data.data.years[0]);
+    },
+    onError: ()=> {}
+  })
+  
 
   return (
     <div className="flex flex-col col-span-full items-center  ">
@@ -142,10 +156,10 @@ const StatiticsPage = () => {
       </div>
 
       <div>
-        {typeInfo === "User" ? (
-          <ListUserInfo dataUsers={data?.users} />
+        { typeInfo === "User" ? (
+          <ListUserInfo dataUsers={dataAPI?.data?.users} />
         ) : (
-          <ListOrder dataOrders={data?.orders} />
+          <ListOrder dataOrders={dataAPI?.data?.orders} />
         )}
       </div>
     </div>

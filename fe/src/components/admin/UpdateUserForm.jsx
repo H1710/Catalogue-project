@@ -61,10 +61,10 @@ export default function UpdateUserForm({ isOpen, setIsOpen, userInfo, page }) {
       });
     },
     onError: (error) => {
-      toast.error(error.response.data.message, toastOptions);
+      // toast.error(error.response.data.message, toastOptions);
     },
     onSuccess: (data) => {
-      toast.success(data.data.message, toastOptions);
+      // toast.success(data.data.message, toastOptions);
     },
   });
 

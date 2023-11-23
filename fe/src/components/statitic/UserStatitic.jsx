@@ -1,10 +1,6 @@
 import {
-  faArrowDown,
   faArrowDownLong,
   faArrowUpLong,
-  faDownLong,
-  faUpRightAndDownLeftFromCenter,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -13,17 +9,13 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  AreaChart,
-  Area,
   CartesianGrid,
-  Pie,
-  Cell,
-  PieChart,
   LineChart,
   Line,
 } from "recharts";
+import { getAPI } from "../../utils/FetchData";
+import { getListUserByYear } from "../../utils/APIRoute";
 
-const COLORS = ["#00C49F", "#FFBB28"];
 const monthNames = [
   "Jan",
   "Feb",
@@ -40,13 +32,12 @@ const monthNames = [
 ];
 export default function UserStatitic({ year, minYear }) {
   const [data, setData] = useState([]);
-  console.log(year, minYear);
   
   let flag = false;
   useEffect(() => {
     const handleAPI = async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/v1/user/get-user-by-year/${year}`
+       `${getListUserByYear}/${year}`
       );
       setData(res.data);
     };

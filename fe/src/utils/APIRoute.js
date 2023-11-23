@@ -44,6 +44,9 @@ export const getUploadImageRoute = `${host}/user/get-images-upload`;
 export const updateUserRoute = `${host}/user/update-user`;
 export const deleteUserRoute = `${host}/user/deleteUser`;
 export const restoreUserRoute = `${host}/user/restore-user`;
+export const getUserAndOrderByYear = `${host}/user/get-list-by-year`;
+export const getListYear = `${host}/user/get-list-year`;
+export const getListUserByYear = `${host}/user/get-user-by-year`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
@@ -58,3 +61,4 @@ export const getAcceptTemplateRoute = `${host}/template/get-accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
 export const updateClassTemplateRoute = `${host}/template/update-service`;
 export const searchTemplateRoute = `${host}/template/search-template`;
+
