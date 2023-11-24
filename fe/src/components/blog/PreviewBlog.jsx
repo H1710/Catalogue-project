@@ -24,10 +24,10 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
     acceptBlog({ blogId });
   }, []);
   return (
-    <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
+    <div className="w-[80vw] py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
       <p
         onClick={() => handleNavigateBlogDetail(blog.id)}
-        className="text-xl w-full font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
+        className="text-xl font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
       >
         {blog.title}
       </p>
@@ -65,7 +65,7 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
             />
           ))}
 
-        <p className="w-full text-sm break-words inline-block overflow-hidden text-justify text-[--primary-text]">
+        <p className=" text-sm break-words inline-block overflow-hidden text-justify text-[--primary-text]">
           {blog.description}
         </p>
       </div>
