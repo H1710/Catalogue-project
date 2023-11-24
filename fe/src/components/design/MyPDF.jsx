@@ -123,10 +123,7 @@ const MyPDF = ({ components }) => {
                   )}
 
                   {c.name === "image" && (
-                    <Image
-                      src={{
-                        uri: c.image,
-                      }}
+                    <View
                       style={{
                         position: "absolute",
                         height: c.height,
@@ -134,7 +131,17 @@ const MyPDF = ({ components }) => {
                         left: c.left,
                         top: c.top,
                       }}
-                    />
+                    >
+                      <Image
+                        src={{
+                          uri: c.image,
+                          method: "GET",
+                          headers: {},
+                          body: "",
+                        }}
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </View>
                   )}
                 </>
               ))}

@@ -498,6 +498,7 @@ const DesignPage = () => {
         createImage={createImage}
         setImage
       />
+
       <div className="w-full h-full flex relative">
         <div className="w-full h-full flex flex-col ml-[80px]">
           <DesignToolBar
