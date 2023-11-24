@@ -12,10 +12,10 @@ const CustomButton = ({ text, type, classContent, handleClick, isLoading }) => {
       type={type}
     >
       {isLoading ? (
-        <>
+        <div className="flex justify-center items-center gap-4">
           <CircularProgress size={16} color="inherit" />
           Loading
-        </>
+        </div>
       ) : (
         <>{text}</>
       )}

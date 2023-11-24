@@ -12,7 +12,7 @@ import {
 import { useOutletContext, useParams } from "react-router-dom";
 import { getAPI, postAPI } from "../utils/FetchData";
 import html2canvas from "@nidi/html2canvas";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const DesignPage = () => {
   const [state, setState] = useState("");
@@ -33,6 +33,7 @@ const DesignPage = () => {
 
   const { productId } = useParams();
   const [user] = useOutletContext();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const intiComponents = async () => {
@@ -463,7 +464,9 @@ const DesignPage = () => {
       onError: (error) => {
         // toast.error(error.response.data.message, toastOptions);
       },
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["upload-image"]);
+      },
     });
 
   const { data: uploadImagesData, isLoading: loadingUploadImage } = useQuery({
@@ -491,6 +494,7 @@ const DesignPage = () => {
         createText={createText}
         uploadImage={uploadImage}
         images={uploadImagesData?.data.images}
+        isLoadingUpload={isLoadingUpload}
         createImage={createImage}
         setImage
       />

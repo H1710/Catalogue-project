@@ -267,7 +267,8 @@ const CreateComponent = ({ info, currentComponent, removeComponent }) => {
             width: info.width + "px",
             height: info.height + "px",
             backgroundImage: `url(${info.image})`,
-            backgroundSize: "cover",
+            backgroundSize: "100% 100%",
+            objectFit: "cover",
           }}
           onMouseDown={() => info.moveElement(info.id, info)}
         ></div>

@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import React from "react";
 
 const DesignTable = ({
@@ -9,6 +10,7 @@ const DesignTable = ({
   createImage,
   images,
   setImage,
+  isLoadingUpload,
 }) => {
   return (
     <div
@@ -94,13 +96,21 @@ const DesignTable = ({
 
         {state === "upload" && (
           <div className="grid grid-cols-1 gap-2">
-            <input
-              // onClick={() => createText("text")}
-              type="file"
-              onChange={uploadImage}
-              className=""
-              placeholder="Add Image"
-            />
+            {isLoadingUpload ? (
+              <div className="flex justify-center items-center gap-4">
+                <CircularProgress size={16} color="inherit" />
+                Loading
+              </div>
+            ) : (
+              <input
+                // onClick={() => createText("text")}
+                type="file"
+                onChange={uploadImage}
+                className=""
+                placeholder="Add Image"
+              />
+            )}
+
             <div className="grid grid-cols-2 gap-2">
               {images &&
                 images.map((img, i) => (

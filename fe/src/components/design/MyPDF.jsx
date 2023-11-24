@@ -124,7 +124,9 @@ const MyPDF = ({ components }) => {
 
                   {c.name === "image" && (
                     <Image
-                      src={c.image}
+                      src={{
+                        uri: c.image,
+                      }}
                       style={{
                         position: "absolute",
                         height: c.height,

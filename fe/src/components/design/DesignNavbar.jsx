@@ -11,6 +11,7 @@ const DesignNavbar = ({
   uploadImage,
   images,
   createImage,
+  isLoadingUpload,
   setImage,
 }) => {
   return (
@@ -95,6 +96,7 @@ const DesignNavbar = ({
           images={images}
           createImage={createImage}
           setImage
+          isLoadingUpload={isLoadingUpload}
         />
       )}
     </div>
