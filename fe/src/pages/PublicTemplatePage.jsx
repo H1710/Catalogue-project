@@ -1,5 +1,3 @@
-import { Button, TextField, Typography } from "@mui/material";
-import { useFormik } from "formik";
 import { useState } from "react";
 import {
   useLocation,
@@ -17,6 +15,7 @@ import { toast } from "react-toastify";
 
 const PublicTemplate = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [tags, setTags] = useState("");
   const [thumbnail, setThumbnail] = useState("");
@@ -32,6 +31,7 @@ const PublicTemplate = () => {
       },
       onSuccess: (data) => {
         toast.success("Public success.Please wait admin approve");
+        navigate('/home')
       },
     });
 

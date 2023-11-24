@@ -9,6 +9,7 @@ import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import LiteQuillEditor from "../textEditor/LiteQuillEditor";
 import CustomButton from "../common/Button";
 import MinidenticonImg from "../common/MinidenticonImg";
+import { formatDate } from "../../utils/FormatDate";
 
 export default function BlogComment({ setOpenAuthForm, blogId, user }) {
   const [body, setBody] = useState("");
@@ -59,7 +60,7 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
               )}
               <div className="flex flex-col gap-1">
                 <p className="text-blue-700 font-bold">{comment.user.name}</p>
-                <p className="text-gray-500 text-xs">{comment.createdAt}</p>
+                <p className="text-gray-500 text-xs">{formatDate(comment.createdAt)}</p>
               </div>
             </div>
             <div
@@ -97,7 +98,7 @@ export default function BlogComment({ setOpenAuthForm, blogId, user }) {
               />
               <div className="flex flex-col gap-1">
                 <p className="text-blue-700 font-bold">{comment.user.name}</p>
-                <p className="text-gray-500 text-xs">{comment.createdAt}</p>
+                <p className="text-gray-500 text-xs">{formatDate(comment.createdAt)}</p>
               </div>
             </div>
             <h1>{comment.content}</h1>
