@@ -42,6 +42,7 @@ const PreviewTemplate = ({ template }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(["templates"]);
+      toast.success(data.data.message, toastOptions);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
@@ -117,6 +118,8 @@ const PreviewTemplate = ({ template }) => {
             classContent={
               "bg-[--bg-button-danger] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-danger-hover]"
             }
+            handleClick={() => handleRejectTemp(template.id)}
+            isLoading={loadingRejectTemp}
           />
         </div>
       )}

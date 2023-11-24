@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 function UserSidebar({ user, setShowServiePackages }) {
   const categoryList = ["Education", "Social media", "Bussiness"];
   const navigate = useNavigate();
+console.log(user);
 
   return (
     <aside className="w-[250px] h-full overflow-y-auto flex flex-col fixed bg-white  border-r border-[#ccc] shadow p-4">

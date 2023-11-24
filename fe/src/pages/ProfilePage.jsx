@@ -1,90 +1,72 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/common/Header";
-import { faChevronDown, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import InfoDetail from "../components/profile/InfoDetail";
-import ChangeAvatar from "../components/profile/ChangeAvatar";
-import ListBoxLanguage from "../components/profile/ListBoxLanguage";
-import { Disclosure } from "@headlessui/react";
 import { useOutletContext } from "react-router-dom";
+import {formatDate} from "../utils/FormatDate"
 import axios from "axios";
+import { getHistoricalOrderRoute } from "../utils/APIRoute";
+import { useQuery } from "react-query";
+import { getAPI } from "../utils/FetchData";
 
-const languages = [
-  {
-    id: 1,
-    name: "English",
-  },
-  {
-    id: 2,
-    name: "Vietnamese",
-  },
-];
+ 
 function ProfilePage() {
   const [user, setOpenAuthForm] = useOutletContext();
-  const [info, setInfo] = useState(user);
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    const callAPI = () => {
-      const res = axios.get(
-        `http://localhost:5000/api/v1/get-historical-order/${user.id}`
-      );
-      setData(res.orders);
-    };
-  }, [user]);
-
+  const {
+    data: orders,
+    isLoading
+  }= useQuery({
+    queryKey: ["historical-order", user?.id],
+    queryFn: () => {
+      return getAPI(`${getHistoricalOrderRoute}/${user?.id}`);
+    },
+    onSuccess: (data) => {},
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+  })
+  
+   if (isLoading) return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="border-t-4 border-gray-300 border-solid rounded-full w-10 h-10 animate-spin"></div>
+    </div>
+   )
+   
+  
   return (
     <>
-      {/* <div className="flex flex-row grid col-span-full md:w-[500px] sm:w-[300px]">
-        <div className="  ml-3 mt-4 text-center h-10  rounded-md text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[200px] font-semibold">
-          Profile
-        </div>
-  
-        <div className=" grid gap-4">
-          <ChangeAvatar info={info} setInfo={setInfo} />
-          <InfoDetail info={info} setInfo={setInfo} name="name" label="Name" />
-          <InfoDetail
-            info={info}
-            setInfo={setInfo}
-            name="country"
-            label="Country"
-          />
-          <InfoDetail info={info} setInfo={setInfo} name="email" label="Email" />
-          <InfoDetail
-            info={info}
-            setInfo={setInfo}
-            name="password"
-            label="Password"
-          />
-          <ListBoxLanguage languages={languages} info={info} setInfo={setInfo} />
-        </div>
-      </div> */}
+     
       <div>
-        <div className="  ml-3 mt-4 text-center h-10  rounded-md mb-4 text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[200px] font-semibold">
+        <div className="  ml-3 mt-4 text-center h-10  rounded-md mb-4 text-white bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 p-2 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400  w-[200px] font-semibold">
           Orders
         </div>
         <table className="p-2 table-auto border-collapse border border-slate-400 ">
           <thead>
             <tr>
               <td className="border border-slate-300 py-2 px-6">No.</td>
-              <td className="border border-slate-300 py-2 px-6">CreatedAt</td>
+              <td className="border border-slate-300 py-2 px-6">Time </td>
               <td className="border border-slate-300 py-2 px-6">Name</td>
               <td className="border border-slate-300 py-2 px-6">Remain day</td>
+              <td className="border border-slate-300 py-2 px-6">Price</td>
             </tr>
           </thead>
           <tbody>
-            {user?.orders.map((order, index) => (
+            {
+            orders &&
+             orders?.data?.result.map((order, index) => (
               <tr>
                 <td className="border border-slate-300 py-2 px-6">
                   {index + 1}
                 </td>
                 <td className="border border-slate-300 py-2 px-6">
-                  {order.createdAt.slice(0, 10)}
+                  {formatDate(order?.createdAt)}
                 </td>
                 <td className="border border-slate-300 py-2 px-6">
-                  {order.service_package.name}
+                  {order?.name}
                 </td>
                 <td className="border border-slate-300 py-2 px-6">
-                  {order.service_package.remain_day}
+                  {order?.remain_day}
+                </td>
+                <td className="border border-slate-300 py-2 px-6">
+                  {order?.price}
                 </td>
               </tr>
             ))}

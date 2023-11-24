@@ -1,55 +1,60 @@
-import React, { useEffect, useMemo, useState } from "react";
-import UserStatitic from "../components/statitic/UserStatitic";
-import RevenueStatitic from "../components/statitic/RevenueStatitic";
-import { Listbox } from "@headlessui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import ListUserInfo from "../components/statitic/ListUserInfo";
-import ListOrder from "../components/statitic/ListOrder";
-import { useQuery } from "react-query";
-import { getAPI } from "../utils/FetchData";
-import { getListYear, getUserAndOrderByYear } from "../utils/APIRoute";
+import React, { useEffect, useMemo, useState } from 'react';
+import UserStatitic from '../components/statitic/UserStatitic';
+import RevenueStatitic from '../components/statitic/RevenueStatitic';
+import { Listbox } from '@headlessui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import ListUserInfo from '../components/statitic/ListUserInfo';
+import ListOrder from '../components/statitic/ListOrder';
+import { useQuery } from 'react-query';
+import { getAPI } from '../utils/FetchData';
+import { getListYear, getUserAndOrderByYear } from '../utils/APIRoute';
+import { useOutletContext } from 'react-router-dom';
+import NotFoundPage from './NotFoundPage';
 const StatiticsPage = () => {
+  const [user] = useOutletContext();
   const nowYear = useMemo(() => new Date().getFullYear());
   const [year, setYear] = useState(nowYear);
-  const [typeInfo, setTypeInfo] = useState("User");
+  const [typeInfo, setTypeInfo] = useState('User');
   const [lsYear, setLsYear] = useState([year]);
-  const lsType = ["User", "Order"];
+  const lsType = ['User', 'Order'];
   const [minYear, setMinYear] = useState(nowYear);
 
-
   const {
-    data: dataAPI
-  }
-= useQuery({
-  queryKey: ["dataUserAndOrder", typeInfo, year],
-  queryFn: ()=> {
-    return getAPI(`${getUserAndOrderByYear}/${year}`)
-  },
-  onSuccess: (data) => {},
-  onError: (error) => {
-  },
-})
-
-  
+    data: dataAPI,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['dataUserAndOrder', typeInfo, year],
+    queryFn: () => {
+      return getAPI(`${getUserAndOrderByYear}/${year}`, user?.access_token);
+    },
+    onSuccess: (data) => {},
+    onError: (error) => {},
+  });
   const {
     data: arrYears,
-    isLoading
-  } 
-  = useQuery({
-    queryKey: ["year"],
-    queryFn: ()=> {
+    // isLoading
+  } = useQuery({
+    queryKey: ['year'],
+    queryFn: () => {
       return getAPI(getListYear);
     },
-    onSuccess:(data)=> {
+    onSuccess: (data) => {
       setLsYear(data.data.years);
       setMinYear(data.data.years[0]);
     },
-    onError: ()=> {}
-  })
-  
+    onError: () => {},
+  });
 
+  if (isError) return <NotFoundPage />;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+      <div className="border-t-4 border-gray-300 border-solid rounded-full w-10 h-10 animate-spin"></div>
+    </div>
+    );
   return (
     <div className="flex flex-col col-span-full items-center  ">
       <div className="h-10 px-4 flex flex-row justify-between gap-x-4 items-center mt-4">
@@ -66,7 +71,7 @@ const StatiticsPage = () => {
                 />
               </span>
             </Listbox.Button>
-            <Listbox.Options className={"absolute z-10 rounded "}>
+            <Listbox.Options className={'absolute z-10 rounded '}>
               {lsYear &&
                 lsYear?.map((year, index) => (
                   <Listbox.Option
@@ -75,8 +80,8 @@ const StatiticsPage = () => {
                     className={({ active }) =>
                       ` select-none py-2 pl-10 pr-5 w-40 hover:bg-[#8884d8]   ${
                         active
-                          ? "bg-violet-600 text-white"
-                          : "text-white bg-violet-600"
+                          ? 'bg-violet-600 text-white'
+                          : 'text-white bg-violet-600'
                       } `
                     }
                   >
@@ -84,7 +89,7 @@ const StatiticsPage = () => {
                       <>
                         <span
                           className={`block truncate ${
-                            selected ? "font-semibold" : "font-normal"
+                            selected ? 'font-semibold' : 'font-normal'
                           }`}
                         >
                           {year}
@@ -109,7 +114,7 @@ const StatiticsPage = () => {
                 />
               </span>
             </Listbox.Button>
-            <Listbox.Options className={"absolute z-10 rounded "}>
+            <Listbox.Options className={'absolute z-10 rounded '}>
               {lsType.map((year, index) => (
                 <Listbox.Option
                   key={index}
@@ -117,8 +122,8 @@ const StatiticsPage = () => {
                   className={({ active }) =>
                     ` select-none py-2 pl-10 pr-5 w-40 hover:bg-[#8884d8]   ${
                       active
-                        ? "bg-violet-600 text-white"
-                        : "text-white bg-violet-600"
+                        ? 'bg-violet-600 text-white'
+                        : 'text-white bg-violet-600'
                     } `
                   }
                 >
@@ -126,7 +131,7 @@ const StatiticsPage = () => {
                     <>
                       <span
                         className={`block truncate ${
-                          selected ? "font-semibold" : "font-normal"
+                          selected ? 'font-semibold' : 'font-normal'
                         }`}
                       >
                         {year}
@@ -156,7 +161,7 @@ const StatiticsPage = () => {
       </div>
 
       <div>
-        { typeInfo === "User" ? (
+        {typeInfo === 'User' ? (
           <ListUserInfo dataUsers={dataAPI?.data?.users} />
         ) : (
           <ListOrder dataOrders={dataAPI?.data?.orders} />

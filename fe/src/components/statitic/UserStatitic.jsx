@@ -15,6 +15,8 @@ import {
 } from "recharts";
 import { getAPI } from "../../utils/FetchData";
 import { getListUserByYear } from "../../utils/APIRoute";
+import NotFoundPage from "../../pages/NotFoundPage";
+import { useOutletContext } from "react-router-dom";
 
 const monthNames = [
   "Jan",
@@ -32,13 +34,14 @@ const monthNames = [
 ];
 export default function UserStatitic({ year, minYear }) {
   const [data, setData] = useState([]);
-  
+  const [user ] = useOutletContext()
   let flag = false;
   useEffect(() => {
     const handleAPI = async () => {
       const res = await axios.get(
        `${getListUserByYear}/${year}`
       );
+      // if (res.status !== 200) {return <NotFoundPage/>}
       setData(res.data);
     };
     handleAPI();

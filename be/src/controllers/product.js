@@ -242,7 +242,7 @@ class ProductController {
           });
         }
       }
-      return res.status(200).send({ message: "Clone template success" });
+      return res.status(200).send({productId: newProduct.id, message: "Clone template success" });
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "Something went wrong" });

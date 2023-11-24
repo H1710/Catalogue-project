@@ -29,6 +29,7 @@ export const getBlogByUserId = `${host}/blog/get-by-user`;
 export const getProcessingBlogRoute = `${host}/blog/processing`;
 export const getAcceptedBlogRoute = `${host}/blog/accepted`;
 export const acceptBlogRoute = `${host}/blog/approve-accept`;
+export const cancelBlogRoute = `${host}/blog/cancel-blog`;
 
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 export const commentBlogRoute = `${host}/comment/blog/create`;
@@ -37,6 +38,7 @@ export const commentTemplateRoute = `${host}/comment/template/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const postOrderRoute = `${host}/order/add-order`;
+export const getHistoricalOrderRoute = `${host}/order/get-historical-order`;
 
 export const getAllUserRoute = `${host}/user/get-all`;
 export const uploadImageUserRoute = `${host}/user/upload-image`;

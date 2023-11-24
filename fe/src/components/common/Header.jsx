@@ -14,6 +14,7 @@ import { postAPI } from "../../utils/FetchData";
 function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
   const [dropDown, setDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const nav = useNavigate();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -31,6 +32,7 @@ function Header({ setShowSidebar, showSidebar, user, setOpenAuthForm }) {
     onSuccess: (data) => {
       dispatch(seft(null));
       queryClient.invalidateQueries(["refresh_token"]);
+      nav('/home')
       toast.success("Logout success");
     },
   });

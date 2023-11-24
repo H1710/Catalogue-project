@@ -16,7 +16,10 @@ router.patch(
   UserController.deleteUser
 );
 router.patch("/update-user", UserController.updateUser);
-router.get("/get-list-by-year/:year", UserController.getListByYear);
+router.get("/get-list-by-year/:year",
+  AuthMiddleware.auth,
+  AuthMiddleware.validateAdmin,
+  UserController.getListByYear);
 router.get("/get-user-by-year/:year", UserController.getUserByYear);
 router.get(
   "/get-all",

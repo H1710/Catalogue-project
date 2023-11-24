@@ -219,7 +219,7 @@ class TemplateController {
 
       return res
         .status(200)
-        .json({ message: "Update template successfully", template });
+        .json({ message: "Reject template successfully", template });
     } catch (error) {
       console.error(error);
       res.status(400).send({ message: "Something went wrong." });

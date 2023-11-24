@@ -14,5 +14,5 @@ router.get(
 router.get("/get-monthly-revenue", OrderController.getMonthlyRevenue);
 router.get("/get-yearly-revenue", OrderController.getYearlyRevenue);
 router.get("/get-order-by-year/:year", OrderController.getOrderByYear);
-router.get("/get-historical-order", OrderController.getHistoricalOrder);
+router.get("/get-historical-order/:userId", OrderController.getHistoricalOrder);
 module.exports = router;
