@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import UserStatitic from '../components/statitic/UserStatitic';
 import RevenueStatitic from '../components/statitic/RevenueStatitic';
 import { Listbox } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import html2pdf from 'html2pdf.js';
 import ListUserInfo from '../components/statitic/ListUserInfo';
 import ListOrder from '../components/statitic/ListOrder';
 import { useQuery } from 'react-query';
@@ -20,7 +21,7 @@ const StatiticsPage = () => {
   const [lsYear, setLsYear] = useState([year]);
   const lsType = ['User', 'Order'];
   const [minYear, setMinYear] = useState(nowYear);
-
+  const pdfContainer = useRef();
   const {
     data: dataAPI,
     isError,
@@ -52,9 +53,21 @@ const StatiticsPage = () => {
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-screen">
-      <div className="border-t-4 border-gray-300 border-solid rounded-full w-10 h-10 animate-spin"></div>
-    </div>
+        <div className="border-t-4 border-gray-300 border-solid rounded-full w-10 h-10 animate-spin"></div>
+      </div>
     );
+
+  const exportToPdf = () => {
+    const content = pdfContainer.current;
+
+    html2pdf(content, {
+      margin: [40, 0, 0, 0],
+      filename: 'exported-chart-statistic.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+    });
+  };
   return (
     <div className="flex flex-col col-span-full items-center  ">
       <div className="h-10 px-4 flex flex-row justify-between gap-x-4 items-center mt-4">
@@ -144,8 +157,18 @@ const StatiticsPage = () => {
           </div>
         </Listbox>
       </div>
-
-      <div className="justify-center flex lg:flex-row items-center w-full sm:flex-col md:flex-col">
+     <div className='flex justify-items-start    p-2'>
+        <button
+          onClick={exportToPdf}
+          className="bg-[#8884d8]   text-white w-50 border-2 border-slate-100 rounded  py-2 pl-3 pr-10 text-center cursor-pointer mb-4"
+        >
+          Export Chart to PDF
+        </button>
+     </div>
+      <div
+        className="justify-center flex lg:flex-row items-center w-full sm:flex-col md:flex-col"
+        ref={pdfContainer}
+      >
         <div className="flex flex-col gap-y-4 justify-center items-center  ">
           <span className="flex-1 text-center rounded-md text-white bg-[#8884d8] p-3 duration-300 rounded-sm hover:from-emerald-400 hover:to-teal-400 w-[15vw] font-semibold">
             User Oveview

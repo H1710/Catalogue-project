@@ -10,9 +10,9 @@ export default function ListUserInfo({ dataUsers }) {
         sheet="users"
         currentTableRef={tableUserRef.current}
       >
-        <button className="relative bg-[#8884d8]  w-40 border-2 border-slate-100 rounded  py-2 pl-3 pr-10 text-center cursor-pointer mb-4">
+        <button className="relative bg-[#8884d8] text-white  w-50 border-2 border-slate-100 rounded  py-2 pl-3 pr-10 text-center cursor-pointer mb-4">
           {" "}
-          Export excel{" "}
+          Export data to excel{" "}
         </button>
       </DownloadTableExcel>
       <table
