@@ -24,11 +24,11 @@ const Dropdown = ({ user, handleLogout }) => {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2 mt-3">
-        <Link to={`/profile/${user.id}`}>
+       {user?.role?.name === "Customer" && <Link to={`/profile/${user.id}`}>
           <p className="text-[16px] hover:bg-gray-100 py-2 px-4 cursor-pointer">
-            Account Setting
+            Historical Order
           </p>
-        </Link>
+        </Link>}
         <p
           onClick={handleLogout}
           className="text-[16px] hover:bg-gray-100 py-2 px-4 cursor-pointer"

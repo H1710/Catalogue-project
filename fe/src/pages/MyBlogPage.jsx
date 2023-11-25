@@ -7,6 +7,7 @@ import { getAPI } from "../utils/FetchData";
 import PreviewBlog from "../components/blog/PreviewBlog";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import CustomButton from "../components/common/Button";
 
 const MyBlog = () => {
   const [user] = useOutletContext();
@@ -16,7 +17,8 @@ const MyBlog = () => {
     queryFn: () => {
       return getAPI(`${getBlogByUserId}/${user?.id}`, user?.access_token);
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+    },
     onError: (error) => {
       toast.error(error.response.data.message);
     },
@@ -28,20 +30,64 @@ const MyBlog = () => {
   };
 
   return (
-    <div className=" w-full flex flex-col justify-between gap-2 p-4">
-      <div className="flex flex-col gap-4">
+    <div className=" w-full flex flex-col   gap-2 p-4 items-center">
+      <div className="flex flex-col gap-4 items-center justify-start ">
+      <CustomButton classContent="py-4 px-8 bg-green-600 w-[200px] rounded  text-white " text={'Accepted Blog'}/>
         {!isLoading &&
           userBlogList &&
-          userBlogList.data.blog.map((blog, index) => (
-            <PreviewBlog
-              key={index}
-              blog={blog}
-              handleNavigateBlogDetail={handleNavigateBlogDetail}
-              author={blog.user.name}
-              // handleAcceptBlog={handleAcceptBlog}
-              // loadingAcceptBlog={loadingAcceptBlog}
-            />
-          ))}
+          userBlogList.data.blog.filter(blog => blog.status === 'Accepted')
+            .map((blog, index) => (
+                <PreviewBlog
+                  key={index}
+                  blog={blog}
+                  handleNavigateBlogDetail={handleNavigateBlogDetail}
+                  author={blog.user.name}
+                  user={user}
+                  // handleAcceptBlog={handleAcceptBlog}
+                  // loadingAcceptBlog={loadingAcceptBlog}
+                />
+              ))
+
+          
+          }
+      </div>
+      <div className="flex flex-col gap-4 items-center justify-start ">
+        <CustomButton classContent="py-4 px-8 bg-yellow-600  rounded    text-white " text={'Processing Blog'}/>
+        {!isLoading &&
+          userBlogList &&
+          userBlogList.data.blog.filter(blog => blog.status === 'Processing')
+          .map((blog, index) => (
+                <PreviewBlog
+                  key={index}
+                  blog={blog}
+                  handleNavigateBlogDetail={handleNavigateBlogDetail}
+                  author={blog.user.name}
+                  user={user}
+                  // handleAcceptBlog={handleAcceptBlog}
+                  // loadingAcceptBlog={loadingAcceptBlog}
+                />
+              ))
+
+          }
+      </div>
+      <div className="flex flex-col gap-4 items-center justify-start ">
+      <CustomButton classContent="py-4 px-8 bg-rose-600 w-[200px] rounded   text-white " text={'Cancelled Blog'}/>
+        {!isLoading &&
+          userBlogList &&
+          userBlogList.data.blog.filter(blog => blog.status === 'Cancelled')
+          .map((blog, index) => (
+                <PreviewBlog
+                  key={index}
+                  blog={blog}
+                  handleNavigateBlogDetail={handleNavigateBlogDetail}
+                  author={blog.user.name}
+                  user={user}
+                  // handleAcceptBlog={handleAcceptBlog}
+                  // loadingAcceptBlog={loadingAcceptBlog}
+                />
+              ))
+
+          }
       </div>
       <ToastContainer />
     </div>

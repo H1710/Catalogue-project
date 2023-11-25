@@ -1,12 +1,21 @@
 import React, { useCallback } from "react";
 import Tag from "../Tag";
 import CustomButton from "../common/Button";
-import { acceptBlogRoute } from "../../utils/APIRoute";
+import { acceptBlogRoute, cancelBlogRoute } from "../../utils/APIRoute";
 import { useMutation, useQueryClient } from "react-query";
 import { patchAPI } from "../../utils/FetchData";
+import { toast } from "react-toastify";
 
 const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
   const queryClient = useQueryClient();
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 3000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+  };
+  
 
   const { mutate: acceptBlog, isLoading: loadingAcceptBlog } = useMutation({
     mutationFn: (info) => {
@@ -14,20 +23,37 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(["processing_blogs"]);
+      toast.success(data.data.message, toastOptions);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
     },
     // enabled: logged,
   });
+
+  const { mutate: rejectBlog, isLoading: loadingRejectBlog } = useMutation({
+    mutationFn: (info) => {
+      return patchAPI(cancelBlogRoute, info, user.access_token);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["processing_blogs" ]);
+      toast.success(data.data.message, toastOptions);
+    },
+    onError: (error) => {
+      // toast.error(error.response.data.message, toastOptions);
+    },
+  });
   const handleAcceptBlog = useCallback((blogId) => {
     acceptBlog({ blogId });
   }, []);
+  const handleRejectBlog = useCallback((blogId) => {
+    rejectBlog({ blogId });
+  }, []);
   return (
-    <div className=" py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
+    <div className="w-[80vw] py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
       <p
         onClick={() => handleNavigateBlogDetail(blog.id)}
-        className="text-xl w-full font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
+        className="text-xl font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
       >
         {blog.title}
       </p>
@@ -65,11 +91,11 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
             />
           ))}
 
-        <p className="w-full text-sm break-words inline-block overflow-hidden text-justify text-[--primary-text]">
+        <p className=" text-sm break-words inline-block overflow-hidden text-justify text-[--primary-text]">
           {blog.description}
         </p>
       </div>
-      {blog?.status === "Processing" && (
+      {blog?.status === "Processing" && user?.role?.name ==="Admin"   && (
         <div className="w-full flex justify-end gap-2">
           <CustomButton
             text={"Accept"}
@@ -84,6 +110,8 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
             classContent={
               "bg-[--bg-button-danger] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-danger-hover]"
             }
+            handleClick={()=> handleRejectBlog(blog.id)}
+            isLoading={loadingRejectBlog}
           />
         </div>
       )}

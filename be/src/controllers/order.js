@@ -305,7 +305,8 @@ class OrderController {
   }
   static async getHistoricalOrder(req, res) {
     try {
-      const { userId } = req.query;
+      const { userId } = req.params;console.log(req.query, req.params);
+      
       if (userId == null) {
         return res.status(400).json("User Id is null");
       } else {

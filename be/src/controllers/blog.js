@@ -551,7 +551,8 @@ class BlogController {
 
   static async cancelBlog(req, res) {
     try {
-      const blogId = req.body.id;
+      const { blogId } = req.body;
+      
       const blog = await Blog.findByPk(blogId);
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
@@ -671,6 +672,7 @@ class BlogController {
         attributes: [
           "id",
           "title",
+          "status",
           "thumbnail",
           "description",
           "content",

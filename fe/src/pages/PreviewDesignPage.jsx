@@ -5,7 +5,7 @@ import {
   getTemplateByIdRoute,
   ratingTemplateRoute,
 } from "../utils/APIRoute";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAPI, postAPI } from "../utils/FetchData";
 import HeaderPreview from "../components/previewDeisgn/HeaderPreview";
@@ -19,6 +19,7 @@ const PreviewDesignPage = () => {
   const { templateId } = useParams();
   const [user, setOpenAuthForm, showServiePackages] = useOutletContext();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: templateData } = useQuery({
     queryKey: ["template", templateId],
     queryFn: () => {
@@ -40,6 +41,7 @@ const PreviewDesignPage = () => {
       },
       onSuccess: (data) => {
         toast.success(data.data.message, toastOptions);
+        navigate(`/design/${data.data.productId}`)
       },
     });
 

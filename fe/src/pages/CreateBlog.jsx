@@ -44,6 +44,7 @@ const CreateBlog = () => {
     },
     onSuccess: (data) => {
       toast.success("Create successfully!");
+      navigate("/");
     },
   });
 

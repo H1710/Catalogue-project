@@ -29,6 +29,7 @@ export const getBlogByUserId = `${host}/blog/get-by-user`;
 export const getProcessingBlogRoute = `${host}/blog/processing`;
 export const getAcceptedBlogRoute = `${host}/blog/accepted`;
 export const acceptBlogRoute = `${host}/blog/approve-accept`;
+export const cancelBlogRoute = `${host}/blog/cancel-blog`;
 
 export const getBlogCmtByIdRoute = `${host}/comment/blog`;
 export const commentBlogRoute = `${host}/comment/blog/create`;
@@ -37,6 +38,7 @@ export const commentTemplateRoute = `${host}/comment/template/create`;
 
 export const getAllOrderRoute = `${host}/order/get-all-order`;
 export const postOrderRoute = `${host}/order/add-order`;
+export const getHistoricalOrderRoute = `${host}/order/get-historical-order`;
 
 export const getAllUserRoute = `${host}/user/get-all`;
 export const uploadImageUserRoute = `${host}/user/upload-image`;
@@ -44,6 +46,9 @@ export const getUploadImageRoute = `${host}/user/get-images-upload`;
 export const updateUserRoute = `${host}/user/update-user`;
 export const deleteUserRoute = `${host}/user/deleteUser`;
 export const restoreUserRoute = `${host}/user/restore-user`;
+export const getUserAndOrderByYear = `${host}/user/get-list-by-year`;
+export const getListYear = `${host}/user/get-list-year`;
+export const getListUserByYear = `${host}/user/get-user-by-year`;
 
 export const uploadImageRoute = `${host}/upload`;
 export const publicTemplate = `${host}/public-form`;
@@ -58,3 +63,4 @@ export const getAcceptTemplateRoute = `${host}/template/get-accepted`;
 export const ratingTemplateRoute = `${host}/template/rating`;
 export const updateClassTemplateRoute = `${host}/template/update-service`;
 export const searchTemplateRoute = `${host}/template/search-template`;
+

@@ -14,6 +14,8 @@ import {
   YAxis,
 } from "recharts";
 import { getOrderByYearRoute } from "../../utils/APIRoute";
+import { useOutletContext } from "react-router-dom";
+import NotFoundPage from "../../pages/NotFoundPage";
 
 const monthNames = [
   "Jan",
@@ -30,7 +32,8 @@ const monthNames = [
   "Dec",
 ];
 
-export default function RevenueStatitic({ year, minYear }) {
+export default function RevenueStatitic({  year, minYear }) {
+  const [user ] = useOutletContext();
   const [data, setData] = useState([]);
   let flag = false;
   useEffect(() => {
