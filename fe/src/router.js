@@ -1,23 +1,24 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import { Suspense, lazy } from "react";
 
-import BlogPage from "./pages/BlogPage";
-import ProfilePage from "./pages/ProfilePage";
-import CreateBlog from "./pages/CreateBlog";
-import MainLayout from "./components/layout/MainLayout";
-import TemplateDetailsPage from "./pages/TemplateDetailsPage";
-import StatiticsPage from "./pages/StatiticsPage";
-import BlogPageDetail from "./pages/BlogPageDetail";
-import UserListPage from "./pages/UserListPage";
-import DesignPage from "./pages/DesignPage";
-import OrderListPage from "./pages/OrderListPage";
-import ApproveBlogPage from "./pages/ApproveBlogPage";
-import PreviewDesignPage from "./pages/PreviewDesignPage";
-import MyBlog from "./pages/MyBlogPage";
-import PublicTemplate from "./pages/PublicTemplatePage";
-import ApproveTemplatePage from "./pages/ApproveTemplatePage";
-import NotFoundPage from "./pages/NotFoundPage";
-import TemplatePage from "./pages/TemplatePage";
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const CreateBlog = lazy(() => import("./pages/CreateBlog"));
+const MainLayout = lazy(() => import("./components/layout/MainLayout"));
+const TemplateDetailsPage = lazy(() => import("./pages/TemplateDetailsPage"));
+const StatiticsPage = lazy(() => import("./pages/StatiticsPage"));
+const BlogPageDetail = lazy(() => import("./pages/BlogPageDetail"));
+const UserListPage = lazy(() => import("./pages/UserListPage"));
+const DesignPage = lazy(() => import("./pages/DesignPage"));
+const OrderListPage = lazy(() => import("./pages/OrderListPage"));
+const ApproveBlogPage = lazy(() => import("./pages/ApproveBlogPage"));
+const PreviewDesignPage = lazy(() => import("./pages/PreviewDesignPage"));
+const MyBlog = lazy(() => import("./pages/MyBlogPage"));
+const PublicTemplate = lazy(() => import("./pages/PublicTemplatePage"));
+const ApproveTemplatePage = lazy(() => import("./pages/ApproveTemplatePage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const TemplatePage = lazy(() => import("./pages/TemplatePage"));
 
 const router = createBrowserRouter([
   {
@@ -30,78 +31,146 @@ const router = createBrowserRouter([
       },
       {
         path: "/home",
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <HomePage />
+          </Suspense>
+        ),
       },
 
       {
         path: "/blog",
-        element: <BlogPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <BlogPage />
+          </Suspense>
+        ),
       },
       {
         path: "/blog/:blogId",
-        element: <BlogPageDetail />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <BlogPageDetail />
+          </Suspense>
+        ),
       },
       {
         path: "/blog/create",
-        element: <CreateBlog />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <CreateBlog />
+          </Suspense>
+        ),
       },
       {
         path: "/blog/approve",
-        element: <ApproveBlogPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <ApproveBlogPage />
+          </Suspense>
+        ),
       },
       {
         path: "/design/:productId",
-        element: <DesignPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <DesignPage />
+          </Suspense>
+        ),
       },
       {
         path: "/design/preview/:templateId",
-        element: <PreviewDesignPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <PreviewDesignPage />
+          </Suspense>
+        ),
       },
       {
         path: "/templatedetails/:id",
-        element: <TemplateDetailsPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <TemplateDetailsPage />
+          </Suspense>
+        ),
       },
       {
         path: "/statitics",
-        element: <StatiticsPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <StatiticsPage />
+          </Suspense>
+        ),
       },
       {
         path: "/account-list",
-        element: <UserListPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <UserListPage />
+          </Suspense>
+        ),
       },
       {
         path: "/order-list",
-        element: <OrderListPage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <OrderListPage />
+          </Suspense>
+        ),
       },
       {
         path: "/profile/:id",
-        element: <ProfilePage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <ProfilePage />
+          </Suspense>
+        ),
       },
       {
         path: "/myblog",
-        element: <MyBlog />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <MyBlog />
+          </Suspense>
+        ),
       },
       {
         path: "/public-form/:id",
-        element: <PublicTemplate />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <PublicTemplate />
+          </Suspense>
+        ),
       },
       {
         path: "/template/approve",
-        element: <ApproveTemplatePage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <ApproveTemplatePage />
+          </Suspense>
+        ),
       },
       {
         path: "/template/:name",
-        element: <TemplatePage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <TemplatePage />
+          </Suspense>
+        ),
       },
       {
         path: "/template",
-        element: <TemplatePage />,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <TemplatePage />
+          </Suspense>
+        ),
       },
     ],
   },
   {
     path: "*",
-    element: <NotFoundPage/>,
+    element: <NotFoundPage />,
   },
 ]);
 

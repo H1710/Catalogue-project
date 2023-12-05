@@ -18,7 +18,7 @@ const BlogList = ({
   const displayedBlogs = searchText ? filterBlogs() : blogsData;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       {!isLoading &&
         displayedBlogs.map((blog, index) => (
           <PreviewBlog

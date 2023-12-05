@@ -20,7 +20,6 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.auth);
-
   const { isLoading } = useQuery({
     queryKey: ["refresh_token", dispatch],
     queryFn: () => {

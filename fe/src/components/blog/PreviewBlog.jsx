@@ -15,7 +15,6 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
     draggable: true,
     theme: "light",
   };
-  
 
   const { mutate: acceptBlog, isLoading: loadingAcceptBlog } = useMutation({
     mutationFn: (info) => {
@@ -23,7 +22,7 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(["processing_blogs"]);
-      toast.success(data.data.message, toastOptions);
+      // toast.success(data.data.message, toastOptions);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
@@ -36,8 +35,8 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
       return patchAPI(cancelBlogRoute, info, user.access_token);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["processing_blogs" ]);
-      toast.success(data.data.message, toastOptions);
+      queryClient.invalidateQueries(["processing_blogs"]);
+      // toast.success(data.data.message, toastOptions);
     },
     onError: (error) => {
       // toast.error(error.response.data.message, toastOptions);
@@ -50,7 +49,7 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
     rejectBlog({ blogId });
   }, []);
   return (
-    <div className="w-[80vw] py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
+    <div className="w-full py-2 gap-3 flex flex-col px-4 rounded border border-[--border-input]">
       <p
         onClick={() => handleNavigateBlogDetail(blog.id)}
         className="text-xl font-semibold py-[3px] leading-none text-[--primary-text] break-words overflow-hidden cursor-pointer"
@@ -95,7 +94,7 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
           {blog.description}
         </p>
       </div>
-      {blog?.status === "Processing" && user?.role?.name ==="Admin"   && (
+      {blog?.status === "Processing" && user?.role?.name === "Admin" && (
         <div className="w-full flex justify-end gap-2">
           <CustomButton
             text={"Accept"}
@@ -110,7 +109,7 @@ const PreviewBlog = ({ blog, handleNavigateBlogDetail, author, user }) => {
             classContent={
               "bg-[--bg-button-danger] text-white text-[14px] font-[600] transition duration-300 hover:bg-[--bg-button-danger-hover]"
             }
-            handleClick={()=> handleRejectBlog(blog.id)}
+            handleClick={() => handleRejectBlog(blog.id)}
             isLoading={loadingRejectBlog}
           />
         </div>
