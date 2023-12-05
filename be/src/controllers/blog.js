@@ -303,7 +303,7 @@ class BlogController {
       const title = req.query.title;
       const name = req.query.name;
       let page = req.query.page;
-      const limit = 4;
+      const limit = 10;
       const offset = (page - 1) * limit;
       if (page == "") {
         page = 1;
@@ -552,7 +552,7 @@ class BlogController {
   static async cancelBlog(req, res) {
     try {
       const { blogId } = req.body;
-      
+
       const blog = await Blog.findByPk(blogId);
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });

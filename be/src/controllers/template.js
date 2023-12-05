@@ -250,9 +250,6 @@ class TemplateController {
         where: {
           status: "Accepted",
         },
-        offset: (page - 1) * limit,
-        limit: limit,
-        subQuery: false,
       });
 
       res.status(200).json(templates);
